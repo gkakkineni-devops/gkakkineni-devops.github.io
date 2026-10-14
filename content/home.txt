@@ -76,7 +76,7 @@ button: Try the playground
 [repos]
 title: On GitHub
 text: Pulled live from my GitHub, so this list keeps itself up to date.
-empty: More projects are on the way. This site is the first one, and you can [read its source](https://github.com/gkakkineni-devops/gopalakrishna-portfolio).
+empty: More projects are on the way. This site is the first one, and you can [read its source](https://github.com/gkakkineni-devops/gkakkineni-devops.github.io).
 
 [now]
 title: Right now
