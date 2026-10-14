@@ -43,7 +43,7 @@ jobs:
       - name: Check links
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --offline --no-progress --include-fragments "dist/**/*.html"
+          args: --offline --no-progress --include-fragments --exclude-path dist/404.html "dist/**/*.html"
           fail: true
 
   container:
@@ -88,6 +88,7 @@ jobs:
             sleep 1
           done
           curl -fsS http://127.0.0.1:8080/ | grep -q "Gopala Krishna Akkineni"
+          for page in about work experience contact work/this-website; do curl -fsS "http://127.0.0.1:8080/$page/" > /dev/null; done
           curl -fsS http://127.0.0.1:8080/data/build.json | python3 -m json.tool > /dev/null
           curl -fsSI http://127.0.0.1:8080/ | grep -qi "content-security-policy"
           echo "Smoke test passed"

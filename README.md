@@ -52,14 +52,19 @@ docker run --rm -p 8080:8080 portfolio
 ## Layout
 
 ```
-src/                 the site (HTML, CSS, JS, résumé PDF)
-scripts/build.py     build step, writes dist/ and the data files
+src/                 the site: one folder per page, plus assets and the résumé PDF
+src/_partials/       shared head, header, footer and call to action
+scripts/build.py     build step: fills in partials and links, writes dist/ and the data files
 deploy/nginx.conf    nginx config for the container (security headers, caching, /healthz)
 Dockerfile           unprivileged nginx image
 .github/workflows/   the pipeline
 ```
 
-## What's on the page
+## Pages
+
+Home, About, Work (five case studies plus a write-up of this site), Experience and Contact. Shared pieces live in `src/_partials` and get stitched in at build time, so there's still no framework.
+
+## What's interactive
 
 - **Live deploy panel**: commit, pipeline run, checks and uptime, all read from files the pipeline writes.
 - **Deploy playground**: pick a clean release, a vulnerable dependency or a bug that only shows under real traffic, then watch the pipeline ship it, block it at the scan, or roll the canary back on its own.
