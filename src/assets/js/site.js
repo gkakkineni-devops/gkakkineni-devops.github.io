@@ -451,6 +451,51 @@
       .catch(() => {});
   });
 
+  // ---------- visitor stats (GoatCounter, no cookies) ----------
+  {
+
+    const isLocal = /^(localhost|127\.|0\.0\.0\.0)/.test(location.hostname);
+    const track = (name, title) => {
+      if (isLocal) return;
+      const send = () => {
+        if (window.goatcounter && window.goatcounter.count) {
+          window.goatcounter.count({ path: name, title: title || name, event: true });
+          return true;
+        }
+        return false;
+      };
+      if (!send()) window.setTimeout(send, 1500);
+    };
+
+    // Clicks on the résumé, email and profile links
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest && e.target.closest("a, button");
+      if (!a) return;
+      const href = a.getAttribute("href") || "";
+      if (/resume\/.*\.pdf/i.test(href)) track("resume-opened", "Résumé opened");
+      else if (/mail\.google\.com|^mailto:/i.test(href) || a.hasAttribute("data-copy")) track("email-click", "Email clicked");
+      else if (/linkedin\.com/i.test(href)) track("linkedin-click", "LinkedIn clicked");
+      else if (/github\.com/i.test(href)) track("github-click", "GitHub clicked");
+    });
+
+    // How far down each page people actually read
+    const marks = [25, 50, 75, 100];
+    const hit = {};
+    const pagePath = location.pathname.replace(/index\.html$/, "");
+    const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (max <= 0) return;
+      const pct = (window.scrollY / max) * 100;
+      marks.forEach((m) => {
+        if (pct >= m - 1 && !hit[m]) {
+          hit[m] = true;
+          track("scroll-" + m + pagePath, "Scrolled " + m + "% on " + pagePath);
+        }
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
   // ---------- copy email ----------
 
   $$("[data-copy]").forEach((btn) => {
