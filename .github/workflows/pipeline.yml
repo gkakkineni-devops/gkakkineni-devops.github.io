@@ -144,7 +144,7 @@ jobs:
           export RUN_STARTED_AT="$(gh run view "$GITHUB_RUN_ID" --json createdAt -q .createdAt || true)"
           python3 scripts/build.py --checks-passed
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
