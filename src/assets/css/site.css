@@ -98,7 +98,6 @@ html {
   scroll-padding-top: var(--s-6);
   background: var(--paper);
 }
-html { overscroll-behavior-y: none; }
 html.fonts-loading body { opacity: 0; }
 
 body {
