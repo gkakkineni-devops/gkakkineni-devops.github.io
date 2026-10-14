@@ -137,8 +137,16 @@ def update_status(site_url: str | None) -> dict:
                 history = json.loads(body).get("checks", [])
             except ValueError:
                 history = []
+        # A 404 before the site has ever answered means it hasn't launched yet,
+        # not that it went down. Leave those out so launch day doesn't count as an outage.
+        if not any(c.get("ok") for c in history):
+            history = [c for c in history if c.get("code") != 404]
+
         probe_status, _, ms = http_get(site_url.rstrip("/") + "/")
         ok = probe_status == 200
+        if not ok and probe_status == 404 and not history:
+            log(f"health check skipped: {site_url} is not live yet")
+            return {"checks": []}
         history.append({
             "at": datetime.now(UTC).isoformat(timespec="seconds").replace("+00:00", "Z"),
             "ok": ok,
