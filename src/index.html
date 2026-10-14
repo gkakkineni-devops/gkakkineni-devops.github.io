@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gopala Krishna Akkineni, DevOps Engineer</title>
+  <meta name="description" content="DevOps engineer in Bloomington, IL. Four years building CI/CD, Kubernetes and cloud infrastructure across AWS, GCP and Azure.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1724" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="Gopala Krishna Akkineni, DevOps Engineer">
+  <meta property="og:description" content="CI/CD, Kubernetes and cloud infrastructure across AWS, GCP and Azure.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
+  <link rel="stylesheet" href="assets/css/site.css?v={{asset_version}}">
+  <script src="assets/js/site.js?v={{asset_version}}" defer></script>
+</head>
+<body data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="wordmark" href="#top">Gopala Krishna Akkineni</a>
+      <nav class="nav" aria-label="Sections">
+        <a href="#work">Work</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <button class="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">
+          <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 3a7 7 0 0 1 0 14z" fill="currentColor"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" id="top">
+      <div class="hero-copy">
+        <p class="role">DevOps Engineer, Bloomington IL</p>
+        <h1>I build cloud platforms that ship fast and stay up.</h1>
+        <p class="lede">Four years across AWS, GCP and Azure. At State Farm I work on the CI/CD, Kubernetes and GPU infrastructure that takes machine learning models from training to production.</p>
+        <div class="actions">
+          <a class="button primary" href="resume/Gopala-Krishna-Akkineni-Resume.pdf" download>Download résumé</a>
+          <a class="button" href="mailto:gopalakrishnaakkineni.dev@gmail.com">Email me</a>
+        </div>
+        <p class="availability">Open to DevOps, SRE and platform engineering roles.</p>
+      </div>
+
+      <aside class="deploy" aria-labelledby="deploy-title">
+        <div class="deploy-head">
+          <h2 id="deploy-title">This page, live from its pipeline</h2>
+          <span class="pulse" data-state="loading" aria-hidden="true"></span>
+        </div>
+        <dl class="deploy-rows">
+          <div><dt>Commit</dt><dd><a data-build="commit_link" class="mono" href="#top">loading</a> <span data-build="message" class="muted"></span></dd></div>
+          <div><dt>Deployed</dt><dd><span data-build="deployed_at">loading</span></dd></div>
+          <div><dt>Run</dt><dd><a data-build="run_link" href="#top">loading</a> <span data-build="duration" class="muted"></span></dd></div>
+          <div><dt>Uptime</dt><dd><span data-status="uptime">loading</span> <span data-status="window" class="muted"></span></dd></div>
+          <div><dt>This visit</dt><dd><span data-live="ttfb">measuring</span></dd></div>
+        </dl>
+        <div class="uptime-bars" data-status="bars" role="img" aria-label="Recent health checks"></div>
+        <ul class="checks" aria-label="Checks this deploy passed">
+          <li data-check="html">HTML validation</li>
+          <li data-check="links">Link check</li>
+          <li data-check="dockerfile">Dockerfile lint</li>
+          <li data-check="trivy">Trivy security scan</li>
+          <li data-check="smoke">Container smoke test</li>
+        </ul>
+        <p class="deploy-note">Every push runs these checks before GitHub Pages gets a new build. A scheduled job probes the site and records the result shown above.</p>
+      </aside>
+    </section>
+
+    <section class="section wrap" id="work" aria-labelledby="work-title">
+      <div class="section-head">
+        <h2 id="work-title">Selected work</h2>
+        <p>What changed after I got involved, in numbers the teams tracked.</p>
+      </div>
+      <div class="work-grid">
+        <article class="work">
+          <h3>Releases that don’t wait</h3>
+          <p>Rebuilt the delivery path on GitHub Actions, Jenkins and Buildkite, with Terraform and CloudFormation underneath. Release cycles got <strong>40% shorter</strong>.</p>
+          <p class="where">State Farm</p>
+        </article>
+        <article class="work">
+          <h3>Deploys nobody notices</h3>
+          <p>Moved services on EKS and GKE to blue-green and canary rollouts through ArgoCD and FluxCD. Service interruptions during releases dropped <strong>95%</strong>.</p>
+          <p class="where">State Farm</p>
+        </article>
+        <article class="work">
+          <h3>GPU clusters that pay for themselves</h3>
+          <p>Set up autoscaling GPU and TPU clusters for model training. Training and inference ran up to <strong>30% faster</strong> while GPU spend fell <strong>15%</strong>.</p>
+          <p class="where">State Farm</p>
+        </article>
+        <article class="work">
+          <h3>Catching problems before users do</h3>
+          <p>Wired Prometheus, Grafana, CloudWatch and the ELK stack into one view with alerts that mean something. Downtime went down <strong>25%</strong>.</p>
+          <p class="where">State Farm</p>
+        </article>
+        <article class="work">
+          <h3>Security as a pipeline step</h3>
+          <p>Put Snyk, Trivy and SonarQube gates into CI so issues fail the build instead of reaching production. Open vulnerabilities fell <strong>35%</strong>.</p>
+          <p class="where">State Farm</p>
+        </article>
+        <article class="work">
+          <h3>Less clicking, more modules</h3>
+          <p>Wrote reusable Terraform modules for S3, IAM and EC2 and scripted backups and credential rotation. Manual provisioning work dropped <strong>50%</strong>.</p>
+          <p class="where">Amistad Technologies</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section wrap" id="experience" aria-labelledby="experience-title">
+      <div class="section-head">
+        <h2 id="experience-title">Experience</h2>
+        <p>From Linux servers to multi-cloud platforms.</p>
+      </div>
+      <ol class="timeline">
+        <li>
+          <p class="when"><time datetime="2025-03">Mar 2025</time> to present</p>
+          <div>
+            <h3>DevOps Engineer (AWS/GCP)</h3>
+            <p class="org">State Farm, Bloomington IL</p>
+            <ul>
+              <li>Lead the multi-cloud infrastructure for training, deploying and monitoring ML models on AWS and GCP.</li>
+              <li>Run EKS and GKE clusters with Helm, ArgoCD and FluxCD, plus autoscaling for high-traffic services.</li>
+              <li>Bring SageMaker, Bedrock and Hugging Face into the deploy pipeline and help ship LLM apps to production.</li>
+              <li>Own secrets with Vault, AWS Secrets Manager and GCP Secret Manager. Handle incidents and root cause reviews.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <p class="when"><time datetime="2022-05">May 2022</time> to <time datetime="2023-06">Jun 2023</time></p>
+          <div>
+            <h3>Cloud/DevOps Engineer</h3>
+            <p class="org">Amistad Technologies, Hyderabad</p>
+            <ul>
+              <li>L1/L2 support for EC2, S3 and IAM with 95% SLA adherence.</li>
+              <li>Automated backups, log archiving and IAM provisioning with Python, Bash and Lambda.</li>
+              <li>Found idle AWS resources and scheduled shutdowns, cutting costs 10%.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <p class="when"><time datetime="2021-03">Mar 2021</time> to <time datetime="2022-02">Feb 2022</time></p>
+          <div>
+            <h3>Cloud/DevOps Engineer</h3>
+            <p class="org">Taal Tech, Bangalore</p>
+            <ul>
+              <li>Provisioned and secured environments across AWS, Azure and GCP.</li>
+              <li>Contributed Terraform and CloudFormation templates and Jenkins pipelines.</li>
+              <li>Troubleshot Kubernetes pods, configs and resource limits.</li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <p class="when"><time datetime="2020-07">Jul 2020</time> to <time datetime="2021-02">Feb 2021</time></p>
+          <div>
+            <h3>Linux Administrator</h3>
+            <p class="org">Ignitarium, Kochi</p>
+            <ul>
+              <li>Kept Linux servers patched, hardened and monitored for development teams.</li>
+              <li>Scripted user provisioning, cron jobs, log rotation and backups.</li>
+            </ul>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section wrap" id="projects" aria-labelledby="projects-title">
+      <div class="section-head">
+        <h2 id="projects-title">Projects</h2>
+        <p>Pulled from GitHub, so this list stays current on its own.</p>
+      </div>
+
+      <article class="featured">
+        <div class="featured-copy">
+          <h3>This website</h3>
+          <p>No framework and no hosting bill. The site is plain HTML, CSS and JavaScript, but it ships the way production software should: checked, scanned, containerized and monitored.</p>
+          <ul class="facts">
+            <li>GitHub Actions pipeline with validation, link checks, Hadolint and Trivy</li>
+            <li>Container image built on an unprivileged nginx base and smoke tested in CI</li>
+            <li>Scheduled health checks that feed the uptime panel at the top of this page</li>
+            <li>Deploys to GitHub Pages only when every check passes</li>
+          </ul>
+          <a class="text-link" data-repo-link href="https://github.com/{{github_user}}/{{github_repo}}">Read the source</a>
+        </div>
+        <figure class="pipeline" aria-label="How a change reaches this site">
+          <svg viewBox="0 0 320 360" role="img" aria-labelledby="pipe-t">
+            <title id="pipe-t">Push, then checks, then build, then deploy, then scheduled health checks</title>
+            <g class="pipe-line"><path d="M40 34 V326"/></g>
+            <g class="pipe-step"><circle cx="40" cy="34" r="7"/><text x="64" y="30">git push</text><text class="sub" x="64" y="48">main branch</text></g>
+            <g class="pipe-step"><circle cx="40" cy="106" r="7"/><text x="64" y="102">Checks</text><text class="sub" x="64" y="120">html-validate, lychee, hadolint, trivy</text></g>
+            <g class="pipe-step"><circle cx="40" cy="178" r="7"/><text x="64" y="174">Build</text><text class="sub" x="64" y="192">assets, build info, container image</text></g>
+            <g class="pipe-step"><circle cx="40" cy="250" r="7"/><text x="64" y="246">Deploy</text><text class="sub" x="64" y="264">GitHub Pages</text></g>
+            <g class="pipe-step last"><circle cx="40" cy="326" r="7"/><text x="64" y="322">Watch</text><text class="sub" x="64" y="340">health check every 3 hours</text></g>
+          </svg>
+        </figure>
+      </article>
+
+      <div class="repos" data-repos aria-live="polite">
+        <p class="empty">More projects are on the way. <a data-profile-link href="https://github.com/{{github_user}}">Follow along on GitHub</a>.</p>
+      </div>
+    </section>
+
+    <section class="section wrap split" aria-labelledby="skills-title">
+      <div class="section-head">
+        <h2 id="skills-title">Tools I use</h2>
+        <p>Grouped by the job they do.</p>
+      </div>
+      <dl class="skills">
+        <div><dt>Cloud</dt><dd>AWS (EC2, EKS, Lambda, RDS, S3, IAM, Route 53), GCP (GKE, BigQuery, Cloud Functions), Azure (AKS, Key Vault)</dd></div>
+        <div><dt>Infrastructure as code</dt><dd>Terraform, CloudFormation, Bicep, Deployment Manager</dd></div>
+        <div><dt>CI/CD and GitOps</dt><dd>GitHub Actions, Jenkins, Buildkite, Azure DevOps, ArgoCD, FluxCD</dd></div>
+        <div><dt>Containers</dt><dd>Docker, Kubernetes, Helm</dd></div>
+        <div><dt>Observability</dt><dd>Prometheus, Grafana, CloudWatch, ELK</dd></div>
+        <div><dt>Security</dt><dd>Vault, AWS and GCP Secret Manager, Snyk, Trivy, SonarQube</dd></div>
+        <div><dt>ML platforms</dt><dd>SageMaker, Bedrock, Hugging Face, GPU and TPU clusters</dd></div>
+        <div><dt>Scripting</dt><dd>Python, Bash</dd></div>
+      </dl>
+    </section>
+
+    <section class="section wrap split" aria-labelledby="edu-title">
+      <div class="section-head">
+        <h2 id="edu-title">Education</h2>
+      </div>
+      <ul class="education">
+        <li><strong>Master’s in Management Information Systems</strong><span>University of Illinois Springfield</span></li>
+        <li><strong>Bachelor of Engineering, Electronics and Communication</strong></li>
+        <li><strong>Diploma, Electronics and Communication Engineering</strong></li>
+      </ul>
+    </section>
+
+    <section class="contact wrap" id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">Hiring for DevOps or platform work?</h2>
+      <p>I reply within a day. Email is fastest.</p>
+      <ul class="contact-links">
+        <li><a href="mailto:gopalakrishnaakkineni.dev@gmail.com">gopalakrishnaakkineni.dev@gmail.com</a></li>
+        <li><a href="https://www.linkedin.com/in/gopala-krishna-devops" rel="noopener">LinkedIn</a></li>
+        <li><a data-profile-link href="https://github.com/{{github_user}}">GitHub</a></li>
+        <li><a href="resume/Gopala-Krishna-Akkineni-Resume.pdf" download>Résumé (PDF)</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <p>Built and deployed by Gopala Krishna Akkineni. Hand-written HTML, CSS and JavaScript.</p>
+    <p class="muted">Build <span class="mono" data-build="short_sha">local</span></p>
+  </footer>
+</body>
+</html>
