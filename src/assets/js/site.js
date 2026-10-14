@@ -1,6 +1,7 @@
 // Everything that moves on the page, with no dependencies.
-// Theme, the live deploy panel, impact counters, the deploy playground,
-// case study tabs, the skill finder, the GitHub project list and copy-to-clipboard.
+// Theme, mobile menu, the live deploy panel, impact counters, the deploy playground,
+// the skill finder, the GitHub project list and copy-to-clipboard.
+
 
 (function () {
   "use strict";
@@ -43,26 +44,34 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  if ("IntersectionObserver" in window) {
-    const links = new Map();
-    $$(".nav a[href^='#']").forEach((a) => links.set(a.getAttribute("href").slice(1), a));
-    const navObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const link = links.get(entry.target.id);
-        if (link && entry.isIntersecting) {
-          links.forEach((l) => l.removeAttribute("aria-current"));
-          link.setAttribute("aria-current", "true");
-        }
-      });
-    }, { rootMargin: "-45% 0px -50% 0px" });
-    links.forEach((_, id) => { const el = document.getElementById(id); if (el) navObserver.observe(el); });
+  // Mark the current section in the nav.
+  const page = body.dataset.page;
+  $$("[data-nav]").forEach((a) => { if (a.dataset.nav === page) a.setAttribute("aria-current", "page"); });
+
+  // Mobile menu.
+  const navToggle = $(".nav-toggle");
+  const navLinks = $("#nav-links");
+  if (navToggle && navLinks) {
+    navToggle.addEventListener("click", () => {
+      const open = navToggle.getAttribute("aria-expanded") !== "true";
+      navToggle.setAttribute("aria-expanded", String(open));
+      navLinks.classList.toggle("open", open);
+    });
+    navLinks.addEventListener("click", (e) => {
+      if (e.target.closest("a")) { navToggle.setAttribute("aria-expanded", "false"); navLinks.classList.remove("open"); }
+    });
   }
 
-  // ---------- profile + repo links ----------
-
-  if (user && user.indexOf("{{") !== 0) {
-    $$("[data-profile-link]").forEach((a) => { a.href = "https://github.com/" + user; });
-    $$("[data-repo-link]").forEach((a) => { a.href = "https://github.com/" + user + "/" + repo; });
+  // Highlight the case study table of contents as you read.
+  const tocLinks = $$(".case-toc a");
+  if (tocLinks.length && "IntersectionObserver" in window) {
+    const tocObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        tocLinks.forEach((a) => a.classList.toggle("active", a.getAttribute("href") === "#" + entry.target.id));
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    tocLinks.forEach((a) => { const el = document.getElementById(a.getAttribute("href").slice(1)); if (el) tocObserver.observe(el); });
   }
 
   // ---------- formatting ----------
@@ -95,13 +104,18 @@
 
   // ---------- live deploy panel ----------
 
+  const dataRoot = body.dataset.root || "./";
+
   function renderBuild(build) {
     const commitLink = $("[data-build='commit_link']");
     if (commitLink) {
       commitLink.textContent = build.short_sha || "local";
       if (build.commit_url) commitLink.href = build.commit_url;
     }
-    setText("[data-build='short_sha']", build.short_sha || "local");
+    $$("[data-build='short_sha_link']").forEach((a) => {
+      a.textContent = build.short_sha || "local";
+      if (build.commit_url) a.href = build.commit_url;
+    });
     setText("[data-build='message']", build.message || "");
 
     const deployed = $("[data-build='deployed_at']");
@@ -161,11 +175,11 @@
     setText("[data-live='ttfb']", "first byte in " + Math.round(nav.responseStart - nav.startTime) + " ms");
   }
 
-  getJSON("data/build.json").then(renderBuild).catch(() => {
+  getJSON(dataRoot + "data/build.json").then(renderBuild).catch(() => {
     setText("[data-build='deployed_at']", "local preview");
     setText("[data-build='run_link']", "No pipeline data yet");
   });
-  getJSON("data/status.json").then(renderStatus).catch(() => renderStatus(null));
+  getJSON(dataRoot + "data/status.json").then(renderStatus).catch(() => renderStatus(null));
   if (document.readyState === "complete") renderVisit();
   else window.addEventListener("load", () => window.setTimeout(renderVisit, 0));
 
@@ -363,83 +377,45 @@
     runBtn.addEventListener("click", run);
   }
 
-  // ---------- case study tabs ----------
-
-  const tabs = $$("[data-cases] [role='tab']");
-  function selectTab(tab, focus) {
-    tabs.forEach((t) => {
-      const on = t === tab;
-      t.setAttribute("aria-selected", String(on));
-      t.tabIndex = on ? 0 : -1;
-      const panel = document.getElementById(t.getAttribute("aria-controls"));
-      if (panel) panel.hidden = !on;
-    });
-    if (focus) tab.focus();
-  }
-  tabs.forEach((tab, i) => {
-    tab.addEventListener("click", () => selectTab(tab, false));
-    tab.addEventListener("keydown", (e) => {
-      let next = null;
-      if (e.key === "ArrowDown" || e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
-      if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = tabs[(i - 1 + tabs.length) % tabs.length];
-      if (e.key === "Home") next = tabs[0];
-      if (e.key === "End") next = tabs[tabs.length - 1];
-      if (next) { e.preventDefault(); selectTab(next, true); }
-    });
-  });
-
   // ---------- skill finder ----------
 
+  const siteRoot = body.dataset.root || "./";
   const PLACES = {
-    ci: { label: "Faster path to production", tab: "tab-ci" },
-    deploy: { label: "Releases nobody notices", tab: "tab-deploy" },
-    gpu: { label: "GPU clusters for ML", tab: "tab-gpu" },
-    obs: { label: "Seeing problems first", tab: "tab-obs" },
-    sec: { label: "Security in the pipeline", tab: "tab-sec" },
-    amistad: { label: "Amistad Technologies" },
-    taal: { label: "Taal Tech" },
-    ignitarium: { label: "Ignitarium" }
+    ci: { label: "Faster path to production", href: "work/faster-releases/" },
+    deploy: { label: "Releases nobody notices", href: "work/zero-downtime-releases/" },
+    gpu: { label: "GPU platform for ML", href: "work/gpu-platform-for-ml/" },
+    obs: { label: "Seeing problems first", href: "work/observability/" },
+    sec: { label: "Security in the pipeline", href: "work/security-in-the-pipeline/" },
+    site: { label: "this website", href: "work/this-website/" },
+    amistad: { label: "Amistad Technologies", href: "experience/#amistad" },
+    taal: { label: "Taal Tech", href: "experience/#taal" },
+    ignitarium: { label: "Ignitarium", href: "experience/#ignitarium" }
   };
   const chips = $$("[data-skills] button");
   const answer = $("[data-skill-answer]");
-
-  function clearMatches() { tabs.forEach((t) => t.classList.remove("match")); }
 
   chips.forEach((chip) => {
     chip.setAttribute("aria-pressed", "false");
     chip.addEventListener("click", () => {
       const wasOn = chip.getAttribute("aria-pressed") === "true";
       chips.forEach((c) => c.setAttribute("aria-pressed", "false"));
-      clearMatches();
       answer.replaceChildren();
-      if (wasOn) return;
+      if (wasOn) { answer.textContent = "Pick a tool above."; return; }
       chip.setAttribute("aria-pressed", "true");
 
-      const used = (chip.dataset.used || "").split(/\s+/).filter(Boolean);
       const name = chip.dataset.skill;
+      const used = (chip.dataset.used || "").split(/\s+/).filter((k) => PLACES[k]);
       if (!used.length) {
-        answer.textContent = name + " is part of my toolkit. Ask me about it.";
+        answer.textContent = name + " is part of my everyday toolkit. Ask me about it.";
         return;
       }
-      answer.append(name + ": ");
+      answer.append("Where I’ve used " + name + ": ");
       used.forEach((key, i) => {
-        const place = PLACES[key];
-        if (!place) return;
         if (i > 0) answer.append(i === used.length - 1 ? " and " : ", ");
-        if (place.tab) {
-          const a = document.createElement("a");
-          a.href = "#work";
-          a.textContent = place.label;
-          a.addEventListener("click", () => {
-            const tab = document.getElementById(place.tab);
-            if (tab) selectTab(tab, false);
-          });
-          answer.append(a);
-          const tab = document.getElementById(place.tab);
-          if (tab) tab.classList.add("match");
-        } else {
-          answer.append("my time at " + place.label);
-        }
+        const a = document.createElement("a");
+        a.href = siteRoot + PLACES[key].href;
+        a.textContent = PLACES[key].label;
+        answer.append(a);
       });
       answer.append(".");
     });
@@ -481,7 +457,7 @@
   }
 
   // A snapshot from the build shows instantly, then the live API refreshes it.
-  getJSON("data/repos.json").then(renderRepos).catch(() => {}).then(() => {
+  getJSON(dataRoot + "data/repos.json").then(renderRepos).catch(() => {}).then(() => {
     if (!user || user.indexOf("{{") === 0) return;
     return getJSON("https://api.github.com/users/" + encodeURIComponent(user) + "/repos?sort=pushed&per_page=30")
       .then(renderRepos)
