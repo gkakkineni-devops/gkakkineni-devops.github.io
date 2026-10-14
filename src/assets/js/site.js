@@ -1,5 +1,6 @@
-// Small, dependency-free script for the live parts of the page:
-// theme toggle, deploy panel (build + uptime data written by CI) and the GitHub project list.
+// Everything that moves on the page, with no dependencies.
+// Theme, the live deploy panel, impact counters, the deploy playground,
+// case study tabs, the skill finder, the GitHub project list and copy-to-clipboard.
 
 (function () {
   "use strict";
@@ -9,74 +10,62 @@
   const user = body.dataset.githubUser || "";
   const repo = body.dataset.githubRepo || "";
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $ = (sel, el) => (el || document).querySelector(sel);
+  const $$ = (sel, el) => Array.prototype.slice.call((el || document).querySelectorAll(sel));
+  const wait = (ms) => new Promise((r) => window.setTimeout(r, reduceMotion ? Math.min(ms, 60) : ms));
 
-  // ---------- storage helpers (storage can throw in private windows) ----------
+  // Storage can throw in private windows, so wrap it.
+  function load(key) { try { return window.localStorage.getItem(key); } catch (e) { return null; } }
+  function save(key, value) { try { window.localStorage.setItem(key, value); } catch (e) { /* ignore */ } }
 
-  function load(key) {
-    try { return window.localStorage.getItem(key); } catch (e) { return null; }
-  }
-  function save(key, value) {
-    try { window.localStorage.setItem(key, value); } catch (e) { /* ignore */ }
-  }
+  function setText(selector, text) { $$(selector).forEach((el) => { el.textContent = text; }); }
 
   // ---------- theme ----------
 
   const savedTheme = load("theme");
   if (savedTheme === "light" || savedTheme === "dark") root.dataset.theme = savedTheme;
 
-  const toggle = document.querySelector(".theme-toggle");
+  const toggle = $(".theme-toggle");
   if (toggle) {
-    toggle.addEventListener("click", function () {
+    toggle.addEventListener("click", () => {
       const current = root.dataset.theme ||
-        (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
       const next = current === "dark" ? "light" : "dark";
       root.dataset.theme = next;
       save("theme", next);
     });
   }
 
-  // ---------- masthead border on scroll + active nav link ----------
+  // ---------- masthead + active nav link ----------
 
-  const masthead = document.querySelector(".masthead");
-  function onScroll() {
-    if (masthead) masthead.classList.toggle("scrolled", window.scrollY > 8);
-  }
+  const masthead = $(".masthead");
+  const onScroll = () => { if (masthead) masthead.classList.toggle("scrolled", window.scrollY > 8); };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
   if ("IntersectionObserver" in window) {
     const links = new Map();
-    document.querySelectorAll(".nav a[href^='#']").forEach(function (a) {
-      links.set(a.getAttribute("href").slice(1), a);
-    });
-    const observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
+    $$(".nav a[href^='#']").forEach((a) => links.set(a.getAttribute("href").slice(1), a));
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
         const link = links.get(entry.target.id);
         if (link && entry.isIntersecting) {
-          links.forEach(function (l) { l.removeAttribute("aria-current"); });
+          links.forEach((l) => l.removeAttribute("aria-current"));
           link.setAttribute("aria-current", "true");
         }
       });
     }, { rootMargin: "-45% 0px -50% 0px" });
-    links.forEach(function (_, id) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    links.forEach((_, id) => { const el = document.getElementById(id); if (el) navObserver.observe(el); });
   }
 
   // ---------- profile + repo links ----------
 
-  const profileUrl = user ? "https://github.com/" + user : "https://github.com/";
-  document.querySelectorAll("[data-profile-link]").forEach(function (a) { a.href = profileUrl; });
-  document.querySelectorAll("[data-repo-link]").forEach(function (a) {
-    a.href = user && repo ? "https://github.com/" + user + "/" + repo : profileUrl;
-  });
+  if (user && user.indexOf("{{") !== 0) {
+    $$("[data-profile-link]").forEach((a) => { a.href = "https://github.com/" + user; });
+    $$("[data-repo-link]").forEach((a) => { a.href = "https://github.com/" + user + "/" + repo; });
+  }
 
   // ---------- formatting ----------
-
-  function setText(selector, text) {
-    document.querySelectorAll(selector).forEach(function (el) { el.textContent = text; });
-  }
 
   function timeAgo(date) {
     const seconds = Math.round((Date.now() - date.getTime()) / 1000);
@@ -90,118 +79,383 @@
     return rtf.format(value, "year");
   }
 
-  function formatDuration(totalSeconds) {
-    if (!totalSeconds && totalSeconds !== 0) return "";
-    const m = Math.floor(totalSeconds / 60);
-    const s = Math.round(totalSeconds % 60);
+  function formatDuration(total) {
+    if (!total && total !== 0) return "";
+    const m = Math.floor(total / 60);
+    const s = Math.round(total % 60);
     return m ? m + "m " + s + "s" : s + "s";
   }
 
   function getJSON(url) {
-    return fetch(url, { cache: "no-store" }).then(function (res) {
+    return fetch(url, { cache: "no-store" }).then((res) => {
       if (!res.ok) throw new Error(url + " returned " + res.status);
       return res.json();
     });
   }
 
-  // ---------- deploy panel ----------
+  // ---------- live deploy panel ----------
 
   function renderBuild(build) {
-    const commitLink = document.querySelector("[data-build='commit_link']");
+    const commitLink = $("[data-build='commit_link']");
     if (commitLink) {
       commitLink.textContent = build.short_sha || "local";
-      commitLink.href = build.commit_url || "#";
+      if (build.commit_url) commitLink.href = build.commit_url;
     }
     setText("[data-build='short_sha']", build.short_sha || "local");
-    setText("[data-build='message']", build.message ? build.message : "");
+    setText("[data-build='message']", build.message || "");
 
-    const deployed = document.querySelector("[data-build='deployed_at']");
+    const deployed = $("[data-build='deployed_at']");
     if (deployed && build.deployed_at) {
       const date = new Date(build.deployed_at);
       deployed.textContent = timeAgo(date);
       deployed.title = date.toLocaleString();
     }
 
-    const runLink = document.querySelector("[data-build='run_link']");
+    const runLink = $("[data-build='run_link']");
     if (runLink) {
       runLink.textContent = build.run_number ? "Pipeline #" + build.run_number : "Local build";
-      runLink.href = build.run_url || "#";
+      if (build.run_url) runLink.href = build.run_url;
     }
     if (build.duration_seconds) setText("[data-build='duration']", "in " + formatDuration(build.duration_seconds));
 
     const passed = build.checks || {};
-    const items = Array.prototype.slice.call(document.querySelectorAll(".checks li"));
-    items.forEach(function (li, i) {
+    $$(".checks li").forEach((li, i) => {
       if (passed[li.dataset.check] !== "passed") return;
-      if (reduceMotion) { li.classList.add("passed"); return; }
-      window.setTimeout(function () { li.classList.add("passed"); }, 280 + i * 180);
+      window.setTimeout(() => li.classList.add("passed"), reduceMotion ? 0 : 300 + i * 180);
     });
   }
 
   function renderStatus(status) {
     const checks = (status && status.checks) || [];
-    const pulse = document.querySelector(".pulse");
+    const pulse = $(".pulse");
     if (!checks.length) {
       setText("[data-status='uptime']", "First check pending");
       if (pulse) pulse.dataset.state = "up";
       return;
     }
-    const ok = checks.filter(function (c) { return c.ok; }).length;
+    const ok = checks.filter((c) => c.ok).length;
     const pct = (ok / checks.length) * 100;
     setText("[data-status='uptime']", (pct === 100 ? "100" : pct.toFixed(2)) + "%");
-    const first = new Date(checks[0].at);
-    const days = Math.max(1, Math.round((Date.now() - first.getTime()) / 86400000));
+    const days = Math.max(1, Math.round((Date.now() - new Date(checks[0].at).getTime()) / 86400000));
     setText("[data-status='window']", "over " + checks.length + " checks, " + days + (days === 1 ? " day" : " days"));
+    if (pulse) pulse.dataset.state = checks[checks.length - 1].ok ? "up" : "down";
 
-    const latest = checks[checks.length - 1];
-    if (pulse) pulse.dataset.state = latest.ok ? "up" : "down";
-
-    const bars = document.querySelector("[data-status='bars']");
-    if (bars) {
-      const recent = checks.slice(-40);
-      const frag = document.createDocumentFragment();
-      for (let i = recent.length; i < 40; i++) frag.appendChild(document.createElement("span"));
-      recent.forEach(function (c) {
-        const s = document.createElement("span");
-        s.dataset.ok = String(Boolean(c.ok));
-        s.title = new Date(c.at).toLocaleString() + (c.ok ? ", up in " + c.ms + " ms" : ", failed");
-        frag.appendChild(s);
-      });
-      bars.replaceChildren(frag);
-      bars.setAttribute("aria-label", "Last " + recent.length + " health checks, " + ok + " of " + checks.length + " passed overall");
-    }
+    const bars = $("[data-status='bars']");
+    if (!bars) return;
+    const recent = checks.slice(-40);
+    const frag = document.createDocumentFragment();
+    for (let i = recent.length; i < 40; i++) frag.appendChild(document.createElement("span"));
+    recent.forEach((c) => {
+      const s = document.createElement("span");
+      s.dataset.ok = String(Boolean(c.ok));
+      s.title = new Date(c.at).toLocaleString() + (c.ok ? ", up in " + c.ms + " ms" : ", failed");
+      frag.appendChild(s);
+    });
+    bars.replaceChildren(frag);
+    bars.setAttribute("aria-label", "Last " + recent.length + " health checks, " + ok + " of " + checks.length + " passed overall");
   }
 
   function renderVisit() {
     const nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
-    if (!nav || !nav.responseStart) { setText("[data-live='ttfb']", "measured on next visit"); return; }
-    const ttfb = Math.round(nav.responseStart - nav.startTime);
-    setText("[data-live='ttfb']", "first byte in " + ttfb + " ms");
+    if (!nav || !nav.responseStart) { setText("[data-live='ttfb']", "measured on your next visit"); return; }
+    setText("[data-live='ttfb']", "first byte in " + Math.round(nav.responseStart - nav.startTime) + " ms");
   }
 
-  getJSON("data/build.json").then(renderBuild).catch(function () {
+  getJSON("data/build.json").then(renderBuild).catch(() => {
     setText("[data-build='deployed_at']", "local preview");
-    const runLink = document.querySelector("[data-build='run_link']");
-    if (runLink) runLink.textContent = "No pipeline data yet";
+    setText("[data-build='run_link']", "No pipeline data yet");
+  });
+  getJSON("data/status.json").then(renderStatus).catch(() => renderStatus(null));
+  if (document.readyState === "complete") renderVisit();
+  else window.addEventListener("load", () => window.setTimeout(renderVisit, 0));
+
+  // ---------- impact numbers count up once ----------
+
+  function countUp(el) {
+    const target = parseFloat(el.dataset.count);
+    const decimals = parseInt(el.dataset.decimals || "0", 10);
+    if (reduceMotion || isNaN(target)) return;
+    const start = performance.now();
+    const duration = 1100;
+    function frame(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = (target * eased).toFixed(decimals);
+      if (t < 1) window.requestAnimationFrame(frame);
+    }
+    el.textContent = (0).toFixed(decimals);
+    window.requestAnimationFrame(frame);
+  }
+
+  const counters = $$("[data-count]");
+  if (counters.length && "IntersectionObserver" in window) {
+    const countObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        countUp(entry.target);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach((el) => countObserver.observe(el));
+  }
+
+  // ---------- deploy playground ----------
+
+  const sim = $("[data-sim]");
+  if (sim) setupSimulator(sim);
+
+  function setupSimulator(box) {
+    const runBtn = $("[data-sim-run]", box);
+    const log = $("[data-sim-log]", box);
+    const stages = new Map($$("[data-stage]", box).map((li) => [li.dataset.stage, li]));
+    const rateEl = $("[data-sim-rate]", box);
+    const line = $("[data-sim-line]", box);
+    const result = $("[data-sim-result]", box);
+    const THRESHOLD = 2; // percent; y = 60 on the chart
+    let points = [];
+    let started = 0;
+    let running = false;
+
+    const sha = () => Math.random().toString(16).slice(2, 9);
+
+    function say(text, tone) {
+      if (log.querySelector(".log-idle")) log.replaceChildren();
+      const p = document.createElement("p");
+      const t = document.createElement("span");
+      t.className = "t";
+      t.textContent = "+" + ((performance.now() - started) / 1000).toFixed(1).padStart(4, " ") + "s  ";
+      const msg = document.createElement("span");
+      if (tone) msg.className = tone;
+      msg.textContent = text;
+      p.append(t, msg);
+      log.appendChild(p);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function setStage(id, state) { const li = stages.get(id); if (li) li.dataset.state = state; }
+
+    function plot(rate) {
+      points.push(rate);
+      if (points.length > 40) points.shift();
+      const step = 300 / 39;
+      const offset = 40 - points.length;
+      line.setAttribute("points", points.map((v, i) => {
+        const y = 120 - Math.min(v, 4) * 30; // 0% at bottom, 4% at top, 2% at middle
+        return ((offset + i) * step).toFixed(1) + "," + y.toFixed(1);
+      }).join(" "));
+      rateEl.textContent = rate.toFixed(1) + "%";
+      rateEl.dataset.high = String(rate > THRESHOLD);
+    }
+
+    async function watch(seconds, rateFn) {
+      // Like a real canary analysis, one noisy sample doesn't fail it; three in a row does.
+      const ticks = Math.round(seconds * 5);
+      let breaches = 0;
+      for (let i = 0; i < ticks; i++) {
+        const rate = rateFn(i, ticks);
+        plot(rate);
+        breaches = rate > THRESHOLD ? breaches + 1 : 0;
+        if (breaches >= 3) return false;
+        await wait(200);
+      }
+      return true;
+    }
+
+    const calm = () => 0.2 + Math.random() * 0.35;
+
+    function reset() {
+      stages.forEach((li) => delete li.dataset.state);
+      log.replaceChildren();
+      points = [];
+      line.setAttribute("points", "");
+      rateEl.textContent = "0.0%";
+      rateEl.dataset.high = "false";
+      result.textContent = "";
+      delete result.dataset.tone;
+    }
+
+    function finish(text, tone) {
+      result.textContent = text;
+      result.dataset.tone = tone;
+      runBtn.disabled = false;
+      runBtn.textContent = "Deploy again";
+      running = false;
+    }
+
+    async function run() {
+      if (running) return;
+      running = true;
+      runBtn.disabled = true;
+      runBtn.textContent = "Deploying";
+      reset();
+      started = performance.now();
+      const scenario = ($("input[name='scenario']:checked", box) || {}).value || "clean";
+      const commit = sha();
+
+      setStage("commit", "running");
+      say("push to main: payments-api@" + commit, "info");
+      await wait(500);
+      setStage("commit", "passed");
+
+      setStage("build", "running");
+      say("building image payments-api:" + commit);
+      await wait(900);
+      say("image built, 142 MB, layers cached 9/11", "ok");
+      setStage("build", "passed");
+
+      setStage("test", "running");
+      say("running 318 unit and integration tests");
+      await wait(900);
+      say("318 passed", "ok");
+      setStage("test", "passed");
+
+      setStage("scan", "running");
+      say("trivy image scan, severity HIGH,CRITICAL");
+      await wait(1000);
+      if (scenario === "vuln") {
+        say("1 CRITICAL: openssl in base image, fixed version available", "bad");
+        say("policy: block on CRITICAL with a fix. pipeline stopped", "bad");
+        setStage("scan", "failed");
+        ["c10", "c50", "full"].forEach((s) => setStage(s, "skipped"));
+        finish("Blocked at the security scan. The vulnerable image never reached a single user.", "warn");
+        return;
+      }
+      say("0 HIGH, 0 CRITICAL", "ok");
+      setStage("scan", "passed");
+
+      setStage("c10", "running");
+      say("argo rollouts: sending 10% of traffic to the new version");
+      say("watching error rate against the 2% threshold");
+      const firstOk = await watch(3, scenario === "canary"
+        ? (i) => (i < 5 ? calm() : 0.4 + (i - 5) * 0.55 + Math.random() * 0.2)
+        : calm);
+      if (!firstOk) {
+        say("error rate " + points[points.length - 1].toFixed(1) + "% at 10% traffic. analysis failed", "bad");
+        setStage("c10", "failed");
+        say("rolling back to the previous version", "warn");
+        await wait(700);
+        ["c50", "full"].forEach((s) => setStage(s, "skipped"));
+        await watch(1.6, calm);
+        setStage("c10", "rolled");
+        say("rollback complete, error rate back to normal", "ok");
+        const secs = ((performance.now() - started) / 1000).toFixed(0);
+        finish("Rolled back on its own in " + secs + " seconds. 90% of users never saw the bad version.", "warn");
+        return;
+      }
+      setStage("c10", "passed");
+      say("canary healthy at 10%", "ok");
+
+      setStage("c50", "running");
+      say("promoting to 50% of traffic");
+      await watch(2, calm);
+      setStage("c50", "passed");
+      say("canary healthy at 50%", "ok");
+
+      setStage("full", "running");
+      say("promoting to 100%, scaling down the old version");
+      await wait(800);
+      setStage("full", "passed");
+      say("rollout complete", "ok");
+      const secs = ((performance.now() - started) / 1000).toFixed(0);
+      finish("Shipped to everyone in " + secs + " seconds. Nobody noticed, which is the point.", "ok");
+    }
+
+    runBtn.addEventListener("click", run);
+  }
+
+  // ---------- case study tabs ----------
+
+  const tabs = $$("[data-cases] [role='tab']");
+  function selectTab(tab, focus) {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      const panel = document.getElementById(t.getAttribute("aria-controls"));
+      if (panel) panel.hidden = !on;
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach((tab, i) => {
+    tab.addEventListener("click", () => selectTab(tab, false));
+    tab.addEventListener("keydown", (e) => {
+      let next = null;
+      if (e.key === "ArrowDown" || e.key === "ArrowRight") next = tabs[(i + 1) % tabs.length];
+      if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (e.key === "Home") next = tabs[0];
+      if (e.key === "End") next = tabs[tabs.length - 1];
+      if (next) { e.preventDefault(); selectTab(next, true); }
+    });
   });
 
-  getJSON("data/status.json").then(renderStatus).catch(function () { renderStatus(null); });
+  // ---------- skill finder ----------
 
-  if (document.readyState === "complete") renderVisit();
-  else window.addEventListener("load", function () { window.setTimeout(renderVisit, 0); });
+  const PLACES = {
+    ci: { label: "Faster path to production", tab: "tab-ci" },
+    deploy: { label: "Releases nobody notices", tab: "tab-deploy" },
+    gpu: { label: "GPU clusters for ML", tab: "tab-gpu" },
+    obs: { label: "Seeing problems first", tab: "tab-obs" },
+    sec: { label: "Security in the pipeline", tab: "tab-sec" },
+    amistad: { label: "Amistad Technologies" },
+    taal: { label: "Taal Tech" },
+    ignitarium: { label: "Ignitarium" }
+  };
+  const chips = $$("[data-skills] button");
+  const answer = $("[data-skill-answer]");
+
+  function clearMatches() { tabs.forEach((t) => t.classList.remove("match")); }
+
+  chips.forEach((chip) => {
+    chip.setAttribute("aria-pressed", "false");
+    chip.addEventListener("click", () => {
+      const wasOn = chip.getAttribute("aria-pressed") === "true";
+      chips.forEach((c) => c.setAttribute("aria-pressed", "false"));
+      clearMatches();
+      answer.replaceChildren();
+      if (wasOn) return;
+      chip.setAttribute("aria-pressed", "true");
+
+      const used = (chip.dataset.used || "").split(/\s+/).filter(Boolean);
+      const name = chip.dataset.skill;
+      if (!used.length) {
+        answer.textContent = name + " is part of my toolkit. Ask me about it.";
+        return;
+      }
+      answer.append(name + ": ");
+      used.forEach((key, i) => {
+        const place = PLACES[key];
+        if (!place) return;
+        if (i > 0) answer.append(i === used.length - 1 ? " and " : ", ");
+        if (place.tab) {
+          const a = document.createElement("a");
+          a.href = "#work";
+          a.textContent = place.label;
+          a.addEventListener("click", () => {
+            const tab = document.getElementById(place.tab);
+            if (tab) selectTab(tab, false);
+          });
+          answer.append(a);
+          const tab = document.getElementById(place.tab);
+          if (tab) tab.classList.add("match");
+        } else {
+          answer.append("my time at " + place.label);
+        }
+      });
+      answer.append(".");
+    });
+  });
 
   // ---------- projects from GitHub ----------
 
-  const repoBox = document.querySelector("[data-repos]");
-
+  const repoBox = $("[data-repos]");
   function renderRepos(list) {
-    if (!repoBox) return;
+    if (!repoBox || !Array.isArray(list)) return;
     const shown = list
-      .filter(function (r) { return !r.fork && !r.archived && r.name !== repo && r.name !== user; })
+      .filter((r) => !r.fork && !r.archived && r.name !== repo && r.name.toLowerCase() !== user.toLowerCase())
       .slice(0, 6);
-    if (!shown.length) return; // keep the friendly empty state
+    if (!shown.length) return;
     const frag = document.createDocumentFragment();
-    shown.forEach(function (r) {
+    shown.forEach((r) => {
       const card = document.createElement("article");
       card.className = "repo";
       const h = document.createElement("h3");
@@ -219,22 +473,37 @@
       meta.className = "meta";
       [r.language, r.stargazers_count ? r.stargazers_count + " stars" : "", r.pushed_at ? "updated " + timeAgo(new Date(r.pushed_at)) : ""]
         .filter(Boolean)
-        .forEach(function (t) {
-          const span = document.createElement("span");
-          span.textContent = t;
-          meta.appendChild(span);
-        });
+        .forEach((t) => { const span = document.createElement("span"); span.textContent = t; meta.appendChild(span); });
       card.appendChild(meta);
       frag.appendChild(card);
     });
     repoBox.replaceChildren(frag);
   }
 
-  // The build writes a snapshot so the list shows instantly; then we try the live API.
-  getJSON("data/repos.json").then(renderRepos).catch(function () { /* no snapshot */ }).then(function () {
+  // A snapshot from the build shows instantly, then the live API refreshes it.
+  getJSON("data/repos.json").then(renderRepos).catch(() => {}).then(() => {
     if (!user || user.indexOf("{{") === 0) return;
     return getJSON("https://api.github.com/users/" + encodeURIComponent(user) + "/repos?sort=pushed&per_page=30")
       .then(renderRepos)
-      .catch(function () { /* rate limited or offline: keep the snapshot */ });
+      .catch(() => {});
+  });
+
+  // ---------- copy email ----------
+
+  $$("[data-copy]").forEach((btn) => {
+    const label = btn.textContent;
+    btn.addEventListener("click", () => {
+      const text = btn.dataset.copy;
+      const done = () => {
+        btn.textContent = "Copied";
+        btn.dataset.copied = "true";
+        window.setTimeout(() => { btn.textContent = label; btn.dataset.copied = "false"; }, 1800);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(() => { window.location.href = "mailto:" + text; });
+      } else {
+        window.location.href = "mailto:" + text;
+      }
+    });
   });
 })();
