@@ -17,6 +17,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -25,6 +26,7 @@ import urllib.error
 import urllib.request
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "src"
@@ -69,18 +71,47 @@ def asset_version() -> str:
     return digest.hexdigest()[:10]
 
 
+PARTIAL = re.compile(r"\{\{>\s*([\w-]+)\s*\}\}")
+
+
+def load_partials() -> dict[str, str]:
+    folder = SRC / "_partials"
+    if not folder.exists():
+        return {}
+    return {p.stem: p.read_text(encoding="utf-8") for p in folder.glob("*.html")}
+
+
+def render_page(text: str, partials: dict[str, str], values: dict[str, str]) -> str:
+    # Partials can't nest, which keeps this predictable. Values are filled in after.
+    def include(match: re.Match) -> str:
+        name = match.group(1)
+        if name not in partials:
+            raise SystemExit(f"[build] unknown partial: {name}")
+        return partials[name]
+
+    text = PARTIAL.sub(include, text)
+    for key, value in values.items():
+        text = text.replace("{{" + key + "}}", value)
+    leftover = re.findall(r"\{\{[^}]+\}\}", text)
+    if leftover:
+        raise SystemExit(f"[build] unfilled placeholders: {sorted(set(leftover))}")
+    return text
+
+
 def copy_source(values: dict[str, str]) -> None:
     if DIST.exists():
         shutil.rmtree(DIST)
-    shutil.copytree(SRC, DIST)
+    shutil.copytree(SRC, DIST, ignore=shutil.ignore_patterns("_partials"))
+    partials = load_partials()
+    pages = 0
     for path in DIST.rglob("*"):
         if path.is_file() and path.suffix in TEMPLATED:
-            text = path.read_text(encoding="utf-8")
-            for key, value in values.items():
-                text = text.replace("{{" + key + "}}", value)
-            path.write_text(text, encoding="utf-8")
+            depth = len(path.relative_to(DIST).parts) - 1
+            page_values = {**values, "root": "../" * depth or "./"}
+            path.write_text(render_page(path.read_text(encoding="utf-8"), partials, page_values), encoding="utf-8")
+            pages += 1
     (DIST / ".nojekyll").write_text("")
-    log(f"copied src/ to dist/ ({sum(1 for p in DIST.rglob('*') if p.is_file())} files)")
+    log(f"copied src/ to dist/ ({pages} pages, {sum(1 for p in DIST.rglob('*') if p.is_file())} files)")
 
 
 def build_info(repo_slug: str, checks_passed: bool) -> dict:
@@ -177,7 +208,17 @@ def main() -> int:
     repo_name = repo_slug.split("/")[1] if "/" in repo_slug else ""
     token = os.environ.get("GITHUB_TOKEN")
 
-    copy_source({"github_user": user, "github_repo": repo_name, "asset_version": asset_version()})
+    # Absolute path the site is served from, for pages like 404.html that can appear at any URL.
+    base_path = urlparse(args.site_url).path if args.site_url else "/"
+    if not base_path.endswith("/"):
+        base_path += "/"
+
+    copy_source({
+        "github_user": user,
+        "github_repo": repo_name,
+        "asset_version": asset_version(),
+        "base_path": base_path,
+    })
 
     data = DIST / "data"
     write_json(data / "build.json", build_info(repo_slug, args.checks_passed))
