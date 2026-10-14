@@ -63,6 +63,27 @@
       </div>
     </section>
 
+    <section class="section wrap" aria-labelledby="how-title">
+      <div class="section-head">
+        <h2 id="how-title">{{playground.how.title}}</h2>
+        <p>{{playground.how.text}}</p>
+      </div>
+      <ol class="how-steps">
+{{#each playground.how.steps}}
+        <li><h3>{{.0}}</h3><p>{{.1}}</p></li>
+{{/each}}
+      </ol>
+      <h3 class="how-sub">{{playground.how.rules_title}}</h3>
+      <div class="decisions">
+{{#each playground.how.rules}}
+        <article>
+          <h4>{{.0}}</h4>
+          <p>{{.1}}</p>
+        </article>
+{{/each}}
+      </div>
+    </section>
+
     <section class="section wrap" aria-labelledby="after-title">
       <div class="section-head">
         <h2 id="after-title">{{playground.after.title}}</h2>

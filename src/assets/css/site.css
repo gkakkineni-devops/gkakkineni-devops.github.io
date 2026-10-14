@@ -769,3 +769,15 @@ h1 {
 .eyebrow-photo { width: 4.25rem; height: 4.25rem; border: 2px solid var(--violet); box-shadow: 0 0 0 4px var(--violet-soft); }
 .portrait { height: auto; }
 @media (max-width: 560px) { .eyebrow-photo { width: 3.5rem; height: 3.5rem; } }
+
+/* ---------- Playground explanation ---------- */
+
+.how-steps { list-style: none; padding: 0; margin: 0 0 var(--s-5); display: grid; gap: var(--s-3); counter-reset: how; }
+.how-steps li {
+  counter-increment: how; display: grid; grid-template-columns: 2.5rem 1fr; column-gap: var(--s-3);
+  padding: var(--s-3) var(--s-4); border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface);
+}
+.how-steps li::before { content: counter(how); grid-row: 1 / span 2; font-family: var(--mono); color: var(--sage); font-size: 1.125rem; }
+.how-steps h3 { font-size: 1.0625rem; }
+.how-steps p { color: var(--ink-2); margin-top: 0.25rem; }
+.how-sub { margin: var(--s-5) 0 var(--s-3); font-size: 1.25rem; }

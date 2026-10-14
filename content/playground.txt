@@ -27,6 +27,23 @@ stages:
   - Canary 50%
   - Everyone
 
+[how]
+title: How it works, stage by stage
+text: Each step in the simulator matches a real step in the pipelines I build. The service name and numbers in the log are made up, but the order and the rules are how I set things up.
+steps:
+  - Commit | A change is pushed through a pull request and merged to main. That starts the pipeline, so every release begins the same way and leaves a record in Git.
+  - Build | The code is built into a container image. Building it the same way every time means the thing that gets tested is the thing that ships.
+  - Tests | Unit and integration tests run against the new build. If they fail, the pipeline stops here and nothing is deployed.
+  - Security scan | Scanners such as Trivy, Snyk and SonarQube check the image, the dependencies and the code. A critical finding that has a fix available fails the build, so the problem stays in the pull request.
+  - Canary 10% | The new version gets a small slice of real traffic while the old version keeps serving everyone else. GitOps tools like ArgoCD or FluxCD handle the shift, so it’s driven by what’s in Git.
+  - Canary 50% | If the error rate on the new version stays healthy, it gets half the traffic. Some bugs only show up at this size, which is why the rollout doesn’t jump straight to everyone.
+  - Everyone | The new version takes all the traffic. The old one stays around briefly so a rollback is a switch back, not a rebuild.
+rules_title: The rules behind the simulation
+rules:
+  - Rollback is automatic | If the error rate stays above 2% for three checks in a row, the release rolls back without waiting for a person. People investigate afterwards, but users stop being affected right away.
+  - Security gates fail the build | A report nobody reads doesn’t protect anyone. A failed scan stops the release, so it gets fixed the same day.
+  - Small slices first | Canary releases limit the damage of a bad change to the few users who saw it, which is why 90% of users never see the bad version in the canary scenario.
+
 [after]
 title: What each option shows
 text:
