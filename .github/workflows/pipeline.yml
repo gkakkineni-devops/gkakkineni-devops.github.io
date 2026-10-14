@@ -50,8 +50,9 @@ jobs:
 
       - name: Report broken links
         run: |
-          jq -r '(.fail_map // .error_map // {}) | to_entries[] | .key as $f | .value[] |
-            "::error file=\($f)::broken link \(.url) (\(.status.text // .status.details // "failed"))"' lychee.json
+          # Turn each broken link into an annotation; never let a parsing hiccup hide the real result.
+          jq -r '((.fail_map // {}) | objects | to_entries[]?) | .key as $f | (.value // [])[]? |
+            "::error file=\($f)::broken link \(.url) (\(.status.text? // "failed"))"' lychee.json || true
           test "${{ steps.lychee.outputs.exit_code }}" = "0"
 
   container:
