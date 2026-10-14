@@ -28,6 +28,14 @@ stack:
   - Python
 availability: Open to DevOps, SRE and platform engineering roles. Based in Bloomington, IL, with State Farm since March 2025.
 
+[greeting]
+morning: Good morning
+afternoon: Good afternoon
+evening: Good evening
+night: Hello
+first: {greeting}, and welcome.
+again: {greeting}. Thanks for visiting again.
+
 [panel]
 title: This page, live from its pipeline
 commit: Commit

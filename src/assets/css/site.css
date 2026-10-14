@@ -784,3 +784,8 @@ h1 {
   .hero h1 { font-size: clamp(2.2rem, 9.5vw, 2.8rem); }
   body::before { height: 40rem; }
 }
+
+/* ---------- Greeting ---------- */
+
+.greeting { min-height: 1.6em; margin-bottom: var(--s-2); color: var(--ink-2); font-size: 0.9688rem; opacity: 0; transition: opacity 0.6s ease 0.15s; }
+.greeting.shown { opacity: 1; }

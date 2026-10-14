@@ -183,6 +183,23 @@
   if (document.readyState === "complete") renderVisit();
   else window.addEventListener("load", () => window.setTimeout(renderVisit, 0));
 
+  // ---------- greeting ----------
+
+  const greetEl = $("[data-greeting]");
+  if (greetEl) {
+    const hour = new Date().getHours();
+    const part = hour >= 5 && hour < 12 ? "morning" : hour < 17 && hour >= 12 ? "afternoon" : hour >= 17 && hour < 22 ? "evening" : "night";
+    let mode = null;
+    try { mode = window.sessionStorage.getItem("greeting-mode"); } catch (e) { /* ignore */ }
+    if (!mode) {
+      mode = load("seen") ? "again" : "first";
+      try { window.sessionStorage.setItem("greeting-mode", mode); } catch (e) { /* ignore */ }
+    }
+    save("seen", "1");
+    greetEl.textContent = greetEl.dataset[mode].replace("{greeting}", greetEl.dataset[part]);
+    greetEl.classList.add("shown");
+  }
+
   // ---------- deploy playground ----------
 
   const sim = $("[data-sim]");
