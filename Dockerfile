@@ -1,6 +1,6 @@
 # Serves the built site from an unprivileged nginx (runs as uid 101, listens on 8080).
 # Build the site first:  python3 scripts/build.py --offline
-FROM nginxinc/nginx-unprivileged:1.27-alpine
+FROM nginxinc/nginx-unprivileged:stable-alpine
 
 LABEL org.opencontainers.image.title="gopala-portfolio" \
       org.opencontainers.image.description="Personal portfolio site served by nginx" \
