@@ -23,7 +23,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -88,12 +88,12 @@ def build_info(repo_slug: str, checks_passed: bool) -> dict:
     server = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
     run_id = os.environ.get("GITHUB_RUN_ID")
     started = os.environ.get("RUN_STARTED_AT")
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
 
     duration = None
     if started:
         try:
-            duration = int((now - datetime.fromisoformat(started.replace("Z", "+00:00"))).total_seconds())
+            duration = int((now - datetime.fromisoformat(started)).total_seconds())
         except ValueError:
             duration = None
 
@@ -140,15 +140,15 @@ def update_status(site_url: str | None) -> dict:
         probe_status, _, ms = http_get(site_url.rstrip("/") + "/")
         ok = probe_status == 200
         history.append({
-            "at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+            "at": datetime.now(UTC).isoformat(timespec="seconds").replace("+00:00", "Z"),
             "ok": ok,
             "code": probe_status,
             "ms": round(ms),
         })
         log(f"health check {site_url}: {'up' if ok else 'DOWN'} ({probe_status}, {round(ms)} ms)")
 
-    cutoff = datetime.now(timezone.utc) - timedelta(days=HISTORY_DAYS)
-    history = [c for c in history if datetime.fromisoformat(c["at"].replace("Z", "+00:00")) >= cutoff]
+    cutoff = datetime.now(UTC) - timedelta(days=HISTORY_DAYS)
+    history = [c for c in history if datetime.fromisoformat(c["at"]) >= cutoff]
     return {"checks": history}
 
 

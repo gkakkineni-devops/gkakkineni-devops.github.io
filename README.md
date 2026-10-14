@@ -34,7 +34,7 @@ There's no server and nothing to pay for, so the uptime history lives on the sit
 
 ## Run it locally
 
-You need Python 3.10+. Nothing to install.
+You need Python 3.11+. Nothing to install.
 
 ```bash
 python3 scripts/build.py --offline
