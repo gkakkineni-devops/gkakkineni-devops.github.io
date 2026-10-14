@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About, Gopala Krishna Akkineni</title>
+  <meta name="description" content="How I got into DevOps, how I like to work, and the tools I use.">
+  <meta property="og:title" content="About Gopala Krishna Akkineni">
+  <meta property="og:description" content="From Linux admin in Kochi to building ML platforms at State Farm.">
+{{> head}}
+</head>
+<body data-page="about" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
+{{> header}}
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="crumb"><a href="{{root}}">Home</a> <span aria-hidden="true">/</span> About</p>
+      <h1>From patching servers to running ML platforms.</h1>
+      <p class="lede">I’ve spent over four years making infrastructure boring in the best way: repeatable, watched, and easy to undo. Here’s how I got here and what I care about.</p>
+    </header>
+
+    <section class="section wrap prose-grid" aria-labelledby="story-title">
+      <aside class="side-note">
+        <h2 id="story-title">The short version</h2>
+        <dl class="facts-list">
+          <div><dt>Based in</dt><dd>Bloomington, Illinois</dd></div>
+          <div><dt>Working on</dt><dd>Multi-cloud ML platform at State Farm</dd></div>
+          <div><dt>Clouds</dt><dd>AWS, GCP, Azure</dd></div>
+          <div><dt>Looking for</dt><dd>DevOps, SRE and platform roles</dd></div>
+        </dl>
+      </aside>
+      <div class="prose">
+        <h3>It started with shell scripts</h3>
+        <p>My first job, in July 2020, was as a Linux administrator at Ignitarium in Kochi. The work was hands-on and unglamorous: patching kernels, hardening servers, setting up cron jobs and log rotation, and helping developers figure out why their app was slow on a box I was responsible for.</p>
+        <p>The part I liked most was writing shell scripts. User provisioning, file cleanup, process monitoring, backups. Anything I did twice by hand, I tried to script the third time. That habit is still the core of how I work.</p>
+
+        <h3>Moving into the cloud</h3>
+        <p>In 2021 I joined Taal Tech in Bangalore as a Cloud/DevOps engineer. For the first time I was working across AWS, Azure and GCP, provisioning instances, virtual machines and storage, managing IAM roles and security groups, and rotating keys. I watched senior engineers manage infrastructure with Terraform and CloudFormation, then started contributing templates myself. I also helped set up Jenkins and GitHub Actions pipelines and learned to troubleshoot Kubernetes when pods kept restarting.</p>
+
+        <h3>Learning what production really means</h3>
+        <p>At Amistad Technologies in Hyderabad, from 2022 to 2023, I was closer to the fire. I handled L1/L2 support for AWS services and networking incidents and kept SLA adherence at 95%. That job taught me what matters when something breaks: a clear alert, a tested backup, a rollback you trust. I joined incident reviews every week, ran disaster recovery tests on backups and DNS failover, and wrote reusable Terraform modules that cut manual provisioning in half.</p>
+
+        <h3>Going deeper</h3>
+        <p>Next I did my master’s in Management Information Systems at the University of Illinois Springfield. It gave me the business side of technology: why a platform exists, who pays for it, and how to explain a technical tradeoff to people who don’t live in a terminal.</p>
+
+        <h3>Where I am now</h3>
+        <p>Since March 2025 I’ve been a DevOps engineer working with State Farm in Bloomington. I lead the design of multi-cloud infrastructure for AI and ML across AWS and GCP: CI/CD pipelines, EKS and GKE clusters, GPU and TPU capacity for training, secrets, monitoring and incident response. I work closely with data scientists and ML engineers, and some of what we’ve shipped together are LLM-based apps running in production.</p>
+        <p>It’s the most interesting mix I’ve worked on. A model is only useful once it’s reliably in front of real users, and that last mile is exactly where DevOps lives.</p>
+      </div>
+    </section>
+
+    <section class="section wrap" aria-labelledby="care-title">
+      <div class="section-head">
+        <h2 id="care-title">What I care about</h2>
+        <p>The ideas I keep coming back to, whatever the stack.</p>
+      </div>
+      <div class="beliefs">
+        <article>
+          <h3>Do it by hand once, then automate it</h3>
+          <p>The first time, I want to understand the steps. The second time, it becomes a script, a Terraform module or a pipeline job. Manual work is where drift and 2 a.m. surprises come from.</p>
+        </article>
+        <article>
+          <h3>Rollback should be cheaper than debugging</h3>
+          <p>Small changes, canary releases and GitOps mean a bad deploy is a quick revert, not an all-hands investigation. Fix forward when you understand the problem, roll back when you don’t.</p>
+        </article>
+        <article>
+          <h3>If it isn’t monitored, it isn’t done</h3>
+          <p>Dashboards and alerts ship with the service, not in a follow-up ticket. And an alert should mean someone needs to act. If it doesn’t, it’s noise and it trains people to ignore the real ones.</p>
+        </article>
+        <article>
+          <h3>Security belongs in the pipeline</h3>
+          <p>A scan that fails the build is worth more than a report nobody reads. Secrets live in Vault or a secret manager, access follows least privilege, and credentials rotate on a schedule.</p>
+        </article>
+        <article>
+          <h3>Cost is a reliability problem too</h3>
+          <p>Idle GPUs and forgotten instances are money that could fund real work. Autoscaling and scheduled shutdowns are part of running a healthy platform.</p>
+        </article>
+        <article>
+          <h3>Write it down</h3>
+          <p>Runbooks, onboarding notes and honest root cause reviews. The next person on call, sometimes me, should not have to rediscover what we already learned.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section wrap" id="tools" aria-labelledby="skills-title">
+      <div class="section-head">
+        <h2 id="skills-title">Tools</h2>
+        <p>Tap one to see where I’ve used it.</p>
+      </div>
+      <div class="skills" data-skills>
+        <div class="skill-group"><h3>Cloud</h3><div class="chips">
+          <button type="button" data-skill="AWS" data-used="ci gpu sec amistad taal">AWS</button>
+          <button type="button" data-skill="GCP" data-used="gpu deploy sec taal">GCP</button>
+          <button type="button" data-skill="Azure" data-used="taal">Azure</button>
+        </div></div>
+        <div class="skill-group"><h3>Infrastructure as code</h3><div class="chips">
+          <button type="button" data-skill="Terraform" data-used="ci gpu amistad taal">Terraform</button>
+          <button type="button" data-skill="CloudFormation" data-used="ci taal">CloudFormation</button>
+          <button type="button" data-skill="Deployment Manager" data-used="">Deployment Manager</button>
+          <button type="button" data-skill="Bicep" data-used="">Bicep</button>
+        </div></div>
+        <div class="skill-group"><h3>CI/CD and GitOps</h3><div class="chips">
+          <button type="button" data-skill="GitHub Actions" data-used="ci site amistad taal">GitHub Actions</button>
+          <button type="button" data-skill="Jenkins" data-used="ci amistad taal">Jenkins</button>
+          <button type="button" data-skill="Buildkite" data-used="ci">Buildkite</button>
+          <button type="button" data-skill="Azure DevOps" data-used="amistad">Azure DevOps</button>
+          <button type="button" data-skill="ArgoCD" data-used="deploy">ArgoCD</button>
+          <button type="button" data-skill="FluxCD" data-used="deploy">FluxCD</button>
+        </div></div>
+        <div class="skill-group"><h3>Containers</h3><div class="chips">
+          <button type="button" data-skill="Kubernetes" data-used="deploy gpu taal">Kubernetes</button>
+          <button type="button" data-skill="Docker" data-used="deploy site">Docker</button>
+          <button type="button" data-skill="Helm" data-used="deploy">Helm</button>
+        </div></div>
+        <div class="skill-group"><h3>Observability</h3><div class="chips">
+          <button type="button" data-skill="Prometheus" data-used="obs">Prometheus</button>
+          <button type="button" data-skill="Grafana" data-used="obs">Grafana</button>
+          <button type="button" data-skill="CloudWatch" data-used="obs amistad taal">CloudWatch</button>
+          <button type="button" data-skill="ELK" data-used="obs">ELK</button>
+        </div></div>
+        <div class="skill-group"><h3>Security</h3><div class="chips">
+          <button type="button" data-skill="Vault" data-used="sec">Vault</button>
+          <button type="button" data-skill="Secrets Manager" data-used="sec amistad">Secrets Manager</button>
+          <button type="button" data-skill="Trivy" data-used="sec site">Trivy</button>
+          <button type="button" data-skill="Snyk" data-used="sec">Snyk</button>
+          <button type="button" data-skill="SonarQube" data-used="sec">SonarQube</button>
+        </div></div>
+        <div class="skill-group"><h3>ML platforms</h3><div class="chips">
+          <button type="button" data-skill="SageMaker" data-used="gpu">SageMaker</button>
+          <button type="button" data-skill="Bedrock" data-used="gpu">Bedrock</button>
+          <button type="button" data-skill="Hugging Face" data-used="gpu">Hugging Face</button>
+        </div></div>
+        <div class="skill-group"><h3>Scripting and collaboration</h3><div class="chips">
+          <button type="button" data-skill="Python" data-used="site amistad taal">Python</button>
+          <button type="button" data-skill="Bash" data-used="amistad taal ignitarium">Bash</button>
+          <button type="button" data-skill="Git" data-used="site">Git</button>
+          <button type="button" data-skill="JIRA" data-used="">JIRA</button>
+          <button type="button" data-skill="Rally" data-used="">Rally</button>
+        </div></div>
+      </div>
+      <p class="skill-answer" data-skill-answer aria-live="polite">Pick a tool above.</p>
+    </section>
+
+    <section class="section wrap" id="education" aria-labelledby="edu-title">
+      <div class="section-head">
+        <h2 id="edu-title">Education</h2>
+        <p>Electronics first, then the business side of technology.</p>
+      </div>
+      <ol class="edu">
+        <li>
+          <h3>Master’s in Management Information Systems</h3>
+          <p>University of Illinois Springfield, Illinois</p>
+        </li>
+        <li>
+          <h3>Bachelor of Technology, Electronics and Communication Engineering</h3>
+          <p>Aditya University, Surampalem, Andhra Pradesh</p>
+        </li>
+        <li>
+          <h3>Diploma in Electronics and Communication Engineering</h3>
+          <p>AANM &amp; VVRSR Polytechnic, Gudlavalleru, Andhra Pradesh</p>
+        </li>
+      </ol>
+    </section>
+
+{{> cta}}
+  </main>
+
+{{> footer}}
+</body>
+</html>
