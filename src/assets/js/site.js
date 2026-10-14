@@ -183,36 +183,6 @@
   if (document.readyState === "complete") renderVisit();
   else window.addEventListener("load", () => window.setTimeout(renderVisit, 0));
 
-  // ---------- impact numbers count up once ----------
-
-  function countUp(el) {
-    const target = parseFloat(el.dataset.count);
-    const decimals = parseInt(el.dataset.decimals || "0", 10);
-    if (reduceMotion || isNaN(target)) return;
-    const start = performance.now();
-    const duration = 1100;
-    function frame(now) {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - t, 3);
-      el.textContent = (target * eased).toFixed(decimals);
-      if (t < 1) window.requestAnimationFrame(frame);
-    }
-    el.textContent = (0).toFixed(decimals);
-    window.requestAnimationFrame(frame);
-  }
-
-  const counters = $$("[data-count]");
-  if (counters.length && "IntersectionObserver" in window) {
-    const countObserver = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        countUp(entry.target);
-        obs.unobserve(entry.target);
-      });
-    }, { threshold: 0.6 });
-    counters.forEach((el) => countObserver.observe(el));
-  }
-
   // ---------- deploy playground ----------
 
   const sim = $("[data-sim]");

@@ -98,7 +98,8 @@ html {
   scroll-padding-top: var(--s-6);
   background: var(--paper);
 }
-html.fonts-loading body { visibility: hidden; }
+html { overscroll-behavior-y: none; }
+html.fonts-loading body { opacity: 0; }
 
 body {
   margin: 0;
@@ -108,7 +109,7 @@ body {
   font-size: 1.0625rem;
   line-height: 1.618;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, opacity 0.35s ease;
 }
 
 h1, h2, h3, p, ul, ol, dl, dd, figure, fieldset { margin: 0; }
