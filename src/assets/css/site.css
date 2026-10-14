@@ -716,3 +716,42 @@ h1 {
   .masthead, .theme-toggle, .deploy, .actions, .playground, .aura, .cta, .case-toc { display: none; }
   body { background: #fff; color: #000; }
 }
+
+/* ---------- Hero, second pass ---------- */
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  margin-bottom: var(--s-4); padding: 0.3rem 0.8rem;
+  border: 1px solid var(--rule); border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  color: var(--ink-2); font-size: 0.875rem; letter-spacing: 0.01em;
+}
+.hero h1 { font-size: clamp(2.6rem, 1.1rem + 5vw, 5rem); line-height: 1.02; max-width: 11em; }
+.hero h1 em {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--violet), var(--sage) 85%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero .lede { font-size: 1.25rem; line-height: 1.55; color: var(--ink); max-width: 36em; }
+.hero .lede { color: color-mix(in srgb, var(--ink) 82%, var(--ink-3)); }
+.hero-links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin-top: var(--s-3); font-size: 0.9688rem; }
+.hero-links a { color: var(--ink-2); text-underline-offset: 0.25em; }
+.hero-links a:hover { color: var(--ink); }
+
+.stack-strip { margin-top: var(--s-5); }
+.stack-label { font-size: 0.8125rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: var(--s-2); }
+.stack-strip ul { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; margin: 0; }
+.stack-strip li {
+  padding: 0.25rem 0.7rem; border: 1px solid var(--rule); border-radius: 6px;
+  font-family: var(--mono); font-size: 0.8125rem; color: var(--ink-2); background: var(--surface);
+}
+
+/* ---------- Playground teaser and page ---------- */
+
+.playground-teaser { background: linear-gradient(180deg, transparent, var(--violet-soft) 50%, transparent); }
+.teaser { display: flex; align-items: center; justify-content: space-between; gap: var(--s-5); flex-wrap: wrap; }
+.teaser h2 { margin-bottom: var(--s-2); }
+.teaser p { max-width: 36rem; color: var(--ink-2); }
+.prose.narrow { max-width: 42rem; }
+.prose.narrow p + p { margin-top: var(--s-3); }
+.page-head + .playground { padding-top: 0; }

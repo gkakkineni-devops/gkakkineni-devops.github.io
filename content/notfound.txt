@@ -1,0 +1,9 @@
+# The page people see when a link is wrong.
+
+[page]
+title: Page not found, Gopala Krishna Akkineni
+code: HTTP 404
+headline: This page didn’t make it to production.
+text: The link might be old, or the page was rolled back. Everything else is still up.
+home: Go to the homepage
+work: See my work

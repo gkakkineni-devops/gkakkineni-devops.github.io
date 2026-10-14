@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gopala Krishna Akkineni, DevOps Engineer</title>
-  <meta name="description" content="DevOps engineer in Bloomington, IL. I build CI/CD pipelines, Kubernetes platforms and GPU infrastructure across AWS, GCP and Azure.">
-  <meta property="og:title" content="Gopala Krishna Akkineni, DevOps Engineer">
-  <meta property="og:description" content="I build the road your code takes to production.">
+  <title>{{home.meta.title}}</title>
+  <meta name="description" content="{{home.meta.description}}">
+  <meta property="og:title" content="{{home.meta.share_title}}">
+  <meta property="og:description" content="{{home.meta.share_description}}">
 {{> head}}
 </head>
 <body data-page="home" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
@@ -17,158 +17,119 @@
       <div class="aura" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="wrap hero-grid">
         <div class="hero-copy">
-          <p class="hello">Hi, I’m Gopala. DevOps engineer in Bloomington, IL.</p>
-          <h1>I build the road your code takes to production.</h1>
-          <p class="lede">For over four years I’ve been building CI/CD pipelines, Kubernetes platforms and GPU infrastructure across AWS, GCP and Azure. These days that means getting machine learning models from a training run to real users at State Farm, safely and without anyone losing a weekend.</p>
+          <p class="eyebrow">{{home.hero.eyebrow}}</p>
+          <h1>{{home.hero.headline}}</h1>
+          <p class="lede">{{home.hero.lede}}</p>
           <div class="actions">
-            <a class="button primary" href="#playground">Watch a deploy</a>
-            <a class="button" href="work/">See my work</a>
+            <a class="button primary" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to={{site.site.email}}&amp;su={{site.site.email_subject}}" target="_blank" rel="noopener noreferrer">{{home.hero.primary}}</a>
+            <a class="button" href="{{root}}work/">{{home.hero.secondary}}</a>
           </div>
-          <p class="availability"><span class="dot" aria-hidden="true"></span>Open to DevOps, SRE and platform engineering roles</p>
+          <p class="hero-links">
+            <a href="{{root}}resume/Gopala-Krishna-Akkineni-Resume.pdf" target="_blank" rel="noopener noreferrer">{{home.hero.link_resume}}</a>
+            <a href="{{root}}playground/">{{home.hero.link_play}}</a>
+          </p>
+          <div class="stack-strip">
+            <p class="stack-label">{{home.hero.stack_label}}</p>
+            <ul>
+{{#each home.hero.stack}}
+              <li>{{.}}</li>
+{{/each}}
+            </ul>
+          </div>
+          <p class="availability"><span class="dot" aria-hidden="true"></span>{{home.hero.availability}}</p>
         </div>
 
         <aside class="deploy" aria-labelledby="deploy-title">
           <div class="deploy-head">
-            <h2 id="deploy-title">This page, live from its pipeline</h2>
+            <h2 id="deploy-title">{{home.panel.title}}</h2>
             <span class="pulse" data-state="loading" aria-hidden="true"></span>
           </div>
           <dl class="deploy-rows">
-            <div><dt>Commit</dt><dd><a data-build="commit_link" class="mono" href="#top" target="_blank" rel="noopener noreferrer">loading</a> <span data-build="message" class="muted"></span></dd></div>
-            <div><dt>Deployed</dt><dd><span data-build="deployed_at">loading</span></dd></div>
-            <div><dt>Run</dt><dd><a data-build="run_link" href="#top" target="_blank" rel="noopener noreferrer">loading</a> <span data-build="duration" class="muted"></span></dd></div>
-            <div><dt>Uptime</dt><dd><span data-status="uptime">loading</span> <span data-status="window" class="muted"></span></dd></div>
-            <div><dt>Your visit</dt><dd><span data-live="ttfb">measuring</span></dd></div>
+            <div><dt>{{home.panel.commit}}</dt><dd><a data-build="commit_link" class="mono" href="#top" target="_blank" rel="noopener noreferrer">{{home.panel.loading}}</a> <span data-build="message" class="muted"></span></dd></div>
+            <div><dt>{{home.panel.deployed}}</dt><dd><span data-build="deployed_at">{{home.panel.loading}}</span></dd></div>
+            <div><dt>{{home.panel.run}}</dt><dd><a data-build="run_link" href="#top" target="_blank" rel="noopener noreferrer">{{home.panel.loading}}</a> <span data-build="duration" class="muted"></span></dd></div>
+            <div><dt>{{home.panel.uptime}}</dt><dd><span data-status="uptime">{{home.panel.loading}}</span> <span data-status="window" class="muted"></span></dd></div>
+            <div><dt>{{home.panel.visit}}</dt><dd><span data-live="ttfb">{{home.panel.measuring}}</span></dd></div>
           </dl>
-          <div class="uptime-bars" data-status="bars" role="img" aria-label="Recent health checks"></div>
+          <div class="uptime-bars" data-status="bars" role="img" aria-label="{{home.panel.checks_label}}"></div>
           <ul class="checks">
-            <li data-check="html">HTML validation</li>
-            <li data-check="links">Link check</li>
-            <li data-check="dockerfile">Dockerfile lint</li>
-            <li data-check="trivy">Trivy security scan</li>
-            <li data-check="smoke">Container smoke test</li>
+            <li data-check="html">{{home.panel.checks.0}}</li>
+            <li data-check="links">{{home.panel.checks.1}}</li>
+            <li data-check="dockerfile">{{home.panel.checks.2}}</li>
+            <li data-check="trivy">{{home.panel.checks.3}}</li>
+            <li data-check="smoke">{{home.panel.checks.4}}</li>
           </ul>
-          <a class="deploy-more" href="work/this-website/">How this works</a>
+          <a class="deploy-more" href="{{root}}work/this-website/">{{home.panel.more}}</a>
         </aside>
       </div>
 
       <div class="wrap">
         <ul class="impact">
-          <li><span class="num" data-count="40">40</span><span class="unit">%</span><p>shorter release cycles after rebuilding the delivery pipeline</p></li>
-          <li><span class="num" data-count="95">95</span><span class="unit">%</span><p>fewer interruptions during releases with blue-green and canary deploys</p></li>
-          <li><span class="num" data-count="30">30</span><span class="unit">%</span><p>faster model training and inference on autoscaling GPU clusters</p></li>
-          <li><span class="num" data-count="99.9" data-decimals="1">99.9</span><span class="unit">%</span><p>uptime on infrastructure I provisioned with Terraform and CloudFormation</p></li>
+{{#each home.impact.items}}
+          <li><span class="num" data-count="{{.0}}" data-decimals="{{.3}}">{{.0}}</span><span class="unit">{{.1}}</span><p>{{.2}}</p></li>
+{{/each}}
         </ul>
       </div>
     </section>
 
     <section class="section wrap" aria-labelledby="do-title">
       <div class="section-head">
-        <h2 id="do-title">What I do</h2>
-        <p>Most of my week falls into three kinds of work. Each one links to a story with the details.</p>
+        <h2 id="do-title">{{home.do.title}}</h2>
+        <p>{{home.do.text}}</p>
       </div>
       <div class="pillars">
-        <a class="pillar" href="work/faster-releases/">
-          <h3>Build the delivery path</h3>
-          <p>CI/CD on GitHub Actions, Jenkins and Buildkite, with every environment defined in Terraform or CloudFormation.</p>
-          <span class="pillar-link">Faster releases</span>
+{{#each home.do.pillars}}
+        <a class="pillar" href="{{root}}{{.2}}">
+          <h3>{{.0}}</h3>
+          <p>{{.1}}</p>
+          <span class="pillar-link">{{.3}}</span>
         </a>
-        <a class="pillar" href="work/gpu-platform-for-ml/">
-          <h3>Run the platform</h3>
-          <p>EKS and GKE clusters, GitOps with ArgoCD and FluxCD, and GPU capacity for model training and LLM apps.</p>
-          <span class="pillar-link">GPU platform for ML</span>
-        </a>
-        <a class="pillar" href="work/observability/">
-          <h3>Keep it safe and visible</h3>
-          <p>Prometheus, Grafana and ELK for seeing problems early, and Vault, Trivy and Snyk so bad builds stop in CI.</p>
-          <span class="pillar-link">Seeing problems first</span>
-        </a>
+{{/each}}
       </div>
     </section>
 
     <section class="section wrap" aria-labelledby="work-title">
       <div class="section-head">
-        <h2 id="work-title">Selected work</h2>
-        <p>Each one is written up properly: the situation, what I built, the decisions behind it and what changed.</p>
+        <h2 id="work-title">{{home.selected.title}}</h2>
+        <p>{{home.selected.text}}</p>
       </div>
       <ul class="work-list">
-        <li><a href="work/faster-releases/"><span class="wl-num">40%</span><span class="wl-title">Faster path to production</span><span class="wl-sub">Rebuilt CI/CD across GitHub Actions, Jenkins and Buildkite</span></a></li>
-        <li><a href="work/zero-downtime-releases/"><span class="wl-num">95%</span><span class="wl-title">Releases nobody notices</span><span class="wl-sub">Blue-green and canary rollouts with GitOps on EKS and GKE</span></a></li>
-        <li><a href="work/gpu-platform-for-ml/"><span class="wl-num">30%</span><span class="wl-title">GPU platform for ML</span><span class="wl-sub">Autoscaling GPU and TPU clusters for training and LLM apps</span></a></li>
-        <li><a href="work/observability/"><span class="wl-num">25%</span><span class="wl-title">Seeing problems first</span><span class="wl-sub">Prometheus, Grafana, CloudWatch and ELK with alerts that matter</span></a></li>
-        <li><a href="work/security-in-the-pipeline/"><span class="wl-num">35%</span><span class="wl-title">Security in the pipeline</span><span class="wl-sub">Snyk, Trivy and SonarQube gates, secrets in Vault</span></a></li>
-        <li><a href="work/this-website/"><span class="wl-num">$0</span><span class="wl-title">This website</span><span class="wl-sub">A static site run like a production service</span></a></li>
+{{#each cases}}
+        <li><a href="{{root}}work/{{.id}}/"><span class="wl-num">{{.home_num}}</span><span class="wl-title">{{.title}}</span><span class="wl-sub">{{.home_sub}}</span></a></li>
+{{/each}}
+        <li><a href="{{root}}work/this-website/"><span class="wl-num">{{home.selected.website_num}}</span><span class="wl-title">{{home.selected.website_title}}</span><span class="wl-sub">{{home.selected.website_sub}}</span></a></li>
       </ul>
     </section>
 
-    <section class="section playground" id="playground" aria-labelledby="play-title">
-      <div class="wrap">
-        <div class="section-head">
-          <h2 id="play-title">Ship a change</h2>
-          <p>A small simulation of how I set up releases. Pick what’s in the change, hit deploy, and watch the pipeline handle it.</p>
+    <section class="section playground-teaser" aria-labelledby="play-title">
+      <div class="wrap teaser">
+        <div>
+          <h2 id="play-title">{{home.play.title}}</h2>
+          <p>{{home.play.text}}</p>
         </div>
-
-        <div class="sim" data-sim>
-          <div class="sim-controls">
-            <fieldset class="scenario">
-              <legend>What’s in this change?</legend>
-              <label><input type="radio" name="scenario" value="clean" checked> A clean release</label>
-              <label><input type="radio" name="scenario" value="vuln"> A vulnerable dependency</label>
-              <label><input type="radio" name="scenario" value="canary"> A bug that only shows up under real traffic</label>
-            </fieldset>
-            <button class="button primary" type="button" data-sim-run>Deploy</button>
-          </div>
-
-          <ol class="stages" data-sim-stages>
-            <li data-stage="commit"><span class="node"></span>Commit</li>
-            <li data-stage="build"><span class="node"></span>Build</li>
-            <li data-stage="test"><span class="node"></span>Tests</li>
-            <li data-stage="scan"><span class="node"></span>Security scan</li>
-            <li data-stage="c10"><span class="node"></span>Canary 10%</li>
-            <li data-stage="c50"><span class="node"></span>Canary 50%</li>
-            <li data-stage="full"><span class="node"></span>Everyone</li>
-          </ol>
-
-          <div class="sim-body">
-            <div class="sim-log" role="log" aria-live="polite" aria-label="Deploy log" data-sim-log>
-              <p class="log-idle">Waiting for a deploy.</p>
-            </div>
-            <div class="sim-metric">
-              <div class="metric-head">
-                <span>Error rate on the new version</span>
-                <span class="metric-value" data-sim-rate>0.0%</span>
-              </div>
-              <svg viewBox="0 0 300 120" preserveAspectRatio="none" class="metric-chart" aria-hidden="true">
-                <line class="threshold" x1="0" x2="300" y1="60" y2="60"/>
-                <polyline class="line" data-sim-line points=""/>
-              </svg>
-              <p class="metric-note">Rollback triggers above 2%</p>
-            </div>
-          </div>
-          <p class="sim-result" data-sim-result aria-live="polite"></p>
-        </div>
-        <p class="sim-more">The real version of this is written up in <a href="work/zero-downtime-releases/">Releases nobody notices</a>.</p>
+        <a class="button primary" href="{{root}}playground/">{{home.play.button}}</a>
       </div>
     </section>
 
     <section class="section wrap" id="projects" aria-labelledby="projects-title">
       <div class="section-head">
-        <h2 id="projects-title">On GitHub</h2>
-        <p>Pulled live from my GitHub, so this list keeps itself up to date.</p>
+        <h2 id="projects-title">{{home.repos.title}}</h2>
+        <p>{{home.repos.text}}</p>
       </div>
       <div class="repos" data-repos aria-live="polite">
-        <p class="empty">More projects are on the way. This site is the first one, and you can <a href="https://github.com/{{github_user}}/{{github_repo}}" target="_blank" rel="noopener noreferrer">read its source</a>.</p>
+        <p class="empty">{{home.repos.empty}}</p>
       </div>
     </section>
 
     <section class="section wrap now" aria-labelledby="now-title">
       <div class="section-head">
-        <h2 id="now-title">Right now</h2>
-        <p>Updated October 2026.</p>
+        <h2 id="now-title">{{home.now.title}}</h2>
+        <p>{{home.now.text}}</p>
       </div>
       <ul>
-        <li>Working on the platform behind State Farm’s AI and ML work.</li>
-        <li>Building DevOps projects in public on GitHub. This site is the first one.</li>
-        <li>Looking for my next DevOps, SRE or platform role.</li>
+{{#each home.now.items}}
+        <li>{{.}}</li>
+{{/each}}
       </ul>
     </section>
 

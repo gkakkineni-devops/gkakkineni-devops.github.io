@@ -1,0 +1,28 @@
+# The story on the About page. Each [section] is one block, shown in this order.
+
+[started]
+title: It started with shell scripts
+paragraphs:
+  - My first job, in July 2020, was as a Linux administrator at Ignitarium in Kochi. The work was hands-on and unglamorous: patching kernels, hardening servers, setting up cron jobs and log rotation, and helping developers figure out why their app was slow on a box I was responsible for.
+  - The part I liked most was writing shell scripts. User provisioning, file cleanup, process monitoring, backups. Anything I did twice by hand, I tried to script the third time. That habit is still the core of how I work.
+
+[cloud]
+title: Moving into the cloud
+paragraphs:
+  - In 2021 I joined Taal Tech in Bangalore as a Cloud/DevOps engineer. For the first time I was working across AWS, Azure and GCP, provisioning instances, virtual machines and storage, managing IAM roles and security groups, and rotating keys. I watched senior engineers manage infrastructure with Terraform and CloudFormation, then started contributing templates myself. I also helped set up Jenkins and GitHub Actions pipelines and learned to troubleshoot Kubernetes when pods kept restarting.
+
+[production]
+title: Learning what production really means
+paragraphs:
+  - At Amistad Technologies in Hyderabad, from 2022 to 2023, I was closer to the fire. I handled L1/L2 support for AWS services and networking incidents and kept SLA adherence at 95%. That job taught me what matters when something breaks: a clear alert, a tested backup, a rollback you trust. I joined incident reviews every week, ran disaster recovery tests on backups and DNS failover, and wrote reusable Terraform modules that cut manual provisioning in half.
+
+[deeper]
+title: Going deeper
+paragraphs:
+  - Next I did my master’s in Management and Information Systems at the University of Illinois Springfield. It gave me the business side of technology: why a platform exists, who pays for it, and how to explain a technical tradeoff to people who don’t live in a terminal.
+
+[now]
+title: Where I am now
+paragraphs:
+  - Since March 2025 I’ve been a DevOps engineer working with State Farm in Bloomington. I lead the design of multi-cloud infrastructure for AI and ML across AWS and GCP: CI/CD pipelines, EKS and GKE clusters, GPU and TPU capacity for training, secrets, monitoring and incident response. I work closely with data scientists and ML engineers, and some of what we’ve shipped together are LLM-based apps running in production.
+  - It’s the most interesting mix I’ve worked on. A model is only useful once it’s reliably in front of real users, and that last mile is exactly where DevOps lives.

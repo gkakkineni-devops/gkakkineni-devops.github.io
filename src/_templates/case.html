@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{case.current.title}}, {{site.site.name}}</title>
+  <meta name="description" content="{{case.current.summary}}">
+  <meta property="og:title" content="{{case.current.title}}">
+  <meta property="og:description" content="{{case.current.summary}}">
+{{> head}}
+</head>
+<body data-page="work" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
+{{> header}}
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="crumb"><a href="{{root}}">{{site.nav.home}}</a> <span aria-hidden="true">/</span> <a href="{{root}}work/">{{site.nav.work}}</a> <span aria-hidden="true">/</span> {{case.current.title}}</p>
+      <h1>{{case.current.title}}</h1>
+      <p class="lede">{{case.current.summary}}</p>
+      <dl class="case-meta">
+        <div><dt>{{work.labels.where}}</dt><dd>{{case.current.where}}</dd></div>
+        <div><dt>{{work.labels.when}}</dt><dd>{{case.current.when}}</dd></div>
+        <div><dt>{{work.labels.role}}</dt><dd>{{case.current.role}}</dd></div>
+      </dl>
+    </header>
+
+    <section class="wrap results-band" aria-label="{{work.labels.results}}">
+      <ul class="results">
+{{#each case.current.results}}
+        <li><span class="r-num">{{.0}}</span><span class="r-label">{{.1}}</span></li>
+{{/each}}
+      </ul>
+    </section>
+
+    <div class="wrap case-body">
+      <nav class="case-toc" aria-label="{{work.labels.toc}}">
+        <p>{{work.labels.toc}}</p>
+        <a href="#situation">{{work.labels.situation}}</a>
+        <a href="#built">{{work.labels.built}}</a>
+        <a href="#how">{{work.labels.flow}}</a>
+        <a href="#decisions">{{work.labels.decisions_short}}</a>
+        <a href="#changed">{{work.labels.changed}}</a>
+      </nav>
+
+      <article class="case-article">
+        <h2 id="situation">{{work.labels.situation}}</h2>
+{{#each case.current.situation}}
+        <p>{{.}}</p>
+{{/each}}
+
+        <h2 id="built">{{work.labels.built}}</h2>
+        <ul class="built">
+{{#each case.current.built}}
+          <li>{{.}}</li>
+{{/each}}
+        </ul>
+
+        <h2 id="how">{{work.labels.flow}}</h2>
+        <ol class="flow">
+{{#each case.current.flow}}
+          <li>{{.}}</li>
+{{/each}}
+        </ol>
+
+        <h2 id="decisions">{{work.labels.decisions}}</h2>
+        <div class="decisions">
+{{#each case.current.decisions}}
+          <article>
+            <h4>{{.0}}</h4>
+            <p>{{.1}}</p>
+          </article>
+{{/each}}
+        </div>
+
+        <h2 id="changed">{{work.labels.changed}}</h2>
+        <p class="changed">{{case.current.changed}}</p>
+
+        <h3>{{work.labels.next}}</h3>
+        <p>{{case.current.next}}</p>
+
+        <p class="stack-line"><strong>{{work.labels.stack}}</strong> {{case.current.stack}}</p>
+{{#if case.current.extra}}
+        <p class="aside-link">{{case.current.extra}}</p>
+{{/if}}
+        <p class="confidential">{{work.notes.confidential}}</p>
+      </article>
+    </div>
+
+    <nav class="wrap pager" aria-label="{{work.labels.pager}}">
+{{#if case.current.prev_slug}}
+      <a class="pager-prev" href="../{{case.current.prev_slug}}/"><span>{{work.labels.previous}}</span>{{case.current.prev_title}}</a>
+{{/if}}
+      <a class="pager-next" href="../{{case.current.next_slug}}/"><span>{{work.labels.next_label}}</span>{{case.current.next_title}}</a>
+    </nav>
+
+{{> cta}}
+  </main>
+
+{{> footer}}
+</body>
+</html>

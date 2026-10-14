@@ -1,0 +1,98 @@
+# Each [section] is one job on the Experience page, newest first.
+# The section name (state-farm, amistad, ...) is also the link target, so keep it as it is.
+# "results" is optional. Leave it out and that block disappears.
+
+[state-farm]
+short: State Farm
+year: 2025
+when: Mar 2025 to now
+where: Bloomington, Illinois
+title: DevOps Engineer (AWS/GCP)
+org: State Farm
+summary: I lead the design and implementation of a scalable, secure and automated multi-cloud infrastructure for end-to-end AI/ML work on AWS and GCP: training, deployment and monitoring.
+do_title: What I own
+do:
+  - CI/CD pipelines on GitHub Actions, Jenkins and Buildkite.
+  - Infrastructure in Terraform and CloudFormation.
+  - EKS and GKE clusters, Helm charts, ArgoCD and FluxCD, and autoscaling for high-traffic applications.
+  - GPU and TPU-enabled clusters for deep learning workloads.
+  - Secrets management with Vault, AWS Secrets Manager and GCP Secret Manager.
+  - Observability with Prometheus, Grafana, CloudWatch and the ELK stack.
+  - Incident response and root cause analysis.
+results:
+  - 40% | shorter release cycles
+  - 95% | fewer interruptions during releases
+  - 30% | faster training and inference
+  - 25% | less downtime
+  - 15% | lower cost for GPU workloads
+  - 99.9% | uptime
+also_title: Also
+also: I integrated SageMaker, Bedrock and Hugging Face into the DevOps pipelines and worked with data scientists and ML engineers to put LLM-based applications into production.
+read_more: Read more: [Faster path to production](@/work/faster-releases/), [Releases nobody notices](@/work/zero-downtime-releases/), [GPU platform for ML](@/work/gpu-platform-for-ml/), [Seeing problems first](@/work/observability/), [Security in the pipeline](@/work/security-in-the-pipeline/)
+
+[amistad]
+short: Amistad
+year: 2022
+when: May 2022 to Jun 2023
+where: Hyderabad, India
+title: Cloud/DevOps Engineer
+org: Amistad Technologies
+summary: This was my on-call education. I supported AWS services in production, automated the repetitive work around them, and learned what really matters when something breaks.
+do_title: What I did
+do:
+  - L1/L2 support for EC2, S3 and IAM, plus networking incidents.
+  - Configured and troubleshot CI/CD pipelines in Jenkins, GitHub Actions and Azure DevOps.
+  - Automated backups, log archiving and IAM provisioning with Bash and Python scripts running on Lambda.
+  - Wrote reusable Terraform modules for S3 buckets, IAM roles and EC2 instances.
+  - Set up CloudWatch alarms, dashboards and log filters.
+  - Joined weekly incident reviews and root cause analyses.
+  - Supported disaster recovery exercises: backup restores and DNS failover tests.
+  - Rotated IAM credentials, enforced least privilege and managed secrets with the DevOps and InfoSec teams.
+results:
+  - 95% | SLA adherence
+  - 50% | less manual provisioning
+  - 20% | fewer failed deploys
+  - 10% | lower AWS cost
+took_title: What I took away
+took: A clear alert, a tested backup and a rollback you trust are worth more than any clever architecture at 2 a.m.
+
+[taal]
+short: Taal Tech
+year: 2021
+when: Mar 2021 to Feb 2022
+where: Bangalore, India
+title: Cloud/DevOps Engineer
+org: Taal Tech
+summary: My first cloud role. I worked across AWS, Azure and GCP and learned to treat infrastructure as code.
+do_title: What I did
+do:
+  - Supported deployment and maintenance of multi-cloud environments, provisioning EC2 instances, virtual machines and storage buckets.
+  - Configured IAM roles, security groups and key rotation to keep access secure and compliant.
+  - Wrote Shell and Python scripts for health checks, log collection and cleanup.
+  - Contributed Terraform and CloudFormation templates for consistent, version-controlled environments.
+  - Helped set up CI/CD in Jenkins and GitHub Actions to automate build, test and deploy.
+  - Monitored performance with CloudWatch and Azure Monitor and escalated issues early.
+  - Troubleshot Kubernetes pod restarts, configuration errors and resource limits.
+  - Wrote runbooks and onboarding material during Agile sprints.
+took_title: What I took away
+took: Once infrastructure lives in code, it can be reviewed, repeated and rolled back. I haven’t wanted to build it any other way since.
+
+[ignitarium]
+short: Ignitarium
+year: 2020
+when: Jul 2020 to Feb 2021
+where: Kochi, India
+title: Linux Administrator
+org: Ignitarium
+summary: Where it started. I kept Linux servers healthy for development teams and began scripting my way out of repetitive work.
+do_title: What I did
+do:
+  - Set up and troubleshot Linux servers for development teams.
+  - Monitored server health and escalated critical failures.
+  - Wrote shell scripts for user provisioning, file management and process monitoring.
+  - Managed user permissions, cron jobs and log rotation.
+  - Handled patching, kernel updates and security hardening.
+  - Set up log monitoring and scheduled backups.
+  - Worked with developers on performance bottlenecks and took part in Agile sprints.
+took_title: What I took away
+took: The fundamentals: permissions, processes, logs and patches. Everything in the cloud still runs on them.

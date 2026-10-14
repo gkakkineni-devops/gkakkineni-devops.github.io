@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Contact, Gopala Krishna Akkineni</title>
-  <meta name="description" content="Get in touch with Gopala Krishna Akkineni about DevOps, SRE and platform engineering roles.">
-  <meta property="og:title" content="Contact Gopala Krishna Akkineni">
-  <meta property="og:description" content="Open to DevOps, SRE and platform engineering roles.">
+  <title>{{contact.meta.title}}</title>
+  <meta name="description" content="{{contact.meta.description}}">
+  <meta property="og:title" content="{{contact.meta.title}}">
+  <meta property="og:description" content="{{contact.meta.description}}">
 {{> head}}
 </head>
 <body data-page="contact" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
@@ -14,39 +14,39 @@
 
   <main id="main">
     <header class="page-head wrap">
-      <p class="crumb"><a href="{{root}}">Home</a> <span aria-hidden="true">/</span> Contact</p>
-      <h1>Let’s talk.</h1>
-      <p class="lede">I’m looking for DevOps, SRE and platform engineering roles. If you’re hiring, or just want to talk about pipelines and Kubernetes, email is the fastest way to reach me. I usually reply within a day.</p>
+      <p class="crumb"><a href="{{root}}">{{site.nav.home}}</a> <span aria-hidden="true">/</span> {{site.nav.contact}}</p>
+      <h1>{{contact.head.title}}</h1>
+      <p class="lede">{{contact.head.lede}}</p>
     </header>
 
-    <section class="wrap contact-grid" aria-label="Ways to reach me">
+    <section class="wrap contact-grid" aria-label="{{contact.email.title}}">
       <div class="contact-card primary-card">
-        <h2>Email</h2>
-        <p class="email-address mono">gopalakrishnaakkineni.dev@gmail.com</p>
-        <p class="muted">Pick where you want to write from. A new tab opens with my address already filled in.</p>
+        <h2>{{contact.email.title}}</h2>
+        <p class="email-address mono">{{site.site.email}}</p>
+        <p class="muted">{{contact.email.text}}</p>
         <div class="email-options">
-          <a class="button primary" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=gopalakrishnaakkineni.dev@gmail.com&amp;su=Hello%20Gopala" target="_blank" rel="noopener noreferrer">Write in Gmail</a>
-          <a class="button" href="https://outlook.office.com/mail/deeplink/compose?to=gopalakrishnaakkineni.dev@gmail.com&amp;subject=Hello%20Gopala" target="_blank" rel="noopener noreferrer">Write in Outlook</a>
-          <a class="button" href="mailto:gopalakrishnaakkineni.dev@gmail.com?subject=Hello%20Gopala">Use my mail app</a>
-          <button class="button copy" type="button" data-copy="gopalakrishnaakkineni.dev@gmail.com">Copy address</button>
+          <a class="button primary" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to={{site.site.email}}&amp;su={{site.site.email_subject}}" target="_blank" rel="noopener noreferrer">{{contact.email.gmail}}</a>
+          <a class="button" href="https://outlook.office.com/mail/deeplink/compose?to={{site.site.email}}&amp;subject={{site.site.email_subject}}" target="_blank" rel="noopener noreferrer">{{contact.email.outlook}}</a>
+          <a class="button" href="mailto:{{site.site.email}}?subject={{site.site.email_subject}}">{{contact.email.mailapp}}</a>
+          <button class="button copy" type="button" data-copy="{{site.site.email}}">{{contact.email.copy}}</button>
         </div>
       </div>
 
       <div class="contact-card">
-        <h2>Elsewhere</h2>
+        <h2>{{contact.elsewhere.title}}</h2>
         <ul class="elsewhere">
-          <li><a href="https://www.linkedin.com/in/gopala-krishna-devops" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><span class="muted">gopala-krishna-devops</span></a></li>
+          <li><a href="{{site.site.linkedin}}" target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><span class="muted">{{site.site.linkedin_handle}}</span></a></li>
           <li><a href="https://github.com/{{github_user}}" target="_blank" rel="noopener noreferrer"><span>GitHub</span><span class="muted">{{github_user}}</span></a></li>
-          <li><a href="{{root}}resume/Gopala-Krishna-Akkineni-Resume.pdf" target="_blank" rel="noopener noreferrer"><span>Résumé</span><span class="muted">PDF, opens in a new tab</span></a></li>
+          <li><a href="{{root}}resume/Gopala-Krishna-Akkineni-Resume.pdf" target="_blank" rel="noopener noreferrer"><span>{{contact.elsewhere.resume_label}}</span><span class="muted">{{contact.elsewhere.resume_note}}</span></a></li>
         </ul>
       </div>
 
       <div class="contact-card">
-        <h2>Good to know</h2>
+        <h2>{{contact.good.title}}</h2>
         <dl class="facts-list">
-          <div><dt>Based in</dt><dd>Bloomington, Illinois</dd></div>
-          <div><dt>Roles</dt><dd>DevOps, SRE, platform engineering</dd></div>
-          <div><dt>Strongest in</dt><dd>CI/CD, Kubernetes, Terraform, AWS and GCP, ML infrastructure</dd></div>
+{{#each contact.good.items}}
+          <div><dt>{{.0}}</dt><dd>{{.1}}</dd></div>
+{{/each}}
         </dl>
       </div>
     </section>

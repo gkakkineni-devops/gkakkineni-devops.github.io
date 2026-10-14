@@ -1,0 +1,87 @@
+# The home page. Edit the words, save, commit, and the site rebuilds itself.
+# Lists: one item per line starting with "- ". " | " splits an item into parts.
+
+[meta]
+title: Gopala Krishna Akkineni, DevOps Engineer
+description: DevOps engineer in Bloomington, IL. I build CI/CD pipelines, Kubernetes platforms and GPU infrastructure across AWS, GCP and Azure, and I turn risky releases into routine ones.
+share_title: Gopala Krishna Akkineni, DevOps Engineer
+share_description: I turn risky releases into routine ones.
+
+[hero]
+eyebrow: Gopala Krishna Akkineni · DevOps engineer · Bloomington, IL
+headline: I turn risky releases into *routine* ones.
+lede: I build the pipelines, clusters and GPU platforms that get software and machine learning models to real users. At State Farm that has meant releases 40% faster, 95% fewer interruptions and 99.9% uptime, with every environment written down as code.
+primary: Email me
+secondary: See my work
+link_resume: Read my résumé
+link_play: Watch a deploy happen
+stack_label: Day to day
+stack:
+  - Kubernetes
+  - Terraform
+  - GitHub Actions
+  - ArgoCD
+  - AWS
+  - GCP
+  - Docker
+  - Prometheus
+  - Python
+availability: Open to DevOps, SRE and platform engineering roles. Based in Bloomington, IL, with State Farm since March 2025.
+
+[panel]
+title: This page, live from its pipeline
+commit: Commit
+deployed: Deployed
+run: Run
+uptime: Uptime
+visit: Your visit
+loading: loading
+measuring: measuring
+checks_label: Recent health checks
+more: How this works
+checks:
+  - HTML validation
+  - Link check
+  - Dockerfile lint
+  - Trivy security scan
+  - Container smoke test
+
+[impact]
+items:
+  - 40 | % | shorter release cycles after rebuilding the delivery pipeline | 0
+  - 95 | % | fewer interruptions during releases with blue-green and canary deploys | 0
+  - 30 | % | faster model training and inference on autoscaling GPU clusters | 0
+  - 99.9 | % | uptime on infrastructure I provisioned with Terraform and CloudFormation | 1
+
+[do]
+title: What I do
+text: Most of my week falls into three kinds of work. Each one links to a story with the details.
+pillars:
+  - Build the delivery path | CI/CD on GitHub Actions, Jenkins and Buildkite, with every environment defined in Terraform or CloudFormation. | work/faster-releases/ | Faster releases
+  - Run the platform | EKS and GKE clusters, GitOps with ArgoCD and FluxCD, and GPU capacity for model training and LLM apps. | work/gpu-platform-for-ml/ | GPU platform for ML
+  - Keep it safe and visible | Prometheus, Grafana and ELK for seeing problems early, and Vault, Trivy and Snyk so bad builds stop in CI. | work/observability/ | Seeing problems first
+
+[selected]
+title: Selected work
+text: Each one is written up properly: the situation, what I built, the decisions behind it and what changed.
+website_num: $0
+website_title: This website
+website_sub: A static site run like a production service
+
+[play]
+title: Ship a change
+text: A small simulation of how I set up releases. Pick what’s in the change, hit deploy, and watch the pipeline decide what happens next.
+button: Try the playground
+
+[repos]
+title: On GitHub
+text: Pulled live from my GitHub, so this list keeps itself up to date.
+empty: More projects are on the way. This site is the first one, and you can [read its source](https://github.com/gkakkineni-devops/gopalakrishna-portfolio).
+
+[now]
+title: Right now
+text: Updated October 2026.
+items:
+  - Working on the platform behind State Farm’s AI and ML work.
+  - Building DevOps projects in public on GitHub. This site is the first one.
+  - Looking for my next DevOps, SRE or platform role.

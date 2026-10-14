@@ -1,0 +1,183 @@
+# Case studies. Each [section] becomes a page at /work/<section-name>/.
+# The order here is the order on the Work page and the previous/next links.
+# Write **bold**, *emphasis* and [link text](https://...) if you need them.
+# In lists, " | " separates the parts of one item (for example a number and its label).
+
+[faster-releases]
+title: Faster path to production
+summary: Getting ML services from merge to production faster, without making releases riskier.
+where: State Farm
+when: 2025 to now
+role: DevOps Engineer (AWS/GCP)
+results:
+  - 40% | shorter release cycles
+  - 99.9% | uptime on the infrastructure underneath
+situation:
+  - The teams I support build and serve machine learning models across AWS and GCP. Code moved through pipelines on more than one CI system, and environments didn’t always come from the same source of truth.
+  - The result was predictable: changes waited longer than they needed to, and every release carried a bit of extra uncertainty because the path to production wasn’t the same every time.
+built:
+  - Developed and tuned CI/CD pipelines on GitHub Actions, Jenkins and Buildkite, so each service has a clear, repeatable path from commit to production.
+  - Provisioned and secured the infrastructure behind those pipelines with Terraform and CloudFormation, so environments are created from code and reviewed like code.
+  - Brought ML lifecycle tools, SageMaker, Bedrock and Hugging Face, into the same pipelines so model deployments follow the same rules as application code.
+flow:
+  - Pull request
+  - Build and test
+  - Scan
+  - Package
+  - Deploy with GitOps
+  - Monitor
+decisions:
+  - Meet teams where they are | Moving every team to one CI tool overnight would have stalled delivery. I focused on making each path consistent and fast first, using the tool the team already ran.
+  - Infrastructure is reviewed like code | Terraform and CloudFormation changes go through pull requests. That turns environment changes into something people can read, discuss and roll back.
+  - Models ship like software | A model deploy gets the same build, scan and rollout steps as a service. Fewer special cases means fewer surprises.
+changed: Release cycles got 40% shorter, and the infrastructure provisioned this way held 99.9% uptime.
+next: Measure lead time and change failure rate per team as standing metrics, so improvements show up on a dashboard instead of in anecdotes.
+stack: GitHub Actions, Jenkins, Buildkite, Terraform, CloudFormation, SageMaker, Bedrock, Hugging Face
+home_num: 40%
+home_sub: Rebuilt CI/CD across GitHub Actions, Jenkins and Buildkite
+card_result: **40%** shorter release cycles
+card_text: One delivery path for ML services across GitHub Actions, Jenkins and Buildkite, with infrastructure from code.
+card_stack: GitHub Actions, Jenkins, Buildkite, Terraform, CloudFormation
+
+[zero-downtime-releases]
+title: Releases nobody notices
+summary: Making deploys on Kubernetes safe enough that users never feel them.
+where: State Farm
+when: 2025 to now
+role: DevOps Engineer (AWS/GCP)
+results:
+  - 95% | fewer interruptions during releases
+  - Minutes | to recover from a bad deploy, down from hours
+situation:
+  - Every release was a moment of risk. When a change misbehaved, users felt it before anyone could react, and getting back to a good state took manual work under pressure.
+  - With high-traffic applications on EKS and GKE, that risk grows with every service and every deploy.
+built:
+  - Managed EKS and GKE clusters and packaged services with Helm charts.
+  - Integrated ArgoCD and FluxCD so the cluster follows what’s in Git, and a rollback is a revert.
+  - Implemented blue-green and canary deployment strategies, so new versions get a slice of real traffic before everyone sees them.
+  - Set up autoscaling policies for the high-traffic applications so a rollout never competes with load.
+flow:
+  - Merge to main
+  - GitOps sync
+  - Canary slice
+  - Check health
+  - Promote or roll back
+decisions:
+  - GitOps over pushing from CI | When the cluster pulls its desired state from Git, there’s one source of truth. You can see what’s running, and undoing a change is a normal Git revert instead of a special procedure.
+  - Canary for risky services, blue-green for the rest | Canary releases catch problems that only show up under real traffic. Blue-green is simpler when a clean switch is enough. Using both kept the setup no more complex than each service needed.
+  - Automatic rollback | If the new version looks unhealthy, it rolls back without waiting for a person. People still investigate, but users stop being affected right away.
+changed: Service interruptions during releases dropped 95%, and automated rollbacks took recovery from hours to minutes.
+next: Tie canary analysis to the same SLOs the teams already watch, so “healthy enough to promote” means exactly what it means in production.
+stack: Kubernetes (EKS, GKE), Helm, ArgoCD, FluxCD
+extra: Want to see the idea in action? The [deploy playground](@/playground/) runs a small simulation of this setup, including a canary that rolls itself back.
+home_num: 95%
+home_sub: Blue-green and canary rollouts with GitOps on EKS and GKE
+card_result: **95%** fewer release interruptions
+card_text: Blue-green and canary rollouts on EKS and GKE, driven by GitOps, with rollbacks in minutes.
+card_stack: Kubernetes, Helm, ArgoCD, FluxCD
+
+[gpu-platform-for-ml]
+title: GPU platform for ML
+summary: Giving data scientists the GPU capacity they need, without paying for GPUs nobody is using.
+where: State Farm
+when: 2025 to now
+role: DevOps Engineer (AWS/GCP)
+results:
+  - 30% | faster training and inference
+  - 15% | lower cost for GPU workloads
+situation:
+  - Deep learning workloads need GPUs, and GPUs are both expensive to leave idle and painful to wait for. Data scientists want capacity on demand; the budget wants nothing running that isn’t doing work.
+  - On top of training, the teams were moving toward LLM-based applications, which bring their own deployment and serving needs.
+built:
+  - Orchestrated GPU and TPU-enabled clusters for deep learning workloads across AWS and GCP.
+  - Designed Terraform-based pipelines to provision GPU clusters for training, so capacity is created the same way every time.
+  - Automated resource monitoring and scaling for GPU workloads, so clusters grow for a job and shrink after it.
+  - Integrated SageMaker, Bedrock and Hugging Face into the DevOps pipelines and worked with data scientists and ML engineers to deploy LLM-based apps to production.
+flow:
+  - Training job queued
+  - Scale up GPUs
+  - Train and track
+  - Register model
+  - Deploy and serve
+  - Scale down
+decisions:
+  - Scale on the work, not the calendar | Scaling GPU capacity around the actual jobs, instead of keeping a fixed fleet warm, is where most of the savings came from.
+  - Provision GPU clusters from Terraform | GPU node pools have a lot of details that are easy to get wrong by hand: drivers, instance types, quotas. Defining them in code made them repeatable and reviewable.
+  - Use managed ML services where they fit | SageMaker, Bedrock and Hugging Face cover a lot of ground. Plugging them into the existing pipelines was faster and safer than rebuilding what they already do.
+changed: Training and inference ran up to 30% faster, and automated scaling cut costs for GPU workloads by 15% while keeping performance where it needed to be.
+next: Show GPU spend per team and per model, so the people choosing instance sizes can see what their choices cost.
+stack: GPU and TPU clusters, Kubernetes (EKS, GKE), Terraform, SageMaker, Bedrock, Hugging Face
+home_num: 30%
+home_sub: Autoscaling GPU and TPU clusters for training and LLM apps
+card_result: **30%** faster training, **15%** lower cost
+card_text: Autoscaling GPU and TPU clusters, plus SageMaker, Bedrock and Hugging Face wired into deploys.
+card_stack: GPU and TPU clusters, Terraform, SageMaker, Bedrock, Hugging Face
+
+[observability]
+title: Seeing problems first
+summary: Finding out about issues from a dashboard, not from a support ticket.
+where: State Farm
+when: 2025 to now
+role: DevOps Engineer (AWS/GCP)
+results:
+  - 25% | less downtime
+situation:
+  - Problems were too often noticed after they reached users. Metrics and logs existed, but they were spread across tools, and alerts didn’t always point at what actually needed attention.
+built:
+  - Established observability across Prometheus, Grafana, CloudWatch and the ELK stack, so metrics and logs for a service can be read together.
+  - Built Grafana dashboards and predictive alerts that flag anomalies before they turn into outages.
+  - Handled incident response and root cause analysis, documented lessons learned and followed through on the fixes.
+flow:
+  - Metrics and logs
+  - Dashboards
+  - Alert
+  - Respond
+  - Root cause review
+  - Fix and document
+decisions:
+  - Every alert needs an owner and an action | An alert that nobody acts on trains people to ignore alerts. If it fires, someone should know what to do.
+  - Watch trends, not just thresholds | Predictive alerts catch a problem that is getting worse before it crosses the line where users notice.
+  - Reviews are about the system | Root cause reviews look for what in the system allowed the problem, then fix that, so the same incident doesn’t come back next month.
+changed: Downtime went down 25%, and anomalies started showing up on a dashboard before they showed up in a support queue.
+next: Add service-level objectives for the most important services, so alerting is based on what users experience.
+stack: Prometheus, Grafana, CloudWatch, ELK
+home_num: 25%
+home_sub: Prometheus, Grafana, CloudWatch and ELK with alerts that matter
+card_result: **25%** less downtime
+card_text: Metrics, logs and dashboards in one place, alerts that mean something, and honest root cause reviews.
+card_stack: Prometheus, Grafana, CloudWatch, ELK
+
+[security-in-the-pipeline]
+title: Security in the pipeline
+summary: Catching vulnerabilities and leaked secrets before code ships, not after.
+where: State Farm
+when: 2025 to now
+role: DevOps Engineer (AWS/GCP)
+results:
+  - 35% | fewer vulnerabilities
+situation:
+  - Security checks happened late in the process, so issues were found after code was already on its way to production, when they’re slowest and most expensive to fix.
+  - Secrets also needed a single, controlled home across AWS and GCP.
+built:
+  - Integrated Snyk, Trivy and SonarQube into the CI/CD workflows as gates, so a failing scan stops the build.
+  - Designed secret management with Vault, AWS Secrets Manager and GCP Secret Manager, so credentials never live in code or pipeline config.
+flow:
+  - Commit
+  - Code analysis
+  - Dependency scan
+  - Image scan
+  - Gate
+  - Deploy
+decisions:
+  - Fail the build, don’t file a report | A finding that blocks a merge gets fixed that day. A finding in a report gets fixed eventually.
+  - Block on what can be fixed | Gating on critical issues that have a fix available keeps the signal high. Teams take the gate seriously because it rarely cries wolf.
+  - Secrets come from a manager at runtime | Pulling credentials from Vault or a cloud secret manager means rotation doesn’t require a code change, and nothing sensitive sits in Git.
+changed: Vulnerabilities dropped 35% and code compliance improved, because problems now surface in the pull request instead of in production.
+next: Sign container images and verify signatures at deploy time, so only images built by the pipeline can run.
+stack: Snyk, Trivy, SonarQube, Vault, AWS Secrets Manager, GCP Secret Manager
+extra: This website uses the same idea on a small scale: [Trivy and hadolint run on every push](@/work/this-website/), and a failing scan blocks the deploy.
+home_num: 35%
+home_sub: Snyk, Trivy and SonarQube gates, secrets in Vault
+card_result: **35%** fewer vulnerabilities
+card_text: Scans that fail builds instead of filling reports, and secrets that never touch a repo.
+card_stack: Snyk, Trivy, SonarQube, Vault, Secrets Manager

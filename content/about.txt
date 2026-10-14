@@ -1,0 +1,42 @@
+# The About page. The story itself is in story.txt.
+# The tool buttons (and which projects they point to) live in src/about/index.html.
+
+[meta]
+title: About, Gopala Krishna Akkineni
+description: How I went from patching Linux servers to running multi-cloud ML platforms, and the ideas I keep coming back to.
+
+[head]
+title: From patching servers to running ML platforms.
+lede: I’ve spent over four years making infrastructure boring in the best way: repeatable, watched, and easy to undo. Here’s how I got here and what I care about.
+
+[facts]
+title: The short version
+items:
+  - Based in | Bloomington, Illinois
+  - Working on | Multi-cloud ML platform at State Farm
+  - Clouds | AWS, GCP, Azure
+  - Looking for | DevOps, SRE and platform roles
+
+[care]
+title: What I care about
+text: The ideas I keep coming back to, whatever the stack.
+items:
+  - Do it by hand once, then automate it | The first time, I want to understand the steps. The second time, it becomes a script, a Terraform module or a pipeline job. Manual work is where drift and 2 a.m. surprises come from.
+  - Rollback should be cheaper than debugging | Small changes, canary releases and GitOps mean a bad deploy is a quick revert, not an all-hands investigation. Fix forward when you understand the problem, roll back when you don’t.
+  - If it isn’t monitored, it isn’t done | Dashboards and alerts ship with the service, not in a follow-up ticket. And an alert should mean someone needs to act. If it doesn’t, it’s noise and it trains people to ignore the real ones.
+  - Security belongs in the pipeline | A scan that fails the build is worth more than a report nobody reads. Secrets live in Vault or a secret manager, access follows least privilege, and credentials rotate on a schedule.
+  - Cost is a reliability problem too | Idle GPUs and forgotten instances are money that could fund real work. Autoscaling and scheduled shutdowns are part of running a healthy platform.
+  - Write it down | Runbooks, onboarding notes and honest root cause reviews. The next person on call, sometimes me, should not have to rediscover what we already learned.
+
+[tools]
+title: Tools
+text: Tap one to see where I’ve used it.
+pick: Pick a tool above.
+
+[education]
+title: Education
+text: Electronics first, then the business side of technology.
+items:
+  - Master’s in Management and Information Systems | University of Illinois Springfield, Illinois
+  - Bachelor of Technology, Electronics and Communication Engineering | Aditya University, Surampalem, Andhra Pradesh
+  - Diploma in Electronics and Communication Engineering | AANM & VVRSR Polytechnic, Gudlavalleru, Andhra Pradesh

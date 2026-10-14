@@ -1,0 +1,54 @@
+# The Work page, plus the headings used on every case study page.
+# The case studies themselves are in cases.txt.
+
+[meta]
+title: Work, Gopala Krishna Akkineni
+description: Case studies from the State Farm ML platform and my own projects: CI/CD, Kubernetes, GPU infrastructure, observability and security.
+
+[head]
+title: Work, written up properly.
+lede: Each case study covers the situation, what I built, the decisions behind it and what changed. Client details are kept general, but the approach and the results are real.
+
+[client]
+title: State Farm ML platform
+text: 2025 to now. Multi-cloud infrastructure for training, deploying and running machine learning models on AWS and GCP.
+
+[own]
+title: My own projects
+text: Built in public, so you can read every line and every pipeline run.
+website_result: **$0** a month to run
+website_title: This website
+website_text: A hand-written site that ships like production software: checks, scans, a container, scheduled health checks and a live uptime panel.
+website_stack: GitHub Actions, Docker, nginx, Trivy, Python, GitHub Pages
+
+[earlier]
+title: Earlier work
+text: Smaller wins from before State Farm. The full picture is on the [experience page](@/experience/).
+items:
+  - Half the manual provisioning. | Reusable Terraform modules for S3, IAM and EC2 at Amistad Technologies.
+  - 10% lower AWS bill. | Found idle resources and scheduled automatic shutdowns.
+  - 20% fewer failed deploys. | Checked infrastructure readiness during release windows.
+  - 95% SLA adherence. | L1/L2 support for EC2, S3, IAM and networking incidents.
+  - Less babysitting. | Python and Bash scripts with Lambda for backups, log archiving and IAM provisioning.
+
+# Headings used inside every case study.
+[labels]
+where: Where
+when: When
+role: My role
+results: Results
+toc: On this page
+situation: The situation
+built: What I built
+flow: How it flows
+decisions: Decisions I made and why
+decisions_short: Decisions
+changed: What changed
+next: What I’d do next
+stack: Stack
+pager: More case studies
+previous: Previous
+next_label: Next
+
+[notes]
+confidential: Details about State Farm’s systems are kept general on purpose. The approach, the tools and the results are from my work there.

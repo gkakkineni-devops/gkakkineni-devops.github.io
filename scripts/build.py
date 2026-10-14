@@ -72,6 +72,171 @@ def asset_version() -> str:
 
 
 PARTIAL = re.compile(r"\{\{>\s*([\w-]+)\s*\}\}")
+CONTENT_DIR = ROOT / "content"
+EACH = re.compile(r"\{\{#each\s+([.\w-]+)\s*\}\}")
+IF = re.compile(r"\{\{#if\s+([.\w-]+)\s*\}\}")
+TAG = re.compile(r"\{\{\s*([.\w-]+)\s*\}\}")
+BLOCK_TAG = re.compile(r"\{\{(#each|#if|/each|/if)\b[^}]*\}\}")
+
+
+# ---------- content files ----------
+#
+# content/<name>.txt holds the words for a page. The format is deliberately plain:
+#
+#   [section]
+#   key: a value, which can continue on lines
+#     that start with spaces.
+#   list:
+#     - first item
+#     - second item | with a second part
+#
+# Templates read them as {{name.section.key}}, or loop over a file with {{#each name}}.
+
+
+def parse_content(path: Path) -> dict[str, dict[str, str | list[str]]]:
+    sections: dict[str, dict[str, str | list[str]]] = {}
+    current: dict[str, str | list[str]] | None = None
+    key: str | None = None
+    for number, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        line = raw.rstrip()
+        if not line.strip() or line.lstrip().startswith("#") and not raw.startswith((" ", "\t")):
+            continue
+        header = re.fullmatch(r"\[([\w-]+)\]", line)
+        if header:
+            current = sections.setdefault(header.group(1), {})
+            key = None
+            continue
+        if current is None:
+            raise SystemExit(f"[build] {path.name}:{number}: text before the first [section]")
+        if raw.startswith((" ", "\t")):
+            if key is None:
+                raise SystemExit(f"[build] {path.name}:{number}: indented line without a key above it")
+            text = line.strip()
+            value = current[key]
+            if text.startswith("- "):
+                if value == "":
+                    current[key] = value = []
+                if not isinstance(value, list):
+                    raise SystemExit(f"[build] {path.name}:{number}: mixed text and list under '{key}'")
+                value.append(text[2:].strip())
+            elif isinstance(value, list):
+                value[-1] += " " + text
+            else:
+                current[key] = (value + " " + text).strip()
+            continue
+        match = re.fullmatch(r"([\w-]+):\s*(.*)", line)
+        if not match:
+            raise SystemExit(f"[build] {path.name}:{number}: expected 'key: value', got: {line[:60]}")
+        key = match.group(1)
+        current[key] = match.group(2).strip()
+    return sections
+
+
+def load_content() -> dict[str, dict]:
+    if not CONTENT_DIR.exists():
+        return {}
+    return {p.stem: parse_content(p) for p in sorted(CONTENT_DIR.glob("*.txt"))}
+
+
+def inline(text: str, root: str) -> str:
+    """Escape text, then allow **bold**, *emphasis* and [links](url). `@/` in a link means the site root."""
+    text = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
+    text = re.sub(r"(?<![\w*])\*(?!\s)(.+?)(?<!\s)\*(?![\w*])", r"<em>\1</em>", text)
+
+    def link(m: re.Match) -> str:
+        label, url = m.group(1), m.group(2)
+        if url.startswith("@/"):
+            return f'<a href="{root}{url[2:]}">{label}</a>'
+        if url.startswith(("http://", "https://")):
+            return f'<a href="{url}" target="_blank" rel="noopener noreferrer">{label}</a>'
+        if url.startswith("mailto:"):
+            return f'<a href="{url}">{label}</a>'
+        return f'<a href="{url}">{label}</a>'
+
+    return re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)", link, text)
+
+
+def lookup(path: str, scope: list, content: dict, strict: bool = True):
+    """Resolve a dotted name. `.x` reads from the innermost loop item, `a.b.c` from content files."""
+    if path.startswith("."):
+        item = scope[-1] if scope else None
+        name = path[1:]
+        if name == "":
+            return item[0] if isinstance(item, list) and len(item) == 1 else item
+        if isinstance(item, dict):
+            return item.get(name, "")
+        if isinstance(item, list) and name.isdigit():
+            return item[int(name)] if int(name) < len(item) else ""
+        return ""
+    parts = path.split(".")
+    node = content
+    for part in parts:
+        if isinstance(node, dict) and part in node:
+            node = node[part]
+        elif isinstance(node, list) and part.isdigit() and int(part) < len(node):
+            node = node[int(part)]
+        elif strict:
+            raise SystemExit(f"[build] content not found: {path}")
+        else:
+            return ""
+    return node
+
+
+def split_block(text: str, start: int, open_tag: str, close_tag: str) -> tuple[str, int]:
+    """Return the body of a block and the index just after its closing tag, honouring nesting."""
+    depth = 1
+    for m in BLOCK_TAG.finditer(text, start):
+        tag = m.group(1)
+        depth += 1 if tag == open_tag else -1 if tag == close_tag else 0
+        if depth == 0:
+            return text[start:m.start()], m.end()
+    raise SystemExit(f"[build] missing {{{{{close_tag}}}}}")
+
+
+def render_content(text: str, scope: list, content: dict, root: str) -> str:
+    out: list[str] = []
+    pos = 0
+    while True:
+        m = re.compile(r"\{\{(#each|#if)\s+([.\w-]+)\s*\}\}").search(text, pos)
+        if not m:
+            out.append(render_tags(text[pos:], scope, content, root))
+            return "".join(out)
+        out.append(render_tags(text[pos:m.start()], scope, content, root))
+        kind, name = m.group(1), m.group(2)
+        body, pos = split_block(text, m.end(), kind, "/each" if kind == "#each" else "/if")
+        value = lookup(name, scope, content, strict=kind != "#if")
+        if kind == "#if":
+            if value:
+                out.append(render_content(body, scope, content, root))
+            continue
+        if isinstance(value, dict) and all(isinstance(v, dict) for v in value.values()):
+            items = [{"id": k, **v} for k, v in value.items()]
+        elif isinstance(value, list):
+            items = [_list_item(i) for i in value]
+        else:
+            items = []
+        for item in items:
+            out.append(render_content(body, [*scope, item], content, root))
+
+
+def _list_item(raw: str) -> list[str]:
+    return [part.strip() for part in raw.split(" | ")]
+
+
+def render_tags(text: str, scope: list, content: dict, root: str) -> str:
+    def sub(m: re.Match) -> str:
+        name = m.group(1)
+        if "." not in name:
+            return m.group(0)  # plain values like {{root}} are filled in later
+        value = lookup(name, scope, content)
+        if isinstance(value, list):
+            raise SystemExit(f"[build] '{name}' is a list; use {{{{#each {name}}}}}")
+        if isinstance(value, dict):
+            raise SystemExit(f"[build] '{name}' is a section; pick a key from it")
+        return inline(str(value), root)
+
+    return TAG.sub(sub, text)
 
 
 def load_partials() -> dict[str, str]:
@@ -81,8 +246,8 @@ def load_partials() -> dict[str, str]:
     return {p.stem: p.read_text(encoding="utf-8") for p in folder.glob("*.html")}
 
 
-def render_page(text: str, partials: dict[str, str], values: dict[str, str]) -> str:
-    # Partials can't nest, which keeps this predictable. Values are filled in after.
+def render_page(text: str, partials: dict[str, str], values: dict[str, str], content: dict | None = None) -> str:
+    # Partials can't nest, which keeps this predictable. Content is read next, then plain values.
     def include(match: re.Match) -> str:
         name = match.group(1)
         if name not in partials:
@@ -90,6 +255,7 @@ def render_page(text: str, partials: dict[str, str], values: dict[str, str]) -> 
         return partials[name]
 
     text = PARTIAL.sub(include, text)
+    text = render_content(text, [], {**(content or {}), "site": (content or {}).get("site", {})}, values["root"])
     for key, value in values.items():
         text = text.replace("{{" + key + "}}", value)
     leftover = re.findall(r"\{\{[^}]+\}\}", text)
@@ -98,18 +264,47 @@ def render_page(text: str, partials: dict[str, str], values: dict[str, str]) -> 
     return text
 
 
+def case_pages(content: dict) -> dict[str, dict]:
+    """Case study pages come from content/cases.txt, one section per page."""
+    return content.get("cases", {})
+
+
 def copy_source(values: dict[str, str]) -> None:
     if DIST.exists():
         shutil.rmtree(DIST)
-    shutil.copytree(SRC, DIST, ignore=shutil.ignore_patterns("_partials"))
+    shutil.copytree(SRC, DIST, ignore=shutil.ignore_patterns("_partials", "_templates"))
     partials = load_partials()
+    content = load_content()
     pages = 0
-    for path in DIST.rglob("*"):
+
+    def write(path: Path, text: str) -> None:
+        nonlocal pages
+        depth = len(path.relative_to(DIST).parts) - 1
+        page_values = {**values, "root": "../" * depth or "./"}
+        path.write_text(render_page(text, partials, page_values, content), encoding="utf-8")
+        pages += 1
+
+    for path in sorted(DIST.rglob("*")):
         if path.is_file() and path.suffix in TEMPLATED:
-            depth = len(path.relative_to(DIST).parts) - 1
-            page_values = {**values, "root": "../" * depth or "./"}
-            path.write_text(render_page(path.read_text(encoding="utf-8"), partials, page_values), encoding="utf-8")
-            pages += 1
+            write(path, path.read_text(encoding="utf-8"))
+
+    template = (SRC / "_templates" / "case.html").read_text(encoding="utf-8")
+    slugs = list(case_pages(content))
+    for i, slug in enumerate(slugs):
+        data = case_pages(content)[slug]
+        # Previous and next links are worked out here so the content files stay simple.
+        cases = content["cases"]
+        neighbours = {
+            "prev_slug": slugs[i - 1] if i else "",
+            "prev_title": cases[slugs[i - 1]]["title"] if i else "",
+            "next_slug": slugs[i + 1] if i + 1 < len(slugs) else "this-website",
+            "next_title": cases[slugs[i + 1]]["title"] if i + 1 < len(slugs) else "This website",
+        }
+        content["case"] = {"current": {**data, **neighbours, "slug": slug}}
+        target = DIST / "work" / slug / "index.html"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        write(target, template)
+    content.pop("case", None)
     (DIST / ".nojekyll").write_text("")
     log(f"copied src/ to dist/ ({pages} pages, {sum(1 for p in DIST.rglob('*') if p.is_file())} files)")
 

@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Experience, Gopala Krishna Akkineni</title>
-  <meta name="description" content="Over four years of DevOps, cloud and Linux experience at State Farm, Amistad Technologies, Taal Tech and Ignitarium.">
-  <meta property="og:title" content="Experience, Gopala Krishna Akkineni">
-  <meta property="og:description" content="DevOps, cloud and Linux experience from 2020 to now.">
+  <title>{{experience.meta.title}}</title>
+  <meta name="description" content="{{experience.meta.description}}">
+  <meta property="og:title" content="{{experience.meta.title}}">
+  <meta property="og:description" content="{{experience.meta.share_description}}">
 {{> head}}
 </head>
 <body data-page="experience" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
@@ -14,166 +14,77 @@
 
   <main id="main">
     <header class="page-head wrap">
-      <p class="crumb"><a href="{{root}}">Home</a> <span aria-hidden="true">/</span> Experience</p>
-      <h1>Over four years, four teams, three clouds.</h1>
-      <p class="lede">Each role taught me something different. Here’s what I owned, what I shipped, and what I took away from it.</p>
+      <p class="crumb"><a href="{{root}}">{{site.nav.home}}</a> <span aria-hidden="true">/</span> {{site.nav.experience}}</p>
+      <h1>{{experience.head.title}}</h1>
+      <p class="lede">{{experience.head.lede}}</p>
       <div class="actions">
-        <a class="button" href="{{root}}resume/Gopala-Krishna-Akkineni-Resume.pdf" target="_blank" rel="noopener noreferrer">Open résumé (PDF)</a>
+        <a class="button" href="{{root}}resume/Gopala-Krishna-Akkineni-Resume.pdf" target="_blank" rel="noopener noreferrer">{{experience.head.resume_button}}</a>
       </div>
     </header>
 
     <div class="wrap">
       <ol class="timeline-strip">
-        <li><a href="#state-farm"><span>2025</span>State Farm</a></li>
-        <li><a href="#amistad"><span>2022</span>Amistad</a></li>
-        <li><a href="#taal"><span>2021</span>Taal Tech</a></li>
-        <li><a href="#ignitarium"><span>2020</span>Ignitarium</a></li>
+{{#each jobs}}
+        <li><a href="#{{.id}}"><span>{{.year}}</span>{{.short}}</a></li>
+{{/each}}
       </ol>
     </div>
 
-    <section class="section wrap job" id="state-farm" aria-labelledby="sf-title sf-org">
+{{#each jobs}}
+    <section class="section wrap job" id="{{.id}}" aria-labelledby="{{.id}}-title {{.id}}-org">
       <div class="job-side">
-        <p class="job-when">Mar 2025 to now</p>
-        <p class="job-where">Bloomington, Illinois</p>
+        <p class="job-when">{{.when}}</p>
+        <p class="job-where">{{.where}}</p>
       </div>
       <div class="job-main">
-        <h2 id="sf-title">DevOps Engineer (AWS/GCP)</h2>
-        <p class="job-org" id="sf-org">State Farm</p>
-        <p class="job-summary">I lead the design and implementation of a scalable, secure and automated multi-cloud infrastructure for end-to-end AI/ML work on AWS and GCP: training, deployment and monitoring.</p>
+        <h2 id="{{.id}}-title">{{.title}}</h2>
+        <p class="job-org" id="{{.id}}-org">{{.org}}</p>
+        <p class="job-summary">{{.summary}}</p>
 
-        <h3>What I own</h3>
+        <h3>{{.do_title}}</h3>
         <ul>
-          <li>CI/CD pipelines on GitHub Actions, Jenkins and Buildkite.</li>
-          <li>Infrastructure in Terraform and CloudFormation.</li>
-          <li>EKS and GKE clusters, Helm charts, ArgoCD and FluxCD, and autoscaling for high-traffic applications.</li>
-          <li>GPU and TPU-enabled clusters for deep learning workloads.</li>
-          <li>Secrets management with Vault, AWS Secrets Manager and GCP Secret Manager.</li>
-          <li>Observability with Prometheus, Grafana, CloudWatch and the ELK stack.</li>
-          <li>Incident response and root cause analysis.</li>
+{{#each .do}}
+          <li>{{.}}</li>
+{{/each}}
         </ul>
+{{#if .results}}
 
-        <h3>Results</h3>
+        <h3>{{experience.labels.results}}</h3>
         <ul class="wins">
-          <li><strong>40%</strong> shorter release cycles</li>
-          <li><strong>95%</strong> fewer interruptions during releases</li>
-          <li><strong>30%</strong> faster training and inference</li>
-          <li><strong>25%</strong> less downtime</li>
-          <li><strong>15%</strong> lower cost for GPU workloads</li>
-          <li><strong>99.9%</strong> uptime</li>
+{{#each .results}}
+          <li><strong>{{.0}}</strong> {{.1}}</li>
+{{/each}}
         </ul>
+{{/if}}
+{{#if .also}}
 
-        <h3>Also</h3>
-        <p>I integrated SageMaker, Bedrock and Hugging Face into the DevOps pipelines and worked with data scientists and ML engineers to put LLM-based applications into production.</p>
-        <p class="job-links">Read more: <a href="{{root}}work/faster-releases/">Faster path to production</a>, <a href="{{root}}work/zero-downtime-releases/">Releases nobody notices</a>, <a href="{{root}}work/gpu-platform-for-ml/">GPU platform for ML</a>, <a href="{{root}}work/observability/">Seeing problems first</a>, <a href="{{root}}work/security-in-the-pipeline/">Security in the pipeline</a></p>
+        <h3>{{.also_title}}</h3>
+        <p>{{.also}}</p>
+{{/if}}
+{{#if .took}}
+
+        <h3>{{.took_title}}</h3>
+        <p>{{.took}}</p>
+{{/if}}
+{{#if .read_more}}
+        <p class="job-links">{{.read_more}}</p>
+{{/if}}
       </div>
     </section>
 
-    <section class="section wrap job" id="amistad" aria-labelledby="am-title am-org">
-      <div class="job-side">
-        <p class="job-when">May 2022 to Jun 2023</p>
-        <p class="job-where">Hyderabad, India</p>
-      </div>
-      <div class="job-main">
-        <h2 id="am-title">Cloud/DevOps Engineer</h2>
-        <p class="job-org" id="am-org">Amistad Technologies</p>
-        <p class="job-summary">This was my on-call education. I supported AWS services in production, automated the repetitive work around them, and learned what really matters when something breaks.</p>
-
-        <h3>What I did</h3>
-        <ul>
-          <li>L1/L2 support for EC2, S3 and IAM, plus networking incidents.</li>
-          <li>Configured and troubleshot CI/CD pipelines in Jenkins, GitHub Actions and Azure DevOps.</li>
-          <li>Automated backups, log archiving and IAM provisioning with Bash and Python scripts running on Lambda.</li>
-          <li>Wrote reusable Terraform modules for S3 buckets, IAM roles and EC2 instances.</li>
-          <li>Set up CloudWatch alarms, dashboards and log filters.</li>
-          <li>Joined weekly incident reviews and root cause analyses.</li>
-          <li>Supported disaster recovery exercises: backup restores and DNS failover tests.</li>
-          <li>Rotated IAM credentials, enforced least privilege and managed secrets with the DevOps and InfoSec teams.</li>
-        </ul>
-
-        <h3>Results</h3>
-        <ul class="wins">
-          <li><strong>95%</strong> SLA adherence</li>
-          <li><strong>50%</strong> less manual provisioning</li>
-          <li><strong>20%</strong> fewer failed deploys</li>
-          <li><strong>10%</strong> lower AWS cost</li>
-        </ul>
-
-        <h3>What I took away</h3>
-        <p>A clear alert, a tested backup and a rollback you trust are worth more than any clever architecture at 2 a.m.</p>
-      </div>
-    </section>
-
-    <section class="section wrap job" id="taal" aria-labelledby="taal-title taal-org">
-      <div class="job-side">
-        <p class="job-when">Mar 2021 to Feb 2022</p>
-        <p class="job-where">Bangalore, India</p>
-      </div>
-      <div class="job-main">
-        <h2 id="taal-title">Cloud/DevOps Engineer</h2>
-        <p class="job-org" id="taal-org">Taal Tech</p>
-        <p class="job-summary">My first cloud role. I worked across AWS, Azure and GCP and learned to treat infrastructure as code.</p>
-
-        <h3>What I did</h3>
-        <ul>
-          <li>Supported deployment and maintenance of multi-cloud environments, provisioning EC2 instances, virtual machines and storage buckets.</li>
-          <li>Configured IAM roles, security groups and key rotation to keep access secure and compliant.</li>
-          <li>Wrote Shell and Python scripts for health checks, log collection and cleanup.</li>
-          <li>Contributed Terraform and CloudFormation templates for consistent, version-controlled environments.</li>
-          <li>Helped set up CI/CD in Jenkins and GitHub Actions to automate build, test and deploy.</li>
-          <li>Monitored performance with CloudWatch and Azure Monitor and escalated issues early.</li>
-          <li>Troubleshot Kubernetes pod restarts, configuration errors and resource limits.</li>
-          <li>Wrote runbooks and onboarding material during Agile sprints.</li>
-        </ul>
-
-        <h3>What I took away</h3>
-        <p>Once infrastructure lives in code, it can be reviewed, repeated and rolled back. I haven’t wanted to build it any other way since.</p>
-      </div>
-    </section>
-
-    <section class="section wrap job" id="ignitarium" aria-labelledby="ig-title ig-org">
-      <div class="job-side">
-        <p class="job-when">Jul 2020 to Feb 2021</p>
-        <p class="job-where">Kochi, India</p>
-      </div>
-      <div class="job-main">
-        <h2 id="ig-title">Linux Administrator</h2>
-        <p class="job-org" id="ig-org">Ignitarium</p>
-        <p class="job-summary">Where it started. I kept Linux servers healthy for development teams and began scripting my way out of repetitive work.</p>
-
-        <h3>What I did</h3>
-        <ul>
-          <li>Set up and troubleshot Linux servers for development teams.</li>
-          <li>Monitored server health and escalated critical failures.</li>
-          <li>Wrote shell scripts for user provisioning, file management and process monitoring.</li>
-          <li>Managed user permissions, cron jobs and log rotation.</li>
-          <li>Handled patching, kernel updates and security hardening.</li>
-          <li>Set up log monitoring and scheduled backups.</li>
-          <li>Worked with developers on performance bottlenecks and took part in Agile sprints.</li>
-        </ul>
-
-        <h3>What I took away</h3>
-        <p>The fundamentals: permissions, processes, logs and patches. Everything in the cloud still runs on them.</p>
-      </div>
-    </section>
-
+{{/each}}
     <section class="section wrap" aria-labelledby="edu-title">
       <div class="section-head">
-        <h2 id="edu-title">Education</h2>
-        <p>More on the <a href="{{root}}about/">about page</a>.</p>
+        <h2 id="edu-title">{{experience.education.title}}</h2>
+        <p>{{experience.education.text}}</p>
       </div>
       <ol class="edu">
+{{#each experience.education.items}}
         <li>
-          <h3>Master’s in Management and Information Systems</h3>
-          <p>University of Illinois Springfield, Illinois</p>
+          <h3>{{.0}}</h3>
+          <p>{{.1}}</p>
         </li>
-        <li>
-          <h3>Bachelor of Technology, Electronics and Communication Engineering</h3>
-          <p>Aditya University, Surampalem, Andhra Pradesh</p>
-        </li>
-        <li>
-          <h3>Diploma in Electronics and Communication Engineering</h3>
-          <p>AANM &amp; VVRSR Polytechnic, Gudlavalleru, Andhra Pradesh</p>
-        </li>
+{{/each}}
       </ol>
     </section>
 

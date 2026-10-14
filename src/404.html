@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Page not found, Gopala Krishna Akkineni</title>
+  <title>{{notfound.page.title}}</title>
   <meta name="robots" content="noindex">
   <link rel="icon" href="{{base_path}}assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="{{base_path}}assets/css/site.css?v={{asset_version}}">
@@ -11,12 +11,12 @@
 </head>
 <body data-page="404" data-root="{{base_path}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
   <main id="main" class="wrap not-found">
-    <p class="mono muted">HTTP 404</p>
-    <h1>This page didn’t make it to production.</h1>
-    <p class="lede">The link might be old, or the page was rolled back. Everything else is still up.</p>
+    <p class="mono muted">{{notfound.page.code}}</p>
+    <h1>{{notfound.page.headline}}</h1>
+    <p class="lede">{{notfound.page.text}}</p>
     <div class="actions">
-      <a class="button primary" href="{{base_path}}">Go to the homepage</a>
-      <a class="button" href="{{base_path}}work/">See my work</a>
+      <a class="button primary" href="{{base_path}}">{{notfound.page.home}}</a>
+      <a class="button" href="{{base_path}}work/">{{notfound.page.work}}</a>
     </div>
   </main>
 </body>

@@ -79,3 +79,21 @@ Three moods drive the colors: a deep violet-black "shadow" base, a warm "sage" o
 ## Cost
 
 $0. GitHub Pages, GitHub Actions on a public repo and GHCR are all free.
+
+## Editing the words
+
+All the text lives in `content/`, one file per page, so you never have to touch HTML to change wording.
+
+| File | What it controls |
+| --- | --- |
+| `site.txt` | Menu, footer, the email box at the bottom, your email and LinkedIn |
+| `home.txt` | Home page, including the hero at the top |
+| `about.txt`, `story.txt` | About page: facts, beliefs, education, and the story |
+| `jobs.txt`, `experience.txt` | Experience page, one section per job |
+| `work.txt`, `cases.txt` | Work page and every case study (one `[section]` = one page) |
+| `playground.txt` | Playground page text |
+| `contact.txt`, `notfound.txt` | Contact and 404 pages |
+
+The format is plain: `[section]` headers, `key: text` lines, and `- item` lines for lists. A ` | ` inside a list item splits it into parts. In any text you can use `**bold**`, `*emphasis*` and `[link](https://...)`. Use `[text](@/about/)` to link to another page on the site. Edit on GitHub, commit, and the pipeline rebuilds and deploys it. A typo in the format fails the build with the file and line, so a broken edit never goes live.
+
+Still in the HTML: the tool buttons on the About page, the body of the "This website" case study, and the messages the playground prints (`src/assets/js/site.js`).

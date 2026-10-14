@@ -1,0 +1,22 @@
+# The Experience page. The jobs themselves are in jobs.txt.
+
+[meta]
+title: Experience, Gopala Krishna Akkineni
+description: Over four years of DevOps, cloud and Linux experience at State Farm, Amistad Technologies, Taal Tech and Ignitarium.
+share_description: DevOps, cloud and Linux experience from 2020 to now.
+
+[head]
+title: Over four years, four teams, three clouds.
+lede: Each role taught me something different. Here’s what I owned, what I shipped, and what I took away from it.
+resume_button: Open résumé (PDF)
+
+[labels]
+results: Results
+
+[education]
+title: Education
+text: More on the [about page](@/about/).
+items:
+  - Master’s in Management and Information Systems | University of Illinois Springfield, Illinois
+  - Bachelor of Technology, Electronics and Communication Engineering | Aditya University, Surampalem, Andhra Pradesh
+  - Diploma in Electronics and Communication Engineering | AANM & VVRSR Polytechnic, Gudlavalleru, Andhra Pradesh

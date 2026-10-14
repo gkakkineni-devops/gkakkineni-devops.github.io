@@ -1,0 +1,37 @@
+# Words used on every page: the menu, the footer and the email box at the bottom.
+# Edit, save, commit, and the site rebuilds itself.
+# Formatting you can use in any text: **bold**, *emphasis*, [link text](https://example.com)
+# Use [text](@/about/) to link to another page on this site.
+
+[site]
+name: Gopala Krishna Akkineni
+first_name: Gopala
+role: DevOps engineer
+city: Bloomington, IL
+email: gopalakrishnaakkineni.dev@gmail.com
+email_subject: Hello%20Gopala
+linkedin: https://www.linkedin.com/in/gopala-krishna-devops
+linkedin_handle: gopala-krishna-devops
+availability: Open to DevOps, SRE and platform engineering roles
+
+[nav]
+home: Home
+about: About
+work: Work
+experience: Experience
+playground: Playground
+contact: Contact
+resume: Résumé
+menu: Menu
+skip: Skip to content
+theme: Switch color theme
+
+[cta]
+title: Hiring for DevOps or platform work?
+text: I’m open to DevOps, SRE and platform engineering roles. Email is the fastest way to reach me.
+button: Write an email
+other: Other ways to reach me
+
+[footer]
+tagline: DevOps engineer, Bloomington IL
+note: Built and deployed by me with plain HTML, CSS and JavaScript. Build

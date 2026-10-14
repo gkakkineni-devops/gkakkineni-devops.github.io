@@ -1,0 +1,29 @@
+# The Contact page. Your email address and LinkedIn link are in site.txt.
+
+[meta]
+title: Contact, Gopala Krishna Akkineni
+description: Email me about DevOps, SRE or platform engineering roles. I usually reply within a day.
+
+[head]
+title: Let’s talk.
+lede: I’m looking for DevOps, SRE and platform engineering roles. If you’re hiring, or just want to talk about pipelines and Kubernetes, email is the fastest way to reach me. I usually reply within a day.
+
+[email]
+title: Email
+text: Pick where you want to write from. A new tab opens with my address already filled in.
+gmail: Write in Gmail
+outlook: Write in Outlook
+mailapp: Use my mail app
+copy: Copy address
+
+[elsewhere]
+title: Elsewhere
+resume_label: Résumé
+resume_note: PDF, opens in a new tab
+
+[good]
+title: Good to know
+items:
+  - Based in | Bloomington, Illinois
+  - Roles | DevOps, SRE, platform engineering
+  - Strongest in | CI/CD, Kubernetes, Terraform, AWS and GCP, ML infrastructure

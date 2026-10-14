@@ -1,0 +1,36 @@
+# The playground page. The messages that appear in the deploy log are written in assets/js/site.js.
+
+[meta]
+title: Playground, Gopala Krishna Akkineni
+description: A small simulation of a release pipeline. Deploy a clean change, a vulnerable dependency or a bad canary and watch what happens.
+
+[head]
+title: Ship a change
+lede: This is a small simulation of how I like releases to work. Pick what’s in the change, press deploy, and watch the pipeline decide whether it reaches your users.
+
+[sim]
+legend: What’s in this change?
+clean: A clean release
+vuln: A vulnerable dependency
+canary: A bug that only shows up under real traffic
+button: Deploy
+idle: Waiting for a deploy.
+metric: Error rate on the new version
+threshold: Rollback triggers above 2%
+log_label: Deploy log
+stages:
+  - Commit
+  - Build
+  - Tests
+  - Security scan
+  - Canary 10%
+  - Canary 50%
+  - Everyone
+
+[after]
+title: What each option shows
+text:
+  - A clean change moves through each stage and reaches everyone. Nothing dramatic, which is the goal.
+  - A vulnerable dependency never leaves the security scan. The build fails, so the problem stays in a pull request instead of production.
+  - A bug that only appears under real traffic gets through the tests, but a canary sends it to a small slice of users first. When the error rate stays above the threshold three checks in a row, the release rolls back by itself.
+more: The real version of this is written up in [Releases nobody notices](@/work/zero-downtime-releases/).
