@@ -59,9 +59,17 @@ Dockerfile           unprivileged nginx image
 .github/workflows/   the pipeline
 ```
 
+## What's on the page
+
+- **Live deploy panel**: commit, pipeline run, checks and uptime, all read from files the pipeline writes.
+- **Deploy playground**: pick a clean release, a vulnerable dependency or a bug that only shows under real traffic, then watch the pipeline ship it, block it at the scan, or roll the canary back on its own.
+- **Case studies**: problem, what I did, what changed.
+- **Tool finder**: tap a tool to see where I've used it.
+- **Projects**: pulled from the GitHub API, so new repos show up without editing the page.
+
 ## Design notes
 
-Spacing and the main column split follow the golden ratio (61.8 / 38.2). Type is IBM Plex Sans, with Plex Mono only where the content is actual pipeline output. Colors are a muted navy palette with a dark mode that follows the system setting.
+Three moods drive the colors: a deep violet-black "shadow" base, a warm "sage" orange for anything live or moving, and a soft "cloud" white for text and the light theme. Spacing and the main column split follow the golden ratio (61.8 / 38.2). Type is IBM Plex Sans, with Plex Mono only where the content is actual pipeline output. Dark and light themes follow the system setting, with a toggle.
 
 ## Cost
 
