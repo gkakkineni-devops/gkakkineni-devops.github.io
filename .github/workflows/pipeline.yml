@@ -25,14 +25,14 @@ jobs:
     name: Site checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
 
       - name: Lint build script
-        run: pipx run ruff check scripts/
+        run: pipx run ruff check --output-format=github scripts/
 
       - name: Build site (offline)
         run: python3 scripts/build.py --offline
@@ -53,7 +53,7 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Lint Dockerfile
         run: docker run --rm -i "$HADOLINT_IMAGE" hadolint - < Dockerfile
@@ -71,8 +71,14 @@ jobs:
 
       - name: Scan image
         run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock "$TRIVY_IMAGE" image \
-            --severity CRITICAL --ignore-unfixed --exit-code 1 portfolio:${{ github.sha }}
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD:/out" "$TRIVY_IMAGE" image \
+            --severity CRITICAL --ignore-unfixed --format json --output /out/trivy-image.json \
+            portfolio:${{ github.sha }}
+          # Surface each finding as an annotation on the run, then fail if there are any.
+          count=$(jq '[.Results[]?.Vulnerabilities[]?] | length' trivy-image.json)
+          jq -r '.Results[]?.Vulnerabilities[]? | "::error title=\(.VulnerabilityID)::\(.PkgName) \(.InstalledVersion) -> \(.FixedVersion) (\(.Severity))"' trivy-image.json
+          echo "Critical vulnerabilities with a fix available: $count"
+          test "$count" -eq 0
 
       - name: Smoke test
         run: |
@@ -114,7 +120,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - id: pages
         uses: actions/configure-pages@v5
@@ -128,7 +134,7 @@ jobs:
           export RUN_STARTED_AT="$(gh run view "$GITHUB_RUN_ID" --json createdAt -q .createdAt || true)"
           python3 scripts/build.py --checks-passed
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
 
