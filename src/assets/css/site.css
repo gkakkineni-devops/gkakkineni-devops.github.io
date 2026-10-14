@@ -755,3 +755,17 @@ h1 {
 .prose.narrow { max-width: 42rem; }
 .prose.narrow p + p { margin-top: var(--s-3); }
 .page-head + .playground { padding-top: 0; }
+
+/* ---------- Photo ---------- */
+
+.eyebrow { padding-left: 0.3rem; }
+.eyebrow-photo { width: 2.5rem; height: 2.5rem; border-radius: 50%; object-fit: cover; object-position: 50% 25%; border: 1px solid var(--rule); flex: none; }
+.portrait {
+  display: block; width: 100%; max-width: 15rem; aspect-ratio: 1; object-fit: cover; object-position: 50% 25%;
+  border-radius: 12px; border: 1px solid var(--rule); margin-bottom: var(--s-4);
+}
+
+.eyebrow { gap: var(--s-3); padding: 0.4rem 1.1rem 0.4rem 0.4rem; font-size: 0.9375rem; }
+.eyebrow-photo { width: 4.25rem; height: 4.25rem; border: 2px solid var(--violet); box-shadow: 0 0 0 4px var(--violet-soft); }
+.portrait { height: auto; }
+@media (max-width: 560px) { .eyebrow-photo { width: 3.5rem; height: 3.5rem; } }

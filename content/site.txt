@@ -12,6 +12,7 @@ email: gopalakrishnaakkineni.dev@gmail.com
 email_subject: Hello%20Gopala
 linkedin: https://www.linkedin.com/in/gopala-krishna-devops
 linkedin_handle: gopala-krishna-devops
+photo_alt: Gopala smiling in a navy blazer, with the Chicago River behind him
 availability: Open to DevOps, SRE and platform engineering roles
 
 [nav]
