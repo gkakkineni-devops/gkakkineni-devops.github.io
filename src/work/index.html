@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Work, Gopala Krishna Akkineni</title>
+  <meta name="description" content="Case studies in CI/CD, GitOps, GPU infrastructure for ML, observability and pipeline security.">
+  <meta property="og:title" content="Work by Gopala Krishna Akkineni">
+  <meta property="og:description" content="Case studies in CI/CD, GitOps, GPU infrastructure, observability and security.">
+{{> head}}
+</head>
+<body data-page="work" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
+{{> header}}
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="crumb"><a href="{{root}}">Home</a> <span aria-hidden="true">/</span> Work</p>
+      <h1>Work, written up properly.</h1>
+      <p class="lede">Each case study covers the situation, what I built, the decisions behind it and what changed. Client details are kept general, but the approach and the results are real.</p>
+    </header>
+
+    <section class="section wrap" aria-labelledby="client-title">
+      <div class="section-head">
+        <h2 id="client-title">State Farm ML platform</h2>
+        <p>2025 to now. Multi-cloud infrastructure for training, deploying and running machine learning models on AWS and GCP.</p>
+      </div>
+      <div class="case-grid">
+        <a class="case-card" href="faster-releases/">
+          <p class="cc-result"><strong>40%</strong> shorter release cycles</p>
+          <h3>Faster path to production</h3>
+          <p>One delivery path for ML services across GitHub Actions, Jenkins and Buildkite, with infrastructure from code.</p>
+          <p class="cc-stack">GitHub Actions, Jenkins, Buildkite, Terraform, CloudFormation</p>
+        </a>
+        <a class="case-card" href="zero-downtime-releases/">
+          <p class="cc-result"><strong>95%</strong> fewer release interruptions</p>
+          <h3>Releases nobody notices</h3>
+          <p>Blue-green and canary rollouts on EKS and GKE, driven by GitOps, with rollbacks in minutes.</p>
+          <p class="cc-stack">Kubernetes, Helm, ArgoCD, FluxCD</p>
+        </a>
+        <a class="case-card" href="gpu-platform-for-ml/">
+          <p class="cc-result"><strong>30%</strong> faster training, <strong>15%</strong> lower cost</p>
+          <h3>GPU platform for ML</h3>
+          <p>Autoscaling GPU and TPU clusters, plus SageMaker, Bedrock and Hugging Face wired into deploys.</p>
+          <p class="cc-stack">GPU and TPU clusters, Terraform, SageMaker, Bedrock, Hugging Face</p>
+        </a>
+        <a class="case-card" href="observability/">
+          <p class="cc-result"><strong>25%</strong> less downtime</p>
+          <h3>Seeing problems first</h3>
+          <p>Metrics, logs and dashboards in one place, alerts that mean something, and honest root cause reviews.</p>
+          <p class="cc-stack">Prometheus, Grafana, CloudWatch, ELK</p>
+        </a>
+        <a class="case-card" href="security-in-the-pipeline/">
+          <p class="cc-result"><strong>35%</strong> fewer vulnerabilities</p>
+          <h3>Security in the pipeline</h3>
+          <p>Scans that fail builds instead of filling reports, and secrets that never touch a repo.</p>
+          <p class="cc-stack">Snyk, Trivy, SonarQube, Vault, Secrets Manager</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="section wrap" aria-labelledby="own-title">
+      <div class="section-head">
+        <h2 id="own-title">My own projects</h2>
+        <p>Built in public, so you can read every line and every pipeline run.</p>
+      </div>
+      <div class="case-grid">
+        <a class="case-card" href="this-website/">
+          <p class="cc-result"><strong>$0</strong> a month to run</p>
+          <h3>This website</h3>
+          <p>A hand-written site that ships like production software: checks, scans, a container, scheduled health checks and a live uptime panel.</p>
+          <p class="cc-stack">GitHub Actions, Docker, nginx, Trivy, Python, GitHub Pages</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="section wrap" aria-labelledby="earlier-title">
+      <div class="section-head">
+        <h2 id="earlier-title">Earlier work</h2>
+        <p>Smaller wins from before State Farm. The full picture is on the <a href="{{root}}experience/">experience page</a>.</p>
+      </div>
+      <ul class="earlier">
+        <li><strong>Half the manual provisioning.</strong> Reusable Terraform modules for S3, IAM and EC2 at Amistad Technologies.</li>
+        <li><strong>10% lower AWS bill.</strong> Found idle resources and scheduled automatic shutdowns.</li>
+        <li><strong>20% fewer failed deploys.</strong> Checked infrastructure readiness during release windows.</li>
+        <li><strong>95% SLA adherence.</strong> L1/L2 support for EC2, S3, IAM and networking incidents.</li>
+        <li><strong>Less babysitting.</strong> Python and Bash scripts with Lambda for backups, log archiving and IAM provisioning.</li>
+      </ul>
+    </section>
+
+{{> cta}}
+  </main>
+
+{{> footer}}
+</body>
+</html>

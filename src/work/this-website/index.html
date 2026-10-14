@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>This website, Gopala Krishna Akkineni</title>
+  <meta name="description" content="How this portfolio is built, tested, scanned, containerized, deployed and monitored for $0 a month.">
+  <meta property="og:title" content="How this website is built">
+  <meta property="og:description" content="A hand-written site that ships like production software, for $0 a month.">
+{{> head}}
+</head>
+<body data-page="work" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
+{{> header}}
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="crumb"><a href="{{root}}">Home</a> <span aria-hidden="true">/</span> <a href="{{root}}work/">Work</a> <span aria-hidden="true">/</span> This website</p>
+      <h1>This website</h1>
+      <p class="lede">A portfolio is a small thing to deploy, which makes it a good place to show how I think about deploying anything. No framework, no server, no bill, and every change goes through the same kind of pipeline I build at work.</p>
+      <dl class="case-meta">
+        <div><dt>Type</dt><dd>Personal project</dd></div>
+        <div><dt>Source</dt><dd><a href="https://github.com/{{github_user}}/{{github_repo}}" target="_blank" rel="noopener noreferrer">{{github_user}}/{{github_repo}}</a></dd></div>
+        <div><dt>Cost</dt><dd>$0 a month</dd></div>
+      </dl>
+    </header>
+
+    <section class="wrap results-band" aria-label="At a glance">
+      <ul class="results">
+        <li><span class="r-num">7</span><span class="r-label">automated checks before every deploy</span></li>
+        <li><span class="r-num">3h</span><span class="r-label">between scheduled health checks</span></li>
+        <li><span class="r-num">0</span><span class="r-label">runtime dependencies</span></li>
+      </ul>
+    </section>
+
+    <div class="wrap case-body">
+      <nav class="case-toc" aria-label="On this page">
+        <p>On this page</p>
+        <a href="#why">Why build it this way</a>
+        <a href="#pipeline">The pipeline</a>
+        <a href="#uptime">Uptime without a database</a>
+        <a href="#container">The container</a>
+        <a href="#decisions">Decisions</a>
+      </nav>
+
+      <article class="case-article">
+        <h2 id="why">Why build it this way</h2>
+        <p>Most portfolios tell you what someone can do. I wanted this one to show it. The panel at the top of the homepage isn’t decoration: the commit, the pipeline run, the checks and the uptime all come from files the pipeline writes during the deploy you’re looking at.</p>
+        <p>I also gave myself one hard rule: it has to cost nothing. Everything runs on GitHub Pages, GitHub Actions and GitHub Container Registry, which are free for a public repo.</p>
+
+        <h2 id="pipeline">The pipeline</h2>
+        <p>One GitHub Actions workflow runs on every push, on every pull request, every three hours on a schedule, and on demand. Two jobs run in parallel, and the deploy only starts if both pass.</p>
+        <ol class="flow">
+          <li>git push</li>
+          <li>Site checks</li>
+          <li>Container checks</li>
+          <li>Build with live data</li>
+          <li>Deploy to Pages</li>
+        </ol>
+        <div class="decisions">
+          <article>
+            <h4>Site checks</h4>
+            <p><code>ruff</code> lints the build script, <code>html-validate</code> checks every generated page, and <code>lychee</code> makes sure no internal link or anchor is broken.</p>
+          </article>
+          <article>
+            <h4>Container checks</h4>
+            <p><code>hadolint</code> lints the Dockerfile, Trivy scans the repo for secrets and misconfigurations and the built image for critical vulnerabilities, then a smoke test starts the container and checks the page, the JSON data and the security headers.</p>
+          </article>
+          <article>
+            <h4>Deploy</h4>
+            <p>The site is rebuilt with live data: commit and run details, a snapshot of my GitHub repos, and the latest health check. Then it goes to GitHub Pages. On <code>main</code>, the container image is also pushed to GitHub Container Registry.</p>
+          </article>
+        </div>
+
+        <h2 id="uptime">Uptime without a database</h2>
+        <p>An uptime chart needs history, and history usually means a database or a paid monitoring service. Instead, the history lives on the site itself.</p>
+        <p>Every scheduled run downloads the current <code>status.json</code> from the live site, probes the homepage, appends the result, drops anything older than 30 days and deploys again. Nothing gets committed back to the repo, so the Git history stays clean.</p>
+        <p>One detail I like: a 404 before the site has ever answered is treated as “not launched yet” rather than downtime. Launch day shouldn’t count as an outage.</p>
+
+        <h2 id="container">The container</h2>
+        <p>GitHub Pages is where the site lives, but the same build also ships as a container, because that’s how most real services run. The image is based on an unprivileged nginx that runs as a non-root user on port 8080. The nginx config adds a Content Security Policy and other security headers, caches versioned assets for a year, never caches the live data files, and exposes <code>/healthz</code> for health checks.</p>
+
+        <h2 id="decisions">Decisions I made and why</h2>
+        <div class="decisions">
+          <article>
+            <h4>No framework</h4>
+            <p>A portfolio doesn’t need React. Plain HTML, CSS and JavaScript load fast, have no dependencies to patch, and are easy for anyone to read.</p>
+          </article>
+          <article>
+            <h4>Findings show up on the run</h4>
+            <p>Lint and scan results are posted as annotations on the GitHub run, so a failure tells you the exact file, line or package to fix without digging through logs.</p>
+          </article>
+          <article>
+            <h4>Keep dependencies fresh automatically</h4>
+            <p>Dependabot watches the GitHub Actions and the Docker base image, so updates arrive as pull requests that go through the same checks.</p>
+          </article>
+          <article>
+            <h4>Tight Content Security Policy</h4>
+            <p>Scripts only load from the site itself, and the only outside connection the page makes is to the GitHub API for the project list.</p>
+          </article>
+        </div>
+
+        <p class="stack-line"><strong>Stack</strong> HTML, CSS, JavaScript, Python, GitHub Actions, Docker, nginx, Trivy, hadolint, html-validate, lychee, GitHub Pages, GitHub Container Registry</p>
+        <p class="aside-link"><a href="https://github.com/{{github_user}}/{{github_repo}}/actions" target="_blank" rel="noopener noreferrer">See every pipeline run on GitHub</a></p>
+      </article>
+    </div>
+
+    <nav class="wrap pager" aria-label="More case studies">
+      <a class="pager-prev" href="../security-in-the-pipeline/"><span>Previous</span>Security in the pipeline</a>
+      <a class="pager-next" href="../"><span>Back to</span>All work</a>
+    </nav>
+
+{{> cta}}
+  </main>
+
+{{> footer}}
+</body>
+</html>

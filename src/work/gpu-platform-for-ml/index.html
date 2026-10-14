@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPU platform for ML, Gopala Krishna Akkineni</title>
+  <meta name="description" content="Giving data scientists the GPU capacity they need, without paying for GPUs nobody is using.">
+  <meta property="og:title" content="GPU platform for ML">
+  <meta property="og:description" content="Giving data scientists the GPU capacity they need, without paying for GPUs nobody is using.">
+{{> head}}
+</head>
+<body data-page="work" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
+{{> header}}
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="crumb"><a href="{{root}}">Home</a> <span aria-hidden="true">/</span> <a href="{{root}}work/">Work</a> <span aria-hidden="true">/</span> GPU platform for ML</p>
+      <h1>GPU platform for ML</h1>
+      <p class="lede">Giving data scientists the GPU capacity they need, without paying for GPUs nobody is using.</p>
+      <dl class="case-meta">
+        <div><dt>Where</dt><dd>State Farm</dd></div>
+        <div><dt>When</dt><dd>2025 to now</dd></div>
+        <div><dt>My role</dt><dd>DevOps Engineer (AWS/GCP)</dd></div>
+      </dl>
+    </header>
+
+    <section class="wrap results-band" aria-label="Results">
+      <ul class="results">
+          <li><span class="r-num">30%</span><span class="r-label">faster training and inference</span></li>
+          <li><span class="r-num">15%</span><span class="r-label">lower cost for GPU workloads</span></li>
+      </ul>
+    </section>
+
+    <div class="wrap case-body">
+      <nav class="case-toc" aria-label="On this page">
+        <p>On this page</p>
+        <a href="#situation">The situation</a>
+        <a href="#built">What I built</a>
+        <a href="#how">How it flows</a>
+        <a href="#decisions">Decisions</a>
+        <a href="#changed">What changed</a>
+      </nav>
+
+      <article class="case-article">
+        <h2 id="situation">The situation</h2>
+        <p>Deep learning workloads need GPUs, and GPUs are both expensive to leave idle and painful to wait for. Data scientists want capacity on demand; the budget wants nothing running that isn’t doing work.</p>
+        <p>On top of training, the teams were moving toward LLM-based applications, which bring their own deployment and serving needs.</p>
+
+        <h2 id="built">What I built</h2>
+        <ul class="built">
+          <li>Orchestrated GPU and TPU-enabled clusters for deep learning workloads across AWS and GCP.</li>
+          <li>Designed Terraform-based pipelines to provision GPU clusters for training, so capacity is created the same way every time.</li>
+          <li>Automated resource monitoring and scaling for GPU workloads, so clusters grow for a job and shrink after it.</li>
+          <li>Integrated SageMaker, Bedrock and Hugging Face into the DevOps pipelines and worked with data scientists and ML engineers to deploy LLM-based apps to production.</li>
+        </ul>
+
+        <h2 id="how">How it flows</h2>
+        <ol class="flow">
+          <li>Training job queued</li>
+          <li>Scale up GPUs</li>
+          <li>Train and track</li>
+          <li>Register model</li>
+          <li>Deploy and serve</li>
+          <li>Scale down</li>
+        </ol>
+
+        <h2 id="decisions">Decisions I made and why</h2>
+        <div class="decisions">
+        <article>
+          <h4>Scale on the work, not the calendar</h4>
+          <p>Scaling GPU capacity around the actual jobs, instead of keeping a fixed fleet warm, is where most of the savings came from.</p>
+        </article>
+        <article>
+          <h4>Provision GPU clusters from Terraform</h4>
+          <p>GPU node pools have a lot of details that are easy to get wrong by hand: drivers, instance types, quotas. Defining them in code made them repeatable and reviewable.</p>
+        </article>
+        <article>
+          <h4>Use managed ML services where they fit</h4>
+          <p>SageMaker, Bedrock and Hugging Face cover a lot of ground. Plugging them into the existing pipelines was faster and safer than rebuilding what they already do.</p>
+        </article>
+        </div>
+
+        <h2 id="changed">What changed</h2>
+        <p class="changed">Training and inference ran up to 30% faster, and automated scaling cut costs for GPU workloads by 15% while keeping performance where it needed to be.</p>
+
+        <h3>What I’d do next</h3>
+        <p>Show GPU spend per team and per model, so the people choosing instance sizes can see what their choices cost.</p>
+
+        <p class="stack-line"><strong>Stack</strong> GPU and TPU clusters, Kubernetes (EKS, GKE), Terraform, SageMaker, Bedrock, Hugging Face</p>
+        <p class="confidential">Details about State Farm’s systems are kept general on purpose. The approach, the tools and the results are from my work there.</p>
+      </article>
+    </div>
+
+    <nav class="wrap pager" aria-label="More case studies">
+      <a class="pager-prev" href="../zero-downtime-releases/"><span>Previous</span>Releases nobody notices</a>
+      <a class="pager-next" href="../observability/"><span>Next</span>Seeing problems first</a>
+    </nav>
+
+{{> cta}}
+  </main>
+
+{{> footer}}
+</body>
+</html>

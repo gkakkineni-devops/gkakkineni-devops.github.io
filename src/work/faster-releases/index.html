@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Faster path to production, Gopala Krishna Akkineni</title>
+  <meta name="description" content="Getting ML services from merge to production faster, without making releases riskier.">
+  <meta property="og:title" content="Faster path to production">
+  <meta property="og:description" content="Getting ML services from merge to production faster, without making releases riskier.">
+{{> head}}
+</head>
+<body data-page="work" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
+{{> header}}
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="crumb"><a href="{{root}}">Home</a> <span aria-hidden="true">/</span> <a href="{{root}}work/">Work</a> <span aria-hidden="true">/</span> Faster path to production</p>
+      <h1>Faster path to production</h1>
+      <p class="lede">Getting ML services from merge to production faster, without making releases riskier.</p>
+      <dl class="case-meta">
+        <div><dt>Where</dt><dd>State Farm</dd></div>
+        <div><dt>When</dt><dd>2025 to now</dd></div>
+        <div><dt>My role</dt><dd>DevOps Engineer (AWS/GCP)</dd></div>
+      </dl>
+    </header>
+
+    <section class="wrap results-band" aria-label="Results">
+      <ul class="results">
+          <li><span class="r-num">40%</span><span class="r-label">shorter release cycles</span></li>
+          <li><span class="r-num">99.9%</span><span class="r-label">uptime on the infrastructure underneath</span></li>
+      </ul>
+    </section>
+
+    <div class="wrap case-body">
+      <nav class="case-toc" aria-label="On this page">
+        <p>On this page</p>
+        <a href="#situation">The situation</a>
+        <a href="#built">What I built</a>
+        <a href="#how">How it flows</a>
+        <a href="#decisions">Decisions</a>
+        <a href="#changed">What changed</a>
+      </nav>
+
+      <article class="case-article">
+        <h2 id="situation">The situation</h2>
+        <p>The teams I support build and serve machine learning models across AWS and GCP. Code moved through pipelines on more than one CI system, and environments didn’t always come from the same source of truth.</p>
+        <p>The result was predictable: changes waited longer than they needed to, and every release carried a bit of extra uncertainty because the path to production wasn’t the same every time.</p>
+
+        <h2 id="built">What I built</h2>
+        <ul class="built">
+          <li>Developed and tuned CI/CD pipelines on GitHub Actions, Jenkins and Buildkite, so each service has a clear, repeatable path from commit to production.</li>
+          <li>Provisioned and secured the infrastructure behind those pipelines with Terraform and CloudFormation, so environments are created from code and reviewed like code.</li>
+          <li>Brought ML lifecycle tools, SageMaker, Bedrock and Hugging Face, into the same pipelines so model deployments follow the same rules as application code.</li>
+        </ul>
+
+        <h2 id="how">How it flows</h2>
+        <ol class="flow">
+          <li>Pull request</li>
+          <li>Build and test</li>
+          <li>Scan</li>
+          <li>Package</li>
+          <li>Deploy with GitOps</li>
+          <li>Monitor</li>
+        </ol>
+
+        <h2 id="decisions">Decisions I made and why</h2>
+        <div class="decisions">
+        <article>
+          <h4>Meet teams where they are</h4>
+          <p>Moving every team to one CI tool overnight would have stalled delivery. I focused on making each path consistent and fast first, using the tool the team already ran.</p>
+        </article>
+        <article>
+          <h4>Infrastructure is reviewed like code</h4>
+          <p>Terraform and CloudFormation changes go through pull requests. That turns environment changes into something people can read, discuss and roll back.</p>
+        </article>
+        <article>
+          <h4>Models ship like software</h4>
+          <p>A model deploy gets the same build, scan and rollout steps as a service. Fewer special cases means fewer surprises.</p>
+        </article>
+        </div>
+
+        <h2 id="changed">What changed</h2>
+        <p class="changed">Release cycles got 40% shorter, and the infrastructure provisioned this way held 99.9% uptime.</p>
+
+        <h3>What I’d do next</h3>
+        <p>Measure lead time and change failure rate per team as standing metrics, so improvements show up on a dashboard instead of in anecdotes.</p>
+
+        <p class="stack-line"><strong>Stack</strong> GitHub Actions, Jenkins, Buildkite, Terraform, CloudFormation, SageMaker, Bedrock, Hugging Face</p>
+        <p class="confidential">Details about State Farm’s systems are kept general on purpose. The approach, the tools and the results are from my work there.</p>
+      </article>
+    </div>
+
+    <nav class="wrap pager" aria-label="More case studies">
+      <a class="pager-next" href="../zero-downtime-releases/"><span>Next</span>Releases nobody notices</a>
+    </nav>
+
+{{> cta}}
+  </main>
+
+{{> footer}}
+</body>
+</html>

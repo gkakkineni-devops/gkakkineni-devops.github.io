@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seeing problems first, Gopala Krishna Akkineni</title>
+  <meta name="description" content="Finding out about issues from a dashboard, not from a support ticket.">
+  <meta property="og:title" content="Seeing problems first">
+  <meta property="og:description" content="Finding out about issues from a dashboard, not from a support ticket.">
+{{> head}}
+</head>
+<body data-page="work" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
+{{> header}}
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="crumb"><a href="{{root}}">Home</a> <span aria-hidden="true">/</span> <a href="{{root}}work/">Work</a> <span aria-hidden="true">/</span> Seeing problems first</p>
+      <h1>Seeing problems first</h1>
+      <p class="lede">Finding out about issues from a dashboard, not from a support ticket.</p>
+      <dl class="case-meta">
+        <div><dt>Where</dt><dd>State Farm</dd></div>
+        <div><dt>When</dt><dd>2025 to now</dd></div>
+        <div><dt>My role</dt><dd>DevOps Engineer (AWS/GCP)</dd></div>
+      </dl>
+    </header>
+
+    <section class="wrap results-band" aria-label="Results">
+      <ul class="results">
+          <li><span class="r-num">25%</span><span class="r-label">less downtime</span></li>
+      </ul>
+    </section>
+
+    <div class="wrap case-body">
+      <nav class="case-toc" aria-label="On this page">
+        <p>On this page</p>
+        <a href="#situation">The situation</a>
+        <a href="#built">What I built</a>
+        <a href="#how">How it flows</a>
+        <a href="#decisions">Decisions</a>
+        <a href="#changed">What changed</a>
+      </nav>
+
+      <article class="case-article">
+        <h2 id="situation">The situation</h2>
+        <p>Problems were too often noticed after they reached users. Metrics and logs existed, but they were spread across tools, and alerts didn’t always point at what actually needed attention.</p>
+
+        <h2 id="built">What I built</h2>
+        <ul class="built">
+          <li>Established observability across Prometheus, Grafana, CloudWatch and the ELK stack, so metrics and logs for a service can be read together.</li>
+          <li>Built Grafana dashboards and predictive alerts that flag anomalies before they turn into outages.</li>
+          <li>Handled incident response and root cause analysis, documented lessons learned and followed through on the fixes.</li>
+        </ul>
+
+        <h2 id="how">How it flows</h2>
+        <ol class="flow">
+          <li>Metrics and logs</li>
+          <li>Dashboards</li>
+          <li>Alert</li>
+          <li>Respond</li>
+          <li>Root cause review</li>
+          <li>Fix and document</li>
+        </ol>
+
+        <h2 id="decisions">Decisions I made and why</h2>
+        <div class="decisions">
+        <article>
+          <h4>Every alert needs an owner and an action</h4>
+          <p>An alert that nobody acts on trains people to ignore alerts. If it fires, someone should know what to do.</p>
+        </article>
+        <article>
+          <h4>Watch trends, not just thresholds</h4>
+          <p>Predictive alerts catch a problem that is getting worse before it crosses the line where users notice.</p>
+        </article>
+        <article>
+          <h4>Reviews are about the system</h4>
+          <p>Root cause reviews look for what in the system allowed the problem, then fix that, so the same incident doesn’t come back next month.</p>
+        </article>
+        </div>
+
+        <h2 id="changed">What changed</h2>
+        <p class="changed">Downtime went down 25%, and anomalies started showing up on a dashboard before they showed up in a support queue.</p>
+
+        <h3>What I’d do next</h3>
+        <p>Add service-level objectives for the most important services, so alerting is based on what users experience.</p>
+
+        <p class="stack-line"><strong>Stack</strong> Prometheus, Grafana, CloudWatch, ELK</p>
+        <p class="confidential">Details about State Farm’s systems are kept general on purpose. The approach, the tools and the results are from my work there.</p>
+      </article>
+    </div>
+
+    <nav class="wrap pager" aria-label="More case studies">
+      <a class="pager-prev" href="../gpu-platform-for-ml/"><span>Previous</span>GPU platform for ML</a>
+      <a class="pager-next" href="../security-in-the-pipeline/"><span>Next</span>Security in the pipeline</a>
+    </nav>
+
+{{> cta}}
+  </main>
+
+{{> footer}}
+</body>
+</html>
