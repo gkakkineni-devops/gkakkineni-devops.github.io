@@ -5,38 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gopala Krishna Akkineni, DevOps Engineer</title>
   <meta name="description" content="DevOps engineer in Bloomington, IL. I build CI/CD pipelines, Kubernetes platforms and GPU infrastructure across AWS, GCP and Azure.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://api.github.com; base-uri 'self'; form-action 'none'">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
-  <meta name="theme-color" content="#f7f5fb" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0b0910" media="(prefers-color-scheme: dark)">
   <meta property="og:title" content="Gopala Krishna Akkineni, DevOps Engineer">
   <meta property="og:description" content="I build the road your code takes to production.">
-  <meta property="og:type" content="website">
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap">
-  <link rel="stylesheet" href="assets/css/site.css?v={{asset_version}}">
-  <script src="assets/js/site.js?v={{asset_version}}" defer></script>
+{{> head}}
 </head>
-<body data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
-  <a class="skip" href="#main">Skip to content</a>
-
-  <header class="masthead">
-    <div class="wrap masthead-inner">
-      <a class="wordmark" href="#top"><span class="mark" aria-hidden="true">GK</span>Gopala Krishna Akkineni</a>
-      <nav class="nav" aria-label="Sections">
-        <a href="#about">About</a>
-        <a href="#playground">Playground</a>
-        <a href="#work">Work</a>
-        <a href="#experience">Experience</a>
-        <a href="#contact">Contact</a>
-        <button class="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">
-          <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 3a7 7 0 0 1 0 14z" fill="currentColor"/></svg>
-        </button>
-      </nav>
-    </div>
-  </header>
+<body data-page="home" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
+{{> header}}
 
   <main id="main">
     <section class="hero" id="top">
@@ -45,10 +19,10 @@
         <div class="hero-copy">
           <p class="hello">Hi, I’m Gopala. DevOps engineer in Bloomington, IL.</p>
           <h1>I build the road your code takes to production.</h1>
-          <p class="lede">For four years I’ve been building CI/CD pipelines, Kubernetes platforms and GPU infrastructure across AWS, GCP and Azure. These days that means getting machine learning models from a training run to real users at State Farm, safely and without anyone losing a weekend.</p>
+          <p class="lede">For over four years I’ve been building CI/CD pipelines, Kubernetes platforms and GPU infrastructure across AWS, GCP and Azure. These days that means getting machine learning models from a training run to real users at State Farm, safely and without anyone losing a weekend.</p>
           <div class="actions">
             <a class="button primary" href="#playground">Watch a deploy</a>
-            <a class="button" href="resume/Gopala-Krishna-Akkineni-Resume.pdf" download>Download résumé</a>
+            <a class="button" href="work/">See my work</a>
           </div>
           <p class="availability"><span class="dot" aria-hidden="true"></span>Open to DevOps, SRE and platform engineering roles</p>
         </div>
@@ -59,9 +33,9 @@
             <span class="pulse" data-state="loading" aria-hidden="true"></span>
           </div>
           <dl class="deploy-rows">
-            <div><dt>Commit</dt><dd><a data-build="commit_link" class="mono" href="#top">loading</a> <span data-build="message" class="muted"></span></dd></div>
+            <div><dt>Commit</dt><dd><a data-build="commit_link" class="mono" href="#top" target="_blank" rel="noopener noreferrer">loading</a> <span data-build="message" class="muted"></span></dd></div>
             <div><dt>Deployed</dt><dd><span data-build="deployed_at">loading</span></dd></div>
-            <div><dt>Run</dt><dd><a data-build="run_link" href="#top">loading</a> <span data-build="duration" class="muted"></span></dd></div>
+            <div><dt>Run</dt><dd><a data-build="run_link" href="#top" target="_blank" rel="noopener noreferrer">loading</a> <span data-build="duration" class="muted"></span></dd></div>
             <div><dt>Uptime</dt><dd><span data-status="uptime">loading</span> <span data-status="window" class="muted"></span></dd></div>
             <div><dt>Your visit</dt><dd><span data-live="ttfb">measuring</span></dd></div>
           </dl>
@@ -73,6 +47,7 @@
             <li data-check="trivy">Trivy security scan</li>
             <li data-check="smoke">Container smoke test</li>
           </ul>
+          <a class="deploy-more" href="work/this-website/">How this works</a>
         </aside>
       </div>
 
@@ -81,34 +56,55 @@
           <li><span class="num" data-count="40">40</span><span class="unit">%</span><p>shorter release cycles after rebuilding the delivery pipeline</p></li>
           <li><span class="num" data-count="95">95</span><span class="unit">%</span><p>fewer interruptions during releases with blue-green and canary deploys</p></li>
           <li><span class="num" data-count="30">30</span><span class="unit">%</span><p>faster model training and inference on autoscaling GPU clusters</p></li>
-          <li><span class="num" data-count="99.9" data-decimals="1">99.9</span><span class="unit">%</span><p>uptime on infrastructure I provisioned and run with Terraform</p></li>
+          <li><span class="num" data-count="99.9" data-decimals="1">99.9</span><span class="unit">%</span><p>uptime on infrastructure I provisioned with Terraform and CloudFormation</p></li>
         </ul>
       </div>
     </section>
 
-    <section class="section wrap about" id="about" aria-labelledby="about-title">
-      <div class="about-story">
-        <h2 id="about-title">How I got here</h2>
-        <p>I started in 2020 as a Linux administrator in Kochi, patching servers, writing cron jobs and shell scripts so nobody had to create user accounts by hand. That habit of scripting away the boring parts is what pulled me into DevOps.</p>
-        <p>From there I moved into cloud work. At Taal Tech I provisioned environments across AWS, Azure and GCP and wrote my first real Terraform. At Amistad I was on the support side, handling L1/L2 incidents, and learned how much a good alert or a clean rollback is worth at 2 a.m.</p>
-        <p>After my master’s in Management Information Systems I joined State Farm, where I work on the platform behind their AI and ML work: pipelines, Kubernetes clusters, GPU capacity, secrets and monitoring. It’s the most interesting mix I’ve worked on, because a model is only useful once it’s reliably in production.</p>
+    <section class="section wrap" aria-labelledby="do-title">
+      <div class="section-head">
+        <h2 id="do-title">What I do</h2>
+        <p>Most of my week falls into three kinds of work. Each one links to a story with the details.</p>
       </div>
-      <div class="principles">
-        <h3>What I care about</h3>
-        <ul>
-          <li><strong>Do it by hand once, then automate it.</strong> If I’m clicking through a console a second time, that’s a script or a module waiting to happen.</li>
-          <li><strong>Rollback should be cheaper than debugging.</strong> I’d rather ship small changes behind a canary and undo them in minutes than chase a bad release for hours.</li>
-          <li><strong>If it isn’t monitored, it isn’t done.</strong> Dashboards and alerts are part of the feature, not a follow-up ticket.</li>
-          <li><strong>Security belongs in the pipeline.</strong> A failed scan should stop a build, not show up in a report next quarter.</li>
-        </ul>
+      <div class="pillars">
+        <a class="pillar" href="work/faster-releases/">
+          <h3>Build the delivery path</h3>
+          <p>CI/CD on GitHub Actions, Jenkins and Buildkite, with every environment defined in Terraform or CloudFormation.</p>
+          <span class="pillar-link">Faster releases</span>
+        </a>
+        <a class="pillar" href="work/gpu-platform-for-ml/">
+          <h3>Run the platform</h3>
+          <p>EKS and GKE clusters, GitOps with ArgoCD and FluxCD, and GPU capacity for model training and LLM apps.</p>
+          <span class="pillar-link">GPU platform for ML</span>
+        </a>
+        <a class="pillar" href="work/observability/">
+          <h3>Keep it safe and visible</h3>
+          <p>Prometheus, Grafana and ELK for seeing problems early, and Vault, Trivy and Snyk so bad builds stop in CI.</p>
+          <span class="pillar-link">Seeing problems first</span>
+        </a>
       </div>
+    </section>
+
+    <section class="section wrap" aria-labelledby="work-title">
+      <div class="section-head">
+        <h2 id="work-title">Selected work</h2>
+        <p>Each one is written up properly: the situation, what I built, the decisions behind it and what changed.</p>
+      </div>
+      <ul class="work-list">
+        <li><a href="work/faster-releases/"><span class="wl-num">40%</span><span class="wl-title">Faster path to production</span><span class="wl-sub">Rebuilt CI/CD across GitHub Actions, Jenkins and Buildkite</span></a></li>
+        <li><a href="work/zero-downtime-releases/"><span class="wl-num">95%</span><span class="wl-title">Releases nobody notices</span><span class="wl-sub">Blue-green and canary rollouts with GitOps on EKS and GKE</span></a></li>
+        <li><a href="work/gpu-platform-for-ml/"><span class="wl-num">30%</span><span class="wl-title">GPU platform for ML</span><span class="wl-sub">Autoscaling GPU and TPU clusters for training and LLM apps</span></a></li>
+        <li><a href="work/observability/"><span class="wl-num">25%</span><span class="wl-title">Seeing problems first</span><span class="wl-sub">Prometheus, Grafana, CloudWatch and ELK with alerts that matter</span></a></li>
+        <li><a href="work/security-in-the-pipeline/"><span class="wl-num">35%</span><span class="wl-title">Security in the pipeline</span><span class="wl-sub">Snyk, Trivy and SonarQube gates, secrets in Vault</span></a></li>
+        <li><a href="work/this-website/"><span class="wl-num">$0</span><span class="wl-title">This website</span><span class="wl-sub">A static site run like a production service</span></a></li>
+      </ul>
     </section>
 
     <section class="section playground" id="playground" aria-labelledby="play-title">
       <div class="wrap">
         <div class="section-head">
           <h2 id="play-title">Ship a change</h2>
-          <p>This is a simulation of how I set up releases. Pick what happens to the change, hit deploy, and watch the pipeline handle it.</p>
+          <p>A small simulation of how I set up releases. Pick what’s in the change, hit deploy, and watch the pipeline handle it.</p>
         </div>
 
         <div class="sim" data-sim>
@@ -150,259 +146,35 @@
           </div>
           <p class="sim-result" data-sim-result aria-live="polite"></p>
         </div>
+        <p class="sim-more">The real version of this is written up in <a href="work/zero-downtime-releases/">Releases nobody notices</a>.</p>
       </div>
-    </section>
-
-    <section class="section wrap" id="work" aria-labelledby="work-title">
-      <div class="section-head">
-        <h2 id="work-title">Selected work</h2>
-        <p>The problem, what I did about it, and what changed. Most of this is from my work with State Farm’s ML platform.</p>
-      </div>
-
-      <div class="cases" data-cases>
-        <div class="case-tabs" role="tablist" aria-label="Case studies">
-          <button type="button" role="tab" id="tab-ci" aria-controls="case-ci" aria-selected="true" data-case="ci">Faster path to production</button>
-          <button type="button" role="tab" id="tab-deploy" aria-controls="case-deploy" aria-selected="false" tabindex="-1" data-case="deploy">Releases nobody notices</button>
-          <button type="button" role="tab" id="tab-gpu" aria-controls="case-gpu" aria-selected="false" tabindex="-1" data-case="gpu">GPU clusters for ML</button>
-          <button type="button" role="tab" id="tab-obs" aria-controls="case-obs" aria-selected="false" tabindex="-1" data-case="obs">Seeing problems first</button>
-          <button type="button" role="tab" id="tab-sec" aria-controls="case-sec" aria-selected="false" tabindex="-1" data-case="sec">Security in the pipeline</button>
-        </div>
-
-        <article class="case" role="tabpanel" id="case-ci" aria-labelledby="tab-ci">
-          <p class="case-result"><strong>40%</strong> shorter release cycles</p>
-          <h3>The problem</h3>
-          <p>Teams were shipping ML services through pipelines spread across different tools, and getting a change from merge to production took longer than it should.</p>
-          <h3>What I did</h3>
-          <p>Built and tuned CI/CD on GitHub Actions, Jenkins and Buildkite, with Terraform and CloudFormation handling the infrastructure underneath, so every environment came from code instead of tickets.</p>
-          <h3>What changed</h3>
-          <p>Release cycles got 40% shorter, and the infrastructure behind them held 99.9% uptime.</p>
-          <p class="stack">GitHub Actions, Jenkins, Buildkite, Terraform, CloudFormation</p>
-        </article>
-
-        <article class="case" role="tabpanel" id="case-deploy" aria-labelledby="tab-deploy" hidden>
-          <p class="case-result"><strong>95%</strong> fewer release interruptions</p>
-          <h3>The problem</h3>
-          <p>Every release was a moment of risk. If something went wrong, users felt it before anyone could react.</p>
-          <h3>What I did</h3>
-          <p>Moved services on EKS and GKE to blue-green and canary rollouts managed through ArgoCD and FluxCD, with Helm charts and autoscaling for the high-traffic apps. Rollbacks became automatic instead of a manual scramble.</p>
-          <h3>What changed</h3>
-          <p>Interruptions during releases dropped 95%, and recovering from a bad deploy went from hours to minutes. The playground above is a small version of this setup.</p>
-          <p class="stack">Kubernetes (EKS, GKE), Helm, ArgoCD, FluxCD</p>
-        </article>
-
-        <article class="case" role="tabpanel" id="case-gpu" aria-labelledby="tab-gpu" hidden>
-          <p class="case-result"><strong>30%</strong> faster training, <strong>15%</strong> lower cost</p>
-          <h3>The problem</h3>
-          <p>Deep learning workloads need GPUs, and GPUs are expensive to leave idle and painful to wait for.</p>
-          <h3>What I did</h3>
-          <p>Set up GPU and TPU clusters with Terraform, automated monitoring and scaling around the training jobs, and wired SageMaker, Bedrock and Hugging Face into the deploy pipeline. I also worked with data scientists and ML engineers to get LLM-based apps into production.</p>
-          <h3>What changed</h3>
-          <p>Training and inference ran up to 30% faster while GPU spend went down 15%.</p>
-          <p class="stack">GPU and TPU clusters, Terraform, SageMaker, Bedrock, Hugging Face</p>
-        </article>
-
-        <article class="case" role="tabpanel" id="case-obs" aria-labelledby="tab-obs" hidden>
-          <p class="case-result"><strong>25%</strong> less downtime</p>
-          <h3>The problem</h3>
-          <p>Issues were getting noticed after users reported them, not before.</p>
-          <h3>What I did</h3>
-          <p>Brought Prometheus, Grafana, CloudWatch and the ELK stack together with dashboards and predictive alerts. I also handle incident response and write up root cause reviews so the same problem doesn’t come back.</p>
-          <h3>What changed</h3>
-          <p>Downtime went down 25%, and anomalies started showing up on a dashboard before they showed up in a support queue.</p>
-          <p class="stack">Prometheus, Grafana, CloudWatch, ELK</p>
-        </article>
-
-        <article class="case" role="tabpanel" id="case-sec" aria-labelledby="tab-sec" hidden>
-          <p class="case-result"><strong>35%</strong> fewer vulnerabilities</p>
-          <h3>The problem</h3>
-          <p>Security checks happened late, so problems were found after code was already on its way out.</p>
-          <h3>What I did</h3>
-          <p>Put Snyk, Trivy and SonarQube into the CI/CD workflows as gates, and moved secrets into Vault, AWS Secrets Manager and GCP Secret Manager.</p>
-          <h3>What changed</h3>
-          <p>Vulnerabilities dropped 35% and code compliance improved, because bad builds now fail early instead of shipping.</p>
-          <p class="stack">Snyk, Trivy, SonarQube, Vault, AWS and GCP Secret Manager</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section wrap" id="experience" aria-labelledby="experience-title">
-      <div class="section-head">
-        <h2 id="experience-title">Experience</h2>
-        <p>Open any role for the details.</p>
-      </div>
-      <div class="roles">
-        <details class="role" open>
-          <summary>
-            <span class="role-when">Mar 2025 – now</span>
-            <span class="role-title">DevOps Engineer (AWS/GCP)</span>
-            <span class="role-org">State Farm, Bloomington IL</span>
-          </summary>
-          <ul>
-            <li>Lead the multi-cloud setup for training, deploying and monitoring ML models on AWS and GCP.</li>
-            <li>Run EKS and GKE clusters with Helm, ArgoCD and FluxCD, plus autoscaling for high-traffic services.</li>
-            <li>Brought SageMaker, Bedrock and Hugging Face into the deploy pipeline.</li>
-            <li>Own secrets management, incident response and root cause reviews.</li>
-          </ul>
-        </details>
-        <details class="role">
-          <summary>
-            <span class="role-when">May 2022 – Jun 2023</span>
-            <span class="role-title">Cloud/DevOps Engineer</span>
-            <span class="role-org">Amistad Technologies, Hyderabad</span>
-          </summary>
-          <ul>
-            <li>L1/L2 support for EC2, S3 and IAM with 95% SLA adherence.</li>
-            <li>Reusable Terraform modules for S3, IAM and EC2 that cut manual provisioning in half.</li>
-            <li>Automated backups, log archiving and IAM provisioning with Python, Bash and Lambda.</li>
-            <li>Found idle AWS resources and scheduled shutdowns, saving 10%. Helped cut deploy failures 20%.</li>
-          </ul>
-        </details>
-        <details class="role">
-          <summary>
-            <span class="role-when">Mar 2021 – Feb 2022</span>
-            <span class="role-title">Cloud/DevOps Engineer</span>
-            <span class="role-org">Taal Tech, Bangalore</span>
-          </summary>
-          <ul>
-            <li>Provisioned and secured environments across AWS, Azure and GCP.</li>
-            <li>Wrote Terraform and CloudFormation templates and helped set up Jenkins and GitHub Actions pipelines.</li>
-            <li>Scripted health checks, log collection and cleanup in Shell and Python.</li>
-          </ul>
-        </details>
-        <details class="role">
-          <summary>
-            <span class="role-when">Jul 2020 – Feb 2021</span>
-            <span class="role-title">Linux Administrator</span>
-            <span class="role-org">Ignitarium, Kochi</span>
-          </summary>
-          <ul>
-            <li>Kept Linux servers patched, hardened and monitored for development teams.</li>
-            <li>Scripted user provisioning, cron jobs, log rotation and backups.</li>
-          </ul>
-        </details>
-      </div>
-    </section>
-
-    <section class="section wrap" id="skills" aria-labelledby="skills-title">
-      <div class="section-head">
-        <h2 id="skills-title">Tools</h2>
-        <p>Tap one to see where I’ve used it.</p>
-      </div>
-      <div class="skills" data-skills>
-        <div class="skill-group"><h3>Cloud</h3><div class="chips">
-          <button type="button" data-skill="AWS" data-used="ci gpu sec amistad taal">AWS</button>
-          <button type="button" data-skill="GCP" data-used="gpu deploy sec">GCP</button>
-          <button type="button" data-skill="Azure" data-used="taal">Azure</button>
-        </div></div>
-        <div class="skill-group"><h3>Infrastructure as code</h3><div class="chips">
-          <button type="button" data-skill="Terraform" data-used="ci gpu amistad taal">Terraform</button>
-          <button type="button" data-skill="CloudFormation" data-used="ci taal">CloudFormation</button>
-          <button type="button" data-skill="Bicep" data-used="">Bicep</button>
-        </div></div>
-        <div class="skill-group"><h3>CI/CD and GitOps</h3><div class="chips">
-          <button type="button" data-skill="GitHub Actions" data-used="ci amistad taal">GitHub Actions</button>
-          <button type="button" data-skill="Jenkins" data-used="ci amistad taal">Jenkins</button>
-          <button type="button" data-skill="Buildkite" data-used="ci">Buildkite</button>
-          <button type="button" data-skill="ArgoCD" data-used="deploy">ArgoCD</button>
-          <button type="button" data-skill="FluxCD" data-used="deploy">FluxCD</button>
-          <button type="button" data-skill="Azure DevOps" data-used="amistad">Azure DevOps</button>
-        </div></div>
-        <div class="skill-group"><h3>Containers</h3><div class="chips">
-          <button type="button" data-skill="Kubernetes" data-used="deploy gpu taal">Kubernetes</button>
-          <button type="button" data-skill="Docker" data-used="deploy">Docker</button>
-          <button type="button" data-skill="Helm" data-used="deploy">Helm</button>
-        </div></div>
-        <div class="skill-group"><h3>Observability</h3><div class="chips">
-          <button type="button" data-skill="Prometheus" data-used="obs">Prometheus</button>
-          <button type="button" data-skill="Grafana" data-used="obs">Grafana</button>
-          <button type="button" data-skill="CloudWatch" data-used="obs amistad taal">CloudWatch</button>
-          <button type="button" data-skill="ELK" data-used="obs">ELK</button>
-        </div></div>
-        <div class="skill-group"><h3>Security</h3><div class="chips">
-          <button type="button" data-skill="Vault" data-used="sec">Vault</button>
-          <button type="button" data-skill="Trivy" data-used="sec">Trivy</button>
-          <button type="button" data-skill="Snyk" data-used="sec">Snyk</button>
-          <button type="button" data-skill="SonarQube" data-used="sec">SonarQube</button>
-        </div></div>
-        <div class="skill-group"><h3>ML platforms</h3><div class="chips">
-          <button type="button" data-skill="SageMaker" data-used="gpu">SageMaker</button>
-          <button type="button" data-skill="Bedrock" data-used="gpu">Bedrock</button>
-          <button type="button" data-skill="Hugging Face" data-used="gpu">Hugging Face</button>
-        </div></div>
-        <div class="skill-group"><h3>Scripting</h3><div class="chips">
-          <button type="button" data-skill="Python" data-used="amistad taal">Python</button>
-          <button type="button" data-skill="Bash" data-used="amistad taal ignitarium">Bash</button>
-        </div></div>
-      </div>
-      <p class="skill-answer" data-skill-answer aria-live="polite"></p>
     </section>
 
     <section class="section wrap" id="projects" aria-labelledby="projects-title">
       <div class="section-head">
-        <h2 id="projects-title">Projects</h2>
-        <p>Pulled from my GitHub, so this list keeps itself up to date.</p>
+        <h2 id="projects-title">On GitHub</h2>
+        <p>Pulled live from my GitHub, so this list keeps itself up to date.</p>
       </div>
-
-      <article class="featured">
-        <div class="featured-copy">
-          <h3>This website</h3>
-          <p>No framework and no hosting bill, but it ships like production software. Every push is validated, scanned, containerized and smoke tested before it goes live, and a scheduled job keeps checking that it’s still up.</p>
-          <ul class="facts">
-            <li>GitHub Actions with html-validate, lychee, hadolint and Trivy</li>
-            <li>Unprivileged nginx container, published to GitHub Container Registry</li>
-            <li>Health checks every 3 hours feed the uptime panel at the top</li>
-            <li>Uptime history stored on the site itself, so there’s no database to pay for</li>
-          </ul>
-          <a class="text-link" data-repo-link href="https://github.com/{{github_user}}/{{github_repo}}">Read the source</a>
-        </div>
-        <figure class="pipeline" aria-label="How a change reaches this site">
-          <svg viewBox="0 0 320 360" role="img" aria-labelledby="pipe-t">
-            <title id="pipe-t">Push, then checks, then build, then deploy, then scheduled health checks</title>
-            <g class="pipe-line"><path d="M40 34 V326"/></g>
-            <g class="pipe-step"><circle cx="40" cy="34" r="7"/><text x="64" y="30">git push</text><text class="sub" x="64" y="48">main branch</text></g>
-            <g class="pipe-step"><circle cx="40" cy="106" r="7"/><text x="64" y="102">Checks</text><text class="sub" x="64" y="120">html-validate, lychee, hadolint, trivy</text></g>
-            <g class="pipe-step"><circle cx="40" cy="178" r="7"/><text x="64" y="174">Build</text><text class="sub" x="64" y="192">assets, build info, container image</text></g>
-            <g class="pipe-step"><circle cx="40" cy="250" r="7"/><text x="64" y="246">Deploy</text><text class="sub" x="64" y="264">GitHub Pages</text></g>
-            <g class="pipe-step last"><circle cx="40" cy="326" r="7"/><text x="64" y="322">Watch</text><text class="sub" x="64" y="340">health check every 3 hours</text></g>
-          </svg>
-        </figure>
-      </article>
-
       <div class="repos" data-repos aria-live="polite">
-        <p class="empty">More projects are on the way. <a data-profile-link href="https://github.com/{{github_user}}">Follow along on GitHub</a>.</p>
+        <p class="empty">More projects are on the way. This site is the first one, and you can <a href="https://github.com/{{github_user}}/{{github_repo}}" target="_blank" rel="noopener noreferrer">read its source</a>.</p>
       </div>
     </section>
 
     <section class="section wrap now" aria-labelledby="now-title">
-      <h2 id="now-title">Right now</h2>
+      <div class="section-head">
+        <h2 id="now-title">Right now</h2>
+        <p>Updated October 2026.</p>
+      </div>
       <ul>
-        <li>Running platform work for ML teams at State Farm.</li>
+        <li>Working on the platform behind State Farm’s AI and ML work.</li>
         <li>Building DevOps projects in public on GitHub. This site is the first one.</li>
         <li>Looking for my next DevOps, SRE or platform role.</li>
       </ul>
-      <p class="muted">Education: Master’s in Management Information Systems. Bachelor’s and diploma in Electronics and Communication Engineering.</p>
     </section>
 
-    <section class="contact" id="contact" aria-labelledby="contact-title">
-      <div class="wrap">
-        <h2 id="contact-title">Hiring for DevOps or platform work? Let’s talk.</h2>
-        <p>Email is the fastest way to reach me. I usually reply within a day.</p>
-        <div class="contact-row">
-          <button class="button primary copy" type="button" data-copy="gopalakrishnaakkineni.dev@gmail.com">Copy my email</button>
-          <a class="button" href="mailto:gopalakrishnaakkineni.dev@gmail.com">Write an email</a>
-        </div>
-        <ul class="contact-links">
-          <li><a href="https://www.linkedin.com/in/gopala-krishna-devops" rel="noopener">LinkedIn</a></li>
-          <li><a data-profile-link href="https://github.com/{{github_user}}">GitHub</a></li>
-          <li><a href="resume/Gopala-Krishna-Akkineni-Resume.pdf" download>Résumé (PDF)</a></li>
-        </ul>
-      </div>
-    </section>
+{{> cta}}
   </main>
 
-  <footer class="footer wrap">
-    <p>Designed, built and deployed by Gopala Krishna Akkineni.</p>
-    <p class="muted">Build <span class="mono" data-build="short_sha">local</span></p>
-  </footer>
+{{> footer}}
 </body>
 </html>
