@@ -1,0 +1,136 @@
+name: pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # Health check + redeploy every 3 hours. Odd minute to avoid the top-of-hour rush.
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pipeline-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  TRIVY_IMAGE: aquasec/trivy:0.56.2
+  HADOLINT_IMAGE: hadolint/hadolint:v2.12.0-alpine
+
+jobs:
+  site-checks:
+    name: Site checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Lint build script
+        run: pipx run ruff check scripts/
+
+      - name: Build site (offline)
+        run: python3 scripts/build.py --offline
+
+      - name: Validate HTML
+        run: npx --yes html-validate@9 "dist/**/*.html"
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --offline --no-progress --include-fragments "dist/**/*.html"
+          fail: true
+
+  container:
+    name: Container build, scan and smoke test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint Dockerfile
+        run: docker run --rm -i "$HADOLINT_IMAGE" hadolint - < Dockerfile
+
+      - name: Scan repo for secrets and misconfigurations
+        run: |
+          docker run --rm -v "$PWD:/src" "$TRIVY_IMAGE" fs \
+            --scanners secret,misconfig --severity HIGH,CRITICAL --exit-code 1 /src
+
+      - name: Build site
+        run: python3 scripts/build.py --offline
+
+      - name: Build image
+        run: docker build -t portfolio:${{ github.sha }} .
+
+      - name: Scan image
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock "$TRIVY_IMAGE" image \
+            --severity CRITICAL --ignore-unfixed --exit-code 1 portfolio:${{ github.sha }}
+
+      - name: Smoke test
+        run: |
+          docker run -d --name site -p 8080:8080 portfolio:${{ github.sha }}
+          for i in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8080/healthz && break
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8080/ | grep -q "Gopala Krishna Akkineni"
+          curl -fsS http://127.0.0.1:8080/data/build.json | python3 -m json.tool > /dev/null
+          curl -fsSI http://127.0.0.1:8080/ | grep -qi "content-security-policy"
+          echo "Smoke test passed"
+
+      - name: Stop container
+        if: always()
+        run: docker rm -f site || true
+
+      - name: Publish image to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          image="ghcr.io/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')"
+          docker tag portfolio:${{ github.sha }} "$image:${{ github.sha }}"
+          docker tag portfolio:${{ github.sha }} "$image:latest"
+          docker push "$image:${{ github.sha }}"
+          docker push "$image:latest"
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: [site-checks, container]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build site with live data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+        run: |
+          export RUN_STARTED_AT="$(gh run view "$GITHUB_RUN_ID" --json createdAt -q .createdAt || true)"
+          python3 scripts/build.py --checks-passed
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
