@@ -265,8 +265,8 @@ def render_page(text: str, partials: dict[str, str], values: dict[str, str], con
 
 
 def case_pages(content: dict) -> dict[str, dict]:
-    """Case study pages come from content/cases.txt, one section per page."""
-    return content.get("cases", {})
+    """Case study pages come from content/cases.txt, then content/projects.txt, one section per page."""
+    return {**content.get("cases", {}), **content.get("projects", {})}
 
 
 def copy_source(values: dict[str, str]) -> None:
@@ -293,7 +293,7 @@ def copy_source(values: dict[str, str]) -> None:
     for i, slug in enumerate(slugs):
         data = case_pages(content)[slug]
         # Previous and next links are worked out here so the content files stay simple.
-        cases = content["cases"]
+        cases = case_pages(content)
         neighbours = {
             "prev_slug": slugs[i - 1] if i else "",
             "prev_title": cases[slugs[i - 1]]["title"] if i else "",

@@ -91,6 +91,7 @@ All the text lives in `content/`, one file per page, so you never have to touch 
 | `about.txt`, `story.txt` | About page: facts, beliefs, education, and the story |
 | `jobs.txt`, `experience.txt` | Experience page, one section per job |
 | `work.txt`, `cases.txt` | Work page and every case study (one `[section]` = one page) |
+| `projects.txt` | The write-ups of my own GitHub projects (one `[section]` = one page, same shape as a case study) |
 | `playground.txt` | Playground page text |
 | `contact.txt`, `notfound.txt` | Contact and 404 pages |
 

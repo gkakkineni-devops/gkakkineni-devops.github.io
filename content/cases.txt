@@ -9,6 +9,7 @@ summary: Getting ML services from merge to production faster, without making rel
 where: State Farm
 when: 2025 to now
 role: DevOps Engineer (AWS/GCP)
+client: yes
 results:
   - 40% | shorter release cycles
   - 99.9% | uptime on the infrastructure underneath
@@ -45,6 +46,7 @@ summary: Making deploys on Kubernetes safe enough that users never feel them.
 where: State Farm
 when: 2025 to now
 role: DevOps Engineer (AWS/GCP)
+client: yes
 results:
   - 95% | fewer interruptions during releases
 situation:
@@ -81,6 +83,7 @@ summary: Giving data scientists the GPU capacity they need, without paying for G
 where: State Farm
 when: 2025 to now
 role: DevOps Engineer (AWS/GCP)
+client: yes
 results:
   - 30% | faster training and inference
   - 15% | lower cost for GPU workloads
@@ -117,6 +120,7 @@ summary: Finding out about issues from a dashboard, not from a support ticket.
 where: State Farm
 when: 2025 to now
 role: DevOps Engineer (AWS/GCP)
+client: yes
 results:
   - 25% | less downtime
 situation:
@@ -151,6 +155,7 @@ summary: Keeping secrets out of code, and catching problems in the pull request 
 where: State Farm, plus my own projects
 when: 2025 to now
 role: DevOps Engineer (AWS/GCP)
+client: yes
 results:
   - 3 | secret managers behind one approach
   - Every push | scanned and linted in my own projects

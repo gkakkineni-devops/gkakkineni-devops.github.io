@@ -377,9 +377,9 @@
     amistad: { label: "Amistad Technologies", href: "experience/#amistad" },
     taal: { label: "Taal Tech", href: "experience/#taal" },
     ignitarium: { label: "Ignitarium", href: "experience/#ignitarium" },
-    canary: { label: "GitOps Canary Rollouts", href: "https://github.com/gkakkineni-devops/gitops-canary-rollouts" },
-    stack: { label: "Observability Stack", href: "https://github.com/gkakkineni-devops/observability-stack" },
-    eks: { label: "Terraform AWS EKS GPU Cluster", href: "https://github.com/gkakkineni-devops/terraform-aws-eks-gpu" }
+    canary: { label: "GitOps Canary Rollouts", href: "work/gitops-canary-rollouts/" },
+    stack: { label: "Observability Stack", href: "work/observability-stack/" },
+    eks: { label: "Terraform AWS EKS GPU Cluster", href: "work/terraform-aws-eks-gpu/" }
   };
   const chips = $$("[data-skills] button");
   const answer = $("[data-skill-answer]");

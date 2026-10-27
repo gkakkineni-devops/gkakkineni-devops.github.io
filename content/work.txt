@@ -20,10 +20,6 @@ website_result: **$0** a month to run
 website_title: This website
 website_text: A hand-written site that ships like production software: checks, scans, a container, scheduled health checks and a live uptime panel.
 website_stack: GitHub Actions, Docker, nginx, Trivy, Python, GitHub Pages
-projects:
-  - **20% → 60% → 100%** canary | GitOps Canary Rollouts | A Helm chart that ships a service as a canary with Argo Rollouts, while ArgoCD keeps the cluster in step with Git. CI builds a real kind cluster, ships a good release and then a broken one, and checks that the broken one never reaches users. | Helm, Argo Rollouts, ArgoCD, kind, GitHub Actions, kubeconform, Trivy | https://github.com/gkakkineni-devops/gitops-canary-rollouts
-  - **One command** starts it all | Observability Stack | Prometheus, Alertmanager and Grafana with recording rules, an error-budget burn alert and a dashboard defined as code. The alert rules have unit tests, and CI starts the whole stack to check that a real alert fires and reaches Alertmanager. | Prometheus, Alertmanager, Grafana, Docker Compose, Python, promtool | https://github.com/gkakkineni-devops/observability-stack
-  - **Zero** GPU nodes until a job needs one | Terraform AWS EKS GPU Cluster | An EKS cluster whose GPU node group runs on Spot, is tainted so only GPU jobs land on it, and sits at zero nodes while idle. API access is limited to listed IPs, and CI runs validate, tflint and a Trivy scan on every push. | Terraform, AWS EKS, VPC, NVIDIA GPU nodes, Spot instances, tflint, Trivy | https://github.com/gkakkineni-devops/terraform-aws-eks-gpu
 
 [earlier]
 title: Earlier work

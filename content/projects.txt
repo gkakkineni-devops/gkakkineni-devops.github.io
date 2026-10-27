@@ -1,0 +1,134 @@
+# My own GitHub projects. Each [section] becomes a page at /work/<section-name>/, built from the same template as the case studies.
+# They are practice projects. Nothing here comes from my job, so don't add anything that does.
+# Everything described below is in the repo, so keep it true to the code.
+
+[observability-stack]
+title: A monitoring stack with tested alerts
+summary: Prometheus, Alertmanager and Grafana that start with one command, with alert rules that have unit tests.
+where: Personal project, on GitHub
+when: October 2026
+role: Designed, built and tested it
+results:
+  - 5 | containers from one command
+  - 5 | alert rules, each with a severity and a runbook line
+  - 4 | unit tests on the alert rules, run on every push
+situation:
+  - Monitoring usually gets built by clicking around, and nobody tests it. The first time you find out an alert rule has a typo is during an outage, when nobody gets paged. I wanted a stack where the alerts are code, the dashboard is code, and CI proves that a real failure produces a real alert.
+  - A tiny Python service sits inside it only to give the monitoring something to watch. You can make it fail on purpose, which is how the tests work.
+built:
+  - Prometheus scraping the demo service, Alertmanager and a node exporter every five seconds, with recording rules that work out request rate, error ratio and p95 latency once, so the dashboard and the alerts always agree.
+  - Five alert rules: instance down, fast error-budget burn, high error ratio, high p95 latency, and a disk that will fill within four hours.
+  - An error-budget burn alert based on a 99.9% target. It fires when errors are using the budget 14.4 times too fast on both a 5-minute and a 1-hour window.
+  - Alertmanager grouping alerts by name and job, repeating critical ones every 30 minutes, and muting warnings for a job that already has a critical alert firing.
+  - A Grafana dashboard provisioned from files, so it lives in Git and comes back identical after a rebuild.
+  - Unit tests for the alert rules with promtool, plus a CI job that starts the whole stack, breaks the demo service on purpose and checks that the alert fires and reaches Alertmanager.
+flow:
+  - Scrape metrics
+  - Recording rules
+  - Alert rules
+  - Alertmanager
+  - Webhook receiver
+  - Dashboard
+decisions:
+  - Two windows for the burn alert | The 5-minute window says it is happening now. The 1-hour window says it has lasted long enough to matter. Both have to agree, so a short blip doesn't page anyone, but a real outage still does.
+  - Test the alerts, not just the config | promtool feeds fake data into the rules and checks what fires, down to the exact summary text. A rule with a typo fails silently, and a test catches it in the pull request instead.
+  - Prove it end to end | My first smoke test only checked that the error ratio went up. I changed it to keep sending traffic, wait for the alert to fire in Prometheus, then check it reached Alertmanager. It has to keep sending, because without new requests the rate goes flat and the alert clears itself.
+  - Keep tests out of the rules folder | Prometheus loads everything in the rules folder as rules. The first test file I put there stopped it from starting, so the tests live in their own folder.
+  - Bind every port to localhost | Grafana's login is admin and admin, which is only acceptable because nothing outside my own machine can reach it.
+changed: CI now proves, on a clean machine, that a real failure produces a real alert, and a broken rule shows up in a pull request instead of in an outage.
+next: Send alerts to a real receiver such as Slack or a pager, keep metrics in long-term storage, and tune the thresholds on real traffic. The ones in the repo are guesses for a demo app.
+stack: Prometheus, Alertmanager, Grafana, Docker Compose, Python, promtool
+extra: Read the code and the pipeline runs: [observability-stack on GitHub](https://github.com/gkakkineni-devops/observability-stack).
+home_num: 5
+home_sub: Tested alert rules, one command to start the stack
+card_result: **One command** starts the whole stack
+card_text: Recording rules, an error-budget burn alert and a dashboard defined as code. CI breaks the demo service on purpose and checks that the alert fires.
+card_stack: Prometheus, Alertmanager, Grafana, Docker Compose, Python, promtool
+
+[gitops-canary-rollouts]
+title: A canary release that stops itself
+summary: A Helm chart that releases a service in steps and stops a broken release before users see it.
+where: Personal project, on GitHub
+when: October 2026
+role: Designed, built and tested it
+results:
+  - 3 | steps: 20%, 60%, then everyone
+  - 2 | releases tested in CI: one good, one broken
+  - 90 s | before a release that never starts is aborted
+situation:
+  - Releasing a new version to everyone at once is a bet. If it is bad, everyone finds out together, and getting back takes work. I wanted a small, readable version of the safer way: put the new version next to the old one, give it a slice of traffic, check it, and only then give it more. If the check fails, the old version keeps serving and users never notice.
+  - It uses a public demo image (argoproj/rollouts-demo) with a blue version and a yellow version, so there is no application code to get in the way.
+built:
+  - A Helm chart with an Argo Rollouts Rollout in place of a Deployment: 20% of the pods, a 30 second pause, 60%, another pause, then everyone.
+  - An analysis check that runs during the pause. A small Kubernetes Job sends 10 requests to the canary Service and expects a 200 each time. It runs three times, 10 seconds apart, and a second failed run aborts the release.
+  - A progress deadline of 90 seconds with abort turned on, so pods that never become ready, for example from a wrong image tag, are rolled back instead of sitting there for ten minutes.
+  - Two Services, stable and canary, so the check tests only the new version.
+  - An Argo CD Application with auto-sync, prune and self-heal, so the cluster follows what is in Git.
+  - Pods that run as a normal user, with no privilege escalation and all Linux capabilities dropped.
+flow:
+  - Change the image tag in Git
+  - Argo CD syncs
+  - 20% canary
+  - Analysis check
+  - 60%
+  - Everyone, or abort
+decisions:
+  - Test it on a real cluster | Linting and schema checks can't tell you that a rollout aborts. CI creates a throwaway kind cluster, installs Argo Rollouts and runs the release test.
+  - Ship a good release and a broken one | The test releases the yellow version, then an image tag that doesn't exist. It checks the broken one fails, and that the stable Service still answers 200 on the last good version. That last check is the point of the whole project.
+  - Set a deadline | Without a progress deadline, a pod stuck pulling a missing image holds a release for ten minutes before Kubernetes gives up. With it, the bad-release test finishes in minutes.
+  - Keep Helm and Argo apart | Both use double curly braces for templates. The chart escapes Argo's canary-service variable, otherwise Helm tries to fill it in and the analysis breaks.
+  - Run Trivy from its Docker image | My first workflow used a Trivy action version that didn't exist. Running the image pins the version and behaves the same on my laptop as in CI.
+changed: Every push now proves that a good release rolls out in steps and that a broken one is stopped while users stay on the last good version.
+next: Judge the canary on its error rate and latency from Prometheus instead of a 200 reply, and use a traffic router for exact percentages, because today the split is by pod count and 20% of five pods is one pod. I also haven't run the Argo CD Application against a live Argo CD yet. CI covers the chart and the release behaviour.
+stack: Helm, Argo Rollouts, ArgoCD, kind, GitHub Actions, kubeconform, Trivy
+extra: Read the code and the pipeline runs: [gitops-canary-rollouts on GitHub](https://github.com/gkakkineni-devops/gitops-canary-rollouts).
+home_num: 3
+home_sub: Canary steps, tested on a real cluster with a broken release
+card_result: **20% → 60% → 100%** canary, tested on a real cluster
+card_text: A Helm chart with Argo Rollouts and ArgoCD. CI ships a good release and a broken one, and checks the broken one never reaches users.
+card_stack: Helm, Argo Rollouts, ArgoCD, kind, GitHub Actions, kubeconform, Trivy
+
+[terraform-aws-eks-gpu]
+title: A GPU cluster that costs nothing when idle
+summary: Terraform for an EKS cluster whose GPU nodes stay at zero until a job needs them.
+where: Personal project, on GitHub
+when: October 2026
+role: Designed, built and tested it
+results:
+  - 0 | GPU nodes until someone scales them up
+  - 2 | node groups: always-on system nodes and GPU nodes on Spot
+  - 3 | scan findings accepted on purpose, each with a written reason
+situation:
+  - GPUs are the expensive part of an ML platform, and the classic mistake is leaving them running. I wanted to practise exactly that: a cluster whose GPU node group sits at zero until a job needs one.
+  - I haven't applied this code to a real AWS account, so nothing has been created and no money has been spent. It is validated, linted and scanned on every push, and the README says so on its first line.
+built:
+  - A VPC across two availability zones, with private and public subnets and one NAT gateway, using the community VPC module.
+  - An EKS cluster whose API endpoint is public but limited to the IP addresses you list.
+  - A small always-on system node group on t3.medium machines.
+  - A GPU node group on g5.xlarge Spot instances, set to a minimum and desired size of zero. It uses the NVIDIA EKS image so the drivers are already installed, and it carries a taint so only GPU jobs land on it.
+  - A hardened test pod that runs nvidia-smi to prove a GPU works.
+  - A pipeline that runs Trivy first, then format, init, validate, tflint and kubeconform, with no AWS credentials at all.
+flow:
+  - Set your own IP
+  - Plan
+  - Apply
+  - Install the NVIDIA plugin
+  - Scale the GPU group up
+  - Run the job
+  - Scale to zero and destroy
+decisions:
+  - Zero by default | The GPU group starts empty, so it costs nothing until someone scales it. It is tagged so a cluster autoscaler could manage it, but I haven't added one, so scaling is manual today.
+  - Make the unsafe thing impossible | The variable for allowed IP addresses has no default and refuses 0.0.0.0/0, so the cluster API can't be opened to the whole internet by accident.
+  - Taint the GPU nodes | The taint keeps ordinary pods off expensive machines. Only pods that explicitly tolerate it can land there.
+  - Spot, behind one variable | Spot is much cheaper and suits jobs that can restart. One variable switches the group to on-demand.
+  - Accept three scan findings in writing | Trivy flagged the public API endpoint, open outbound traffic from the nodes and the default network ACLs. Each one is in the ignore file with the reason next to it. Ignoring a finding with a reason is normal. Ignoring it silently isn't.
+  - Scan before init | After terraform init, Trivy started scanning the example folders inside the downloaded modules and failed. Running the scan first fixed it.
+changed: Every push is formatted, validated, linted and scanned without giving GitHub a single AWS credential, and the part that costs the most money is off by default.
+next: Remote state in S3 with locking, Karpenter or the cluster autoscaler, the NVIDIA device plugin installed by Terraform or GitOps instead of by hand, VPC endpoints instead of open outbound traffic, and a real apply in a sandbox account with a billing alert.
+stack: Terraform, AWS EKS, VPC, NVIDIA GPU nodes, Spot instances, tflint, Trivy
+extra: Read the code and the pipeline runs: [terraform-aws-eks-gpu on GitHub](https://github.com/gkakkineni-devops/terraform-aws-eks-gpu).
+home_num: 0
+home_sub: GPU nodes running until a job needs one
+card_result: **Zero** GPU nodes until a job needs one
+card_text: An EKS cluster with a tainted GPU node group on Spot. API access is limited to listed IPs, and CI scans every push.
+card_stack: Terraform, AWS EKS, VPC, NVIDIA GPU nodes, Spot instances, tflint, Trivy

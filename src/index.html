@@ -98,6 +98,9 @@
 {{#each cases}}
         <li><a href="{{root}}work/{{.id}}/"><span class="wl-num">{{.home_num}}</span><span class="wl-title">{{.title}}</span><span class="wl-sub">{{.home_sub}}</span></a></li>
 {{/each}}
+{{#each projects}}
+        <li><a href="{{root}}work/{{.id}}/"><span class="wl-num">{{.home_num}}</span><span class="wl-title">{{.title}}</span><span class="wl-sub">{{.home_sub}}</span></a></li>
+{{/each}}
         <li><a href="{{root}}work/this-website/"><span class="wl-num">{{home.selected.website_num}}</span><span class="wl-title">{{home.selected.website_title}}</span><span class="wl-sub">{{home.selected.website_sub}}</span></a></li>
       </ul>
     </section>

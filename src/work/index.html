@@ -48,12 +48,12 @@
           <p>{{work.own.website_text}}</p>
           <p class="cc-stack">{{work.own.website_stack}}</p>
         </a>
-{{#each work.own.projects}}
-        <a class="case-card" href="{{.4}}" target="_blank" rel="noopener noreferrer">
-          <p class="cc-result">{{.0}}</p>
-          <h3>{{.1}}</h3>
-          <p>{{.2}}</p>
-          <p class="cc-stack">{{.3}}</p>
+{{#each projects}}
+        <a class="case-card" href="{{.id}}/">
+          <p class="cc-result">{{.card_result}}</p>
+          <h3>{{.title}}</h3>
+          <p>{{.card_text}}</p>
+          <p class="cc-stack">{{.card_stack}}</p>
         </a>
 {{/each}}
       </div>
