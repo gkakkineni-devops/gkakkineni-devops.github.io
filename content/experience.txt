@@ -17,6 +17,6 @@ results: Results
 title: Education
 text: More on the [about page](@/about/).
 items:
-  - Master’s in Management and Information Systems | University of Illinois Springfield, Illinois
-  - Bachelor of Technology, Electronics and Communication Engineering | Aditya University, Surampalem, Andhra Pradesh
-  - Diploma in Electronics and Communication Engineering | AANM & VVRSR Polytechnic, Gudlavalleru, Andhra Pradesh
+  - Master of Science, Management Information Systems | University of Illinois Springfield, Springfield, IL · Dec 2024
+  - Bachelor of Technology, Electronics and Communication Engineering | Aditya University, Andhra Pradesh, India · Apr 2023
+  - Diploma, Electronics and Communication Engineering | AANM & VVRSR Polytechnic, Andhra Pradesh, India · Apr 2020

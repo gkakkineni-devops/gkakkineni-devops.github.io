@@ -48,6 +48,14 @@
           <p>{{work.own.website_text}}</p>
           <p class="cc-stack">{{work.own.website_stack}}</p>
         </a>
+{{#each work.own.projects}}
+        <a class="case-card" href="{{.4}}" target="_blank" rel="noopener noreferrer">
+          <p class="cc-result">{{.0}}</p>
+          <h3>{{.1}}</h3>
+          <p>{{.2}}</p>
+          <p class="cc-stack">{{.3}}</p>
+        </a>
+{{/each}}
       </div>
     </section>
 

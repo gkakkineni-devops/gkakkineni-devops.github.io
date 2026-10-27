@@ -47,7 +47,6 @@ when: 2025 to now
 role: DevOps Engineer (AWS/GCP)
 results:
   - 95% | fewer interruptions during releases
-  - Minutes | to recover from a bad deploy, down from hours
 situation:
   - Every release was a moment of risk. When a change misbehaved, users felt it before anyone could react, and getting back to a good state took manual work under pressure.
   - With high-traffic applications on EKS and GKE, that risk grows with every service and every deploy.
@@ -65,15 +64,15 @@ flow:
 decisions:
   - GitOps over pushing from CI | When the cluster pulls its desired state from Git, there’s one source of truth. You can see what’s running, and undoing a change is a normal Git revert instead of a special procedure.
   - Canary for risky services, blue-green for the rest | Canary releases catch problems that only show up under real traffic. Blue-green is simpler when a clean switch is enough. Using both kept the setup no more complex than each service needed.
-  - Automatic rollback | If the new version looks unhealthy, it rolls back without waiting for a person. People still investigate, but users stop being affected right away.
-changed: Service interruptions during releases dropped 95%, and automated rollbacks took recovery from hours to minutes.
+  - Let a small slice find the problem | A new version that misbehaves is caught while only a few users can see it, and everyone else stays on the version that works. People investigate afterwards, but users stop being affected quickly.
+changed: Service interruptions during releases dropped 95%, and releases stopped being something the teams had to schedule around.
 next: Tie canary analysis to the same SLOs the teams already watch, so “healthy enough to promote” means exactly what it means in production.
 stack: Kubernetes (EKS, GKE), Helm, ArgoCD, FluxCD
 extra: Want to see the idea in action? The [deploy playground](@/playground/) runs a small simulation of this setup, including a canary that rolls itself back.
 home_num: 95%
 home_sub: Blue-green and canary rollouts with GitOps on EKS and GKE
 card_result: **95%** fewer release interruptions
-card_text: Blue-green and canary rollouts on EKS and GKE, driven by GitOps, with rollbacks in minutes.
+card_text: Blue-green and canary rollouts on EKS and GKE, driven by GitOps, so new versions reach users in small steps.
 card_stack: Kubernetes, Helm, ArgoCD, FluxCD
 
 [gpu-platform-for-ml]
@@ -90,7 +89,6 @@ situation:
   - On top of training, the teams were moving toward LLM-based applications, which bring their own deployment and serving needs.
 built:
   - Orchestrated GPU and TPU-enabled clusters for deep learning workloads across AWS and GCP.
-  - Designed Terraform-based pipelines to provision GPU clusters for training, so capacity is created the same way every time.
   - Automated resource monitoring and scaling for GPU workloads, so clusters grow for a job and shrink after it.
   - Integrated SageMaker, Bedrock and Hugging Face into the DevOps pipelines and worked with data scientists and ML engineers to deploy LLM-based apps to production.
 flow:
@@ -102,16 +100,16 @@ flow:
   - Scale down
 decisions:
   - Scale on the work, not the calendar | Scaling GPU capacity around the actual jobs, instead of keeping a fixed fleet warm, is where most of the savings came from.
-  - Provision GPU clusters from Terraform | GPU node pools have a lot of details that are easy to get wrong by hand: drivers, instance types, quotas. Defining them in code made them repeatable and reviewable.
+  - Measure first, then scale | Automated monitoring of GPU workloads showed when capacity sat idle and when it ran short, so scaling followed real usage instead of guesses.
   - Use managed ML services where they fit | SageMaker, Bedrock and Hugging Face cover a lot of ground. Plugging them into the existing pipelines was faster and safer than rebuilding what they already do.
 changed: Training and inference ran up to 30% faster, and automated scaling cut costs for GPU workloads by 15% while keeping performance where it needed to be.
 next: Show GPU spend per team and per model, so the people choosing instance sizes can see what their choices cost.
-stack: GPU and TPU clusters, Kubernetes (EKS, GKE), Terraform, SageMaker, Bedrock, Hugging Face
+stack: GPU and TPU clusters, Kubernetes (EKS, GKE), SageMaker, Bedrock, Hugging Face
 home_num: 30%
 home_sub: Autoscaling GPU and TPU clusters for training and LLM apps
 card_result: **30%** faster training, **15%** lower cost
 card_text: Autoscaling GPU and TPU clusters, plus SageMaker, Bedrock and Hugging Face wired into deploys.
-card_stack: GPU and TPU clusters, Terraform, SageMaker, Bedrock, Hugging Face
+card_stack: GPU and TPU clusters, Kubernetes, SageMaker, Bedrock, Hugging Face
 
 [observability]
 title: Seeing problems first
@@ -125,7 +123,7 @@ situation:
   - Problems were too often noticed after they reached users. Metrics and logs existed, but they were spread across tools, and alerts didn’t always point at what actually needed attention.
 built:
   - Established observability across Prometheus, Grafana, CloudWatch and the ELK stack, so metrics and logs for a service can be read together.
-  - Built Grafana dashboards and predictive alerts that flag anomalies before they turn into outages.
+  - Built dashboards and alerts on top of that data, so problems show up before users report them.
   - Handled incident response and root cause analysis, documented lessons learned and followed through on the fixes.
 flow:
   - Metrics and logs
@@ -136,10 +134,10 @@ flow:
   - Fix and document
 decisions:
   - Every alert needs an owner and an action | An alert that nobody acts on trains people to ignore alerts. If it fires, someone should know what to do.
-  - Watch trends, not just thresholds | Predictive alerts catch a problem that is getting worse before it crosses the line where users notice.
+  - Watch trends, not just thresholds | An alert on a trend catches a problem that is getting worse before it crosses the line where users notice.
   - Reviews are about the system | Root cause reviews look for what in the system allowed the problem, then fix that, so the same incident doesn’t come back next month.
-changed: Downtime went down 25%, and anomalies started showing up on a dashboard before they showed up in a support queue.
-next: Add service-level objectives for the most important services, so alerting is based on what users experience.
+changed: Downtime went down 25%, and problems started showing up on a dashboard before they showed up in a support queue.
+next: Base alerting on service-level objectives and error budgets for more of the important services, so it follows what users experience.
 stack: Prometheus, Grafana, CloudWatch, ELK
 home_num: 25%
 home_sub: Prometheus, Grafana, CloudWatch and ELK with alerts that matter
@@ -149,18 +147,18 @@ card_stack: Prometheus, Grafana, CloudWatch, ELK
 
 [security-in-the-pipeline]
 title: Security in the pipeline
-summary: Catching vulnerabilities and leaked secrets before code ships, not after.
-where: State Farm
+summary: Keeping secrets out of code, and catching problems in the pull request instead of in production.
+where: State Farm, plus my own projects
 when: 2025 to now
 role: DevOps Engineer (AWS/GCP)
 results:
-  - 35% | fewer vulnerabilities
+  - 3 | secret managers behind one approach
+  - Every push | scanned and linted in my own projects
 situation:
-  - Security checks happened late in the process, so issues were found after code was already on its way to production, when they’re slowest and most expensive to fix.
-  - Secrets also needed a single, controlled home across AWS and GCP.
+  - Credentials and compliance rules don’t stop at one cloud. With work on both AWS and GCP, secrets needed a single, controlled way of being handled, and security checks needed to happen before code ships, not after.
 built:
-  - Integrated Snyk, Trivy and SonarQube into the CI/CD workflows as gates, so a failing scan stops the build.
-  - Designed secret management with Vault, AWS Secrets Manager and GCP Secret Manager, so credentials never live in code or pipeline config.
+  - Set up secrets management with Vault, AWS Secrets Manager and GCP Secret Manager to meet compliance requirements, so credentials don’t live in code or pipeline config.
+  - Put scanners in the pipeline as gates. In my own projects, Trivy, hadolint and tflint run on every push and a failing scan stops the build. Snyk and SonarQube are the dependency and code-analysis tools I use in the same position.
 flow:
   - Commit
   - Code analysis
@@ -172,12 +170,12 @@ decisions:
   - Fail the build, don’t file a report | A finding that blocks a merge gets fixed that day. A finding in a report gets fixed eventually.
   - Block on what can be fixed | Gating on critical issues that have a fix available keeps the signal high. Teams take the gate seriously because it rarely cries wolf.
   - Secrets come from a manager at runtime | Pulling credentials from Vault or a cloud secret manager means rotation doesn’t require a code change, and nothing sensitive sits in Git.
-changed: Vulnerabilities dropped 35% and code compliance improved, because problems now surface in the pull request instead of in production.
+changed: Secrets moved into managed stores that help meet compliance requirements, and on my own projects a problem now surfaces in the pull request instead of in production.
 next: Sign container images and verify signatures at deploy time, so only images built by the pipeline can run.
-stack: Snyk, Trivy, SonarQube, Vault, AWS Secrets Manager, GCP Secret Manager
+stack: Vault, AWS Secrets Manager, GCP Secret Manager, Trivy, hadolint, tflint, Snyk, SonarQube
 extra: This website uses the same idea on a small scale: [Trivy and hadolint run on every push](@/work/this-website/), and a failing scan blocks the deploy.
-home_num: 35%
-home_sub: Snyk, Trivy and SonarQube gates, secrets in Vault
-card_result: **35%** fewer vulnerabilities
-card_text: Scans that fail builds instead of filling reports, and secrets that never touch a repo.
-card_stack: Snyk, Trivy, SonarQube, Vault, Secrets Manager
+home_num: 3
+home_sub: Secret managers behind one approach, and scans that fail builds
+card_result: **3** secret managers, one approach
+card_text: Secrets out of code, and scans that fail builds instead of filling reports.
+card_stack: Vault, Secrets Manager, Trivy, hadolint, Snyk, SonarQube

@@ -376,7 +376,10 @@
     site: { label: "this website", href: "work/this-website/" },
     amistad: { label: "Amistad Technologies", href: "experience/#amistad" },
     taal: { label: "Taal Tech", href: "experience/#taal" },
-    ignitarium: { label: "Ignitarium", href: "experience/#ignitarium" }
+    ignitarium: { label: "Ignitarium", href: "experience/#ignitarium" },
+    canary: { label: "GitOps Canary Rollouts", href: "https://github.com/gkakkineni-devops/gitops-canary-rollouts" },
+    stack: { label: "Observability Stack", href: "https://github.com/gkakkineni-devops/observability-stack" },
+    eks: { label: "Terraform AWS EKS GPU Cluster", href: "https://github.com/gkakkineni-devops/terraform-aws-eks-gpu" }
   };
   const chips = $$("[data-skills] button");
   const answer = $("[data-skill-answer]");
@@ -400,7 +403,10 @@
       used.forEach((key, i) => {
         if (i > 0) answer.append(i === used.length - 1 ? " and " : ", ");
         const a = document.createElement("a");
-        a.href = siteRoot + PLACES[key].href;
+        const target = PLACES[key].href;
+        const offSite = /^https:\/\//.test(target);
+        a.href = offSite ? target : siteRoot + target;
+        if (offSite) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
         a.textContent = PLACES[key].label;
         answer.append(a);
       });

@@ -45,7 +45,6 @@ do:
   - Automated backups, log archiving and IAM provisioning with Bash and Python scripts running on Lambda.
   - Wrote reusable Terraform modules for S3 buckets, IAM roles and EC2 instances.
   - Set up CloudWatch alarms, dashboards and log filters.
-  - Joined weekly incident reviews and root cause analyses.
   - Supported disaster recovery exercises: backup restores and DNS failover tests.
   - Rotated IAM credentials, enforced least privilege and managed secrets with the DevOps and InfoSec teams.
 results:
@@ -60,13 +59,13 @@ took: A clear alert, a tested backup and a rollback you trust are worth more tha
 short: Taal Tech
 year: 2021
 when: Mar 2021 to Feb 2022
-where: Bangalore, India
+where: Bengaluru, India
 title: Cloud/DevOps Engineer
 org: Taal Tech
 summary: My first cloud role. I worked across AWS, Azure and GCP and learned to treat infrastructure as code.
 do_title: What I did
 do:
-  - Supported deployment and maintenance of multi-cloud environments, provisioning EC2 instances, virtual machines and storage buckets.
+  - Supported deployment and maintenance of multi-cloud environments, provisioning EC2 instances, virtual machines and storage.
   - Configured IAM roles, security groups and key rotation to keep access secure and compliant.
   - Wrote Shell and Python scripts for health checks, log collection and cleanup.
   - Contributed Terraform and CloudFormation templates for consistent, version-controlled environments.
@@ -87,12 +86,10 @@ org: Ignitarium
 summary: Where it started. I kept Linux servers healthy for development teams and began scripting my way out of repetitive work.
 do_title: What I did
 do:
-  - Set up and troubleshot Linux servers for development teams.
-  - Monitored server health and escalated critical failures.
-  - Wrote shell scripts for user provisioning, file management and process monitoring.
+  - Set up and troubleshot Linux servers for development teams and monitored server health.
+  - Wrote shell scripts for user provisioning, file management, process monitoring and scheduled backups.
   - Managed user permissions, cron jobs and log rotation.
-  - Handled patching, kernel updates and security hardening.
-  - Set up log monitoring and scheduled backups.
-  - Worked with developers on performance bottlenecks and took part in Agile sprints.
+  - Handled patching, kernel updates, package installs and security hardening.
+  - Worked with developers to fix application performance bottlenecks.
 took_title: What I took away
 took: The fundamentals: permissions, processes, logs and patches. Everything in the cloud still runs on them.

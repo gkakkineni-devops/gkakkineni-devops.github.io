@@ -9,17 +9,17 @@ paragraphs:
 [cloud]
 title: Moving into the cloud
 paragraphs:
-  - In 2021 I joined Taal Tech in Bangalore as a Cloud/DevOps engineer. For the first time I was working across AWS, Azure and GCP, provisioning instances, virtual machines and storage, managing IAM roles and security groups, and rotating keys. I watched senior engineers manage infrastructure with Terraform and CloudFormation, then started contributing templates myself. I also helped set up Jenkins and GitHub Actions pipelines and learned to troubleshoot Kubernetes when pods kept restarting.
+  - In 2021 I joined Taal Tech in Bengaluru as a Cloud/DevOps engineer. For the first time I was working across AWS, Azure and GCP, provisioning instances, virtual machines and storage, managing IAM roles and security groups, and rotating keys. I contributed Terraform and CloudFormation templates so environments were consistent and version-controlled. I also helped set up Jenkins and GitHub Actions pipelines and learned to troubleshoot Kubernetes when pods kept restarting.
 
 [production]
 title: Learning what production really means
 paragraphs:
-  - At Amistad Technologies in Hyderabad, from 2022 to 2023, I was closer to the fire. I handled L1/L2 support for AWS services and networking incidents and kept SLA adherence at 95%. That job taught me what matters when something breaks: a clear alert, a tested backup, a rollback you trust. I joined incident reviews every week, ran disaster recovery tests on backups and DNS failover, and wrote reusable Terraform modules that cut manual provisioning in half.
+  - At Amistad Technologies in Hyderabad, from 2022 to 2023, I was closer to the fire. I handled L1/L2 support for AWS services and networking incidents and kept SLA adherence at 95%. That job taught me what matters when something breaks: a clear alert, a tested backup, a rollback you trust. I helped run disaster recovery tests on backups and DNS failover, and wrote reusable Terraform modules that cut manual provisioning in half.
 
 [deeper]
 title: Going deeper
 paragraphs:
-  - Next I did my master’s in Management and Information Systems at the University of Illinois Springfield. It gave me the business side of technology: why a platform exists, who pays for it, and how to explain a technical tradeoff to people who don’t live in a terminal.
+  - Next I did my Master of Science in Management Information Systems at the University of Illinois Springfield, finishing in December 2024. It gave me the business side of technology: why a platform exists, who pays for it, and how to explain a technical tradeoff to people who don’t live in a terminal.
 
 [now]
 title: Where I am now
