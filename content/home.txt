@@ -88,7 +88,7 @@ empty: More projects are on the way. This site is the first one, and you can [re
 
 [now]
 title: Right now
-text: Updated October 2026.
+text: Updated November 2026.
 items:
   - Working on the platform behind State Farm’s AI and ML work.
   - Building DevOps projects in public on GitHub. This site is the first one.

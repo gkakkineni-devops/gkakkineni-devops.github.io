@@ -11,6 +11,12 @@ title: Moving into the cloud
 paragraphs:
   - In 2021 I joined Taal Tech in Bengaluru as a Cloud/DevOps engineer. For the first time I was working across AWS, Azure and GCP, provisioning instances, virtual machines and storage, managing IAM roles and security groups, and rotating keys. I contributed Terraform and CloudFormation templates so environments were consistent and version-controlled. I also helped set up Jenkins and GitHub Actions pipelines and learned to troubleshoot Kubernetes when pods kept restarting.
 
+[studying]
+title: Studying while working
+paragraphs:
+  - I finished my diploma in Electronics and Communication Engineering in April 2020 and went straight to work. At the same time I started a B.Tech in the same field and did it alongside my jobs at Ignitarium, Taal Tech and Amistad. I finished it in April 2023. That is why the dates on my résumé overlap: the degree and the jobs ran side by side.
+  - There is also a gap on the résumé, between Taal Tech, which ended in February 2022, and Amistad, which started in May 2022. In that stretch my semester exams and my project submission landed at the same time, so I took a couple of months off to finish them. Then I went back to work.
+
 [production]
 title: Learning what production really means
 paragraphs:

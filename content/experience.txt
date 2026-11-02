@@ -15,7 +15,7 @@ results: Results
 
 [education]
 title: Education
-text: More on the [about page](@/about/).
+text: I did the B.Tech alongside my jobs, so the dates overlap. The [about page](@/about/) explains it, along with the break between Taal Tech and Amistad.
 items:
   - Master of Science, Management Information Systems | University of Illinois Springfield, Springfield, IL · Dec 2024
   - Bachelor of Technology, Electronics and Communication Engineering | Aditya University, Surampalem, Andhra Pradesh, India · Apr 2023

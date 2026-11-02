@@ -35,7 +35,7 @@ pick: Pick a tool above.
 
 [education]
 title: Education
-text: Electronics first, then the business side of technology.
+text: Electronics first, then the business side of technology. I did the B.Tech alongside my jobs, so the dates overlap. "Studying while working" in my story above has the details.
 items:
   - Master of Science, Management Information Systems | University of Illinois Springfield, Springfield, IL · Dec 2024
   - Bachelor of Technology, Electronics and Communication Engineering | Aditya University, Surampalem, Andhra Pradesh, India · Apr 2023
