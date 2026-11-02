@@ -19,7 +19,7 @@ copy: Copy address
 [elsewhere]
 title: Elsewhere
 resume_label: Résumé
-resume_note: PDF, two pages
+resume_note: PDF
 
 [good]
 title: Good to know
