@@ -396,7 +396,7 @@
       const name = chip.dataset.skill;
       const used = (chip.dataset.used || "").split(/\s+/).filter((k) => PLACES[k]);
       if (!used.length) {
-        answer.textContent = name + " is part of my everyday toolkit. Ask me about it.";
+        answer.textContent = name + " is part of my toolkit. Ask me about it.";
         return;
       }
       answer.append("Where I’ve used " + name + ": ");
