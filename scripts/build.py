@@ -6,6 +6,7 @@ reads at runtime:
 
   data/build.json   commit, run and check results for this deploy
   data/repos.json   snapshot of public GitHub repos
+  data/board.json   the practice board (tickets from devops-practice-board) and each project's latest CI result
   data/status.json  rolling history of health checks
 
 Standard library only, so it runs the same on a laptop and in CI.
@@ -36,6 +37,11 @@ TEMPLATED = {".html"}
 CHECK_NAMES = ("html", "links", "dockerfile", "trivy", "smoke")
 HISTORY_DAYS = 30
 USER_AGENT = "portfolio-build"
+
+PRACTICE_REPO = "devops-practice-board"
+DEFAULT_OWNER = "gkakkineni-devops"
+# A saved copy of the board, used when GitHub can't be reached (offline previews, a blip in CI).
+BOARD_FALLBACK = ROOT / "scripts" / "board-fallback.json"
 
 
 def log(msg: str) -> None:
@@ -353,6 +359,62 @@ def fetch_repos(user: str, token: str | None) -> list:
     return repos
 
 
+def valid_board(board: object) -> bool:
+    return isinstance(board, dict) and board.get("schema") == 1 and isinstance(board.get("problems"), list)
+
+
+def fetch_board(owner: str, offline: bool) -> tuple[dict, str]:
+    """The ticket board from the practice repo, or the saved copy if it can't be read."""
+    if not offline:
+        url = f"https://raw.githubusercontent.com/{owner}/{PRACTICE_REPO}/main/board.json"
+        try:
+            status, body, _ = http_get(url)
+            if status == 200:
+                board = json.loads(body)
+                if valid_board(board):
+                    log(f"board: {len(board['problems'])} tickets from {PRACTICE_REPO}")
+                    return board, "live"
+                log("board skipped (board.json in the repo has an unexpected shape)")
+            else:
+                log(f"board skipped (raw.githubusercontent.com returned {status})")
+        except (OSError, ValueError) as err:
+            log(f"board skipped ({err})")
+    return json.loads(BOARD_FALLBACK.read_text(encoding="utf-8")), "fallback"
+
+
+def fetch_ci(owner: str, board: dict, token: str | None) -> dict:
+    """Latest finished CI result on main for each project that has a repo."""
+    results: dict[str, dict] = {}
+    for problem in board["problems"]:
+        name = problem.get("repo")
+        if not name or problem.get("status") == "open" or name in results:
+            continue
+        workflow = problem.get("workflow") or "ci.yml"
+        url = (
+            f"https://api.github.com/repos/{owner}/{name}/actions/workflows/{workflow}/runs"
+            "?branch=main&status=completed&per_page=5"
+        )
+        try:
+            status, body, _ = http_get(url, token)
+        except OSError as err:
+            log(f"ci status for {name} skipped ({err})")
+            continue
+        if status != 200:
+            log(f"ci status for {name} skipped (GitHub API returned {status})")
+            continue
+        for run in json.loads(body).get("workflow_runs", []):
+            if run.get("conclusion") in ("success", "failure", "timed_out"):
+                results[name] = {
+                    "conclusion": run["conclusion"],
+                    "finished_at": run["updated_at"],
+                    "url": run["html_url"],
+                }
+                break
+    summary = ", ".join(name + " " + result["conclusion"] for name, result in results.items())
+    log(f"ci status: {summary or 'none read'}")
+    return results
+
+
 def update_status(site_url: str | None) -> dict:
     """Pull the history from the live site, probe it once, keep the last 30 days."""
     history: list = []
@@ -418,6 +480,19 @@ def main() -> int:
     data = DIST / "data"
     write_json(data / "build.json", build_info(repo_slug, args.checks_passed))
     write_json(data / "repos.json", [] if args.offline else fetch_repos(user, token))
+    owner = user or DEFAULT_OWNER
+    board, board_source = fetch_board(owner, args.offline)
+    write_json(
+        data / "board.json",
+        {
+            "fetched_at": datetime.now(UTC).isoformat(timespec="seconds").replace("+00:00", "Z"),
+            "source": board_source,
+            "owner": owner,
+            "repo": PRACTICE_REPO,
+            "board": board,
+            "ci": {} if args.offline else fetch_ci(owner, board, token),
+        },
+    )
     write_json(data / "status.json", update_status(None if args.offline else args.site_url))
     log("done")
     return 0

@@ -1,0 +1,172 @@
+{
+  "schema": 1,
+  "counts": {
+    "open": 4,
+    "building": 0,
+    "done": 3
+  },
+  "problems": [
+    {
+      "id": "001",
+      "title": "A bad release reaches every user",
+      "status": "done",
+      "area": "Delivery",
+      "summary": "Release a new version in steps, and stop it on its own if it breaks.",
+      "tools": [
+        "Helm",
+        "Argo Rollouts",
+        "Argo CD",
+        "kind",
+        "GitHub Actions"
+      ],
+      "repo": "gitops-canary-rollouts",
+      "workflow": "ci.yml",
+      "site_page": "work/gitops-canary-rollouts/",
+      "post": null,
+      "file": "problems/001-bad-release-reaches-everyone.md",
+      "done_when": []
+    },
+    {
+      "id": "002",
+      "title": "Alerts nobody trusts",
+      "status": "done",
+      "area": "Observability",
+      "summary": "Alert rules with unit tests, and a check that a real failure really pages.",
+      "tools": [
+        "Prometheus",
+        "Alertmanager",
+        "Grafana",
+        "Docker Compose",
+        "promtool",
+        "Python"
+      ],
+      "repo": "observability-stack",
+      "workflow": "ci.yml",
+      "site_page": "work/observability-stack/",
+      "post": null,
+      "file": "problems/002-alerts-nobody-trusts.md",
+      "done_when": []
+    },
+    {
+      "id": "003",
+      "title": "GPU nodes burn money while idle",
+      "status": "done",
+      "area": "Cost",
+      "summary": "A GPU node group that sits at zero nodes until a job needs one.",
+      "tools": [
+        "Terraform",
+        "AWS EKS",
+        "VPC",
+        "Spot instances",
+        "tflint",
+        "Trivy"
+      ],
+      "repo": "terraform-aws-eks-gpu",
+      "workflow": "ci.yml",
+      "site_page": "work/terraform-aws-eks-gpu/",
+      "post": null,
+      "file": "problems/003-gpu-nodes-burn-money.md",
+      "done_when": []
+    },
+    {
+      "id": "004",
+      "title": "Nobody knows what is wasting money in AWS",
+      "status": "open",
+      "area": "Cost",
+      "summary": "A weekly report of idle AWS resources and what they cost. It only reads and never deletes.",
+      "tools": [
+        "Python",
+        "AWS Lambda",
+        "Terraform",
+        "EventBridge",
+        "boto3",
+        "pytest",
+        "GitHub Actions"
+      ],
+      "repo": null,
+      "workflow": "ci.yml",
+      "site_page": null,
+      "post": null,
+      "file": "problems/004-idle-aws-resources.md",
+      "done_when": [
+        "A Lambda function finds unattached EBS volumes, unassociated Elastic IPs, old snapshots and EC2 instances that are missing an owner or project tag.",
+        "The rules are plain functions with tests, so they run without an AWS account.",
+        "Every finding has an estimated monthly cost, and the README says the prices are estimates.",
+        "The IAM role can only read EC2 and write to one folder of one S3 bucket. Nothing can delete or change a resource.",
+        "Terraform deploys the function, the bucket, the logs and a weekly schedule, and CI checks the Terraform.",
+        "I have run it once in a real AWS account and destroyed it afterwards, or the README says that I haven't."
+      ]
+    },
+    {
+      "id": "005",
+      "title": "Secrets end up in commits",
+      "status": "open",
+      "area": "Security",
+      "summary": "Catch a leaked key before it reaches main, and know what to do when one gets through.",
+      "tools": [
+        "gitleaks",
+        "pre-commit",
+        "GitHub Actions",
+        "Python"
+      ],
+      "repo": null,
+      "workflow": "ci.yml",
+      "site_page": null,
+      "post": null,
+      "file": "problems/005-secrets-in-commits.md",
+      "done_when": [
+        "A secret scanner runs on every pull request and blocks the merge when it finds something.",
+        "The same scan runs on my machine as a pre-commit hook, so most leaks never leave the laptop.",
+        "A test shows that a fake key is caught and a harmless file passes.",
+        "The README says what to do when a real key leaks: revoke it first, clean up second.",
+        "The write-up shows what the scanner flagged by mistake and how I handled the false alarms."
+      ]
+    },
+    {
+      "id": "006",
+      "title": "Terraform drifts from reality",
+      "status": "open",
+      "area": "Infrastructure",
+      "summary": "A scheduled plan that notices when someone changes things by hand.",
+      "tools": [
+        "Terraform",
+        "Docker",
+        "GitHub Actions"
+      ],
+      "repo": null,
+      "workflow": "ci.yml",
+      "site_page": null,
+      "post": null,
+      "file": "problems/006-terraform-drift.md",
+      "done_when": [
+        "Terraform manages something small that runs locally, so the whole project costs nothing.",
+        "A scheduled workflow runs `terraform plan -detailed-exitcode` and opens a GitHub issue with the plan output when it finds a difference.",
+        "CI proves the detection: it changes the resource by hand on purpose and checks that the workflow notices.",
+        "The write-up explains the two ways to fix drift, apply the code or import the change, and when to pick which."
+      ]
+    },
+    {
+      "id": "007",
+      "title": "The pipeline takes too long",
+      "status": "open",
+      "area": "Delivery",
+      "summary": "Measure a slow pipeline, speed it up, and report the real before and after.",
+      "tools": [
+        "GitHub Actions",
+        "Docker",
+        "Caching"
+      ],
+      "repo": null,
+      "workflow": "ci.yml",
+      "site_page": null,
+      "post": null,
+      "file": "problems/007-slow-pipeline.md",
+      "done_when": [
+        "The baseline run time comes from real workflow runs, not from a guess.",
+        "Dependency and Docker layer caching are added, and parallel jobs where the steps don't depend on each other.",
+        "The write-up shows before and after times from real runs.",
+        "It also lists what I tried that didn't help."
+      ]
+    }
+  ]
+}
