@@ -19,6 +19,7 @@ availability: Open to DevOps, SRE and platform engineering roles
 home: Home
 about: About
 work: Work
+practice: Practice
 experience: Experience
 playground: Playground
 contact: Contact

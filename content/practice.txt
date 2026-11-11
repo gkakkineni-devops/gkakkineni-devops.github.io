@@ -1,0 +1,52 @@
+# The Practice board page. The tickets themselves are read from the devops-practice-board repo,
+# so this file only holds the words around them.
+
+[meta]
+title: Practice board, Gopala Krishna Akkineni
+description: A live board of DevOps problems I work through in small, tested projects: what is done, what is open, and whether each pipeline is passing.
+share_description: A live board of DevOps practice problems and the projects that solve them.
+
+[head]
+title: Practice board.
+lede: A backlog of DevOps problems that I work through one small, tested project at a time. Each ticket says what is being asked. The finished ones say what I built, how I know it works and what went wrong on the way.
+
+[board]
+title: The board
+note: The tickets are written as if a small online shop's platform team sent them. The shop and the requests are made up. The code, the tests and the pipelines behind the finished tickets are real, and none of it comes from my job.
+labels_title: Filter by area
+all: All
+failed: The board didn't load. The same list is in the [repo on GitHub](https://github.com/gkakkineni-devops/devops-practice-board).
+nojs: The board needs JavaScript. The same list is in the [repo on GitHub](https://github.com/gkakkineni-devops/devops-practice-board).
+empty: No tickets in this area yet.
+
+[how]
+title: How a ticket is written
+text: Every ticket is a Markdown file in the repo, and a small script checks each one before it can be merged. That is why this page can read the board straight from GitHub.
+items:
+  - The ask | The request in a sentence or two, the way the platform team would say it.
+  - Why it hurts | What goes wrong today, and who feels it.
+  - Done when | On open tickets, a short list that anyone could tick or not.
+  - What went wrong on the way | On finished tickets, the mistakes I made, not just the result.
+
+[source]
+title: Where this comes from
+text: The board is read from [devops-practice-board](https://github.com/gkakkineni-devops/devops-practice-board) each time this site is built, every few hours. The pipeline status is checked again in your browser, and falls back to the last build if GitHub is rate limiting.
+
+# Words used inside the ticket cards and the numbers above them.
+[labels]
+done: Done
+building: Building
+open: Open
+solved: Solved
+progress: In progress
+backlog: Open
+pipelines: Pipelines passing
+done_when: Done when
+casestudy: Case study
+repo: Repo
+writeup: Write-up
+post: Read the post
+passing: Checks passing
+failing: Checks failing
+unknown: Checks not read yet
+last_run: last run

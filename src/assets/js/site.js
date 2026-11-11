@@ -1,6 +1,6 @@
 // Everything that moves on the page, with no dependencies.
 // Theme, mobile menu, the live deploy panel, impact counters, the deploy playground,
-// the skill finder, the GitHub project list and copy-to-clipboard.
+// the skill finder, the GitHub project list, the practice board and copy-to-clipboard.
 
 
 (function () {
@@ -456,6 +456,191 @@
       .then(renderRepos)
       .catch(() => {});
   });
+
+  // ---------- practice board ----------
+  // Reads data/board.json (saved at build time from the devops-practice-board repo), draws it,
+  // then asks GitHub for the latest pipeline result of each finished project.
+
+  {
+    const box = $("[data-board]");
+    if (box) {
+      const L = (name) => box.dataset["label" + name.charAt(0).toUpperCase() + name.slice(1)] || "";
+      const statsEl = $("[data-board-stats]", box);
+      const barEl = $("[data-board-bar]", box);
+      const filterEl = $("[data-board-filter]", box);
+      const listEl = $("[data-board-list]", box);
+      const noteEl = $("[data-board-note]", box);
+      const failedEl = $("[data-board-failed]", box);
+      const rank = { done: 0, building: 1, open: 2 };
+      let snapshot = null;
+      let ci = {};
+      let area = "all";
+      let checkedLive = false;
+
+      const make = (tag, cls, text) => {
+        const node = document.createElement(tag);
+        if (cls) node.className = cls;
+        if (text !== undefined) node.textContent = text;
+        return node;
+      };
+      const anchor = (text, href) => {
+        const a = make("a", null, text);
+        a.href = href;
+        if (/^https:\/\//.test(href)) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+        return a;
+      };
+      const problems = () => (snapshot ? snapshot.board.problems : []);
+      const ghRepo = (name) => "https://github.com/" + snapshot.owner + "/" + name;
+
+      function ciState(name) {
+        const run = ci[name];
+        if (!run) return "unknown";
+        if (run.conclusion === "success") return "passing";
+        if (run.conclusion === "failure" || run.conclusion === "timed_out") return "failing";
+        return "unknown";
+      }
+
+      function renderStats() {
+        const all = problems();
+        const count = (status) => all.filter((p) => p.status === status).length;
+        const withRepo = all.filter((p) => p.repo && p.status !== "open");
+        const passing = withRepo.filter((p) => ciState(p.repo) === "passing").length;
+        const known = Object.keys(ci).length > 0;
+        const tiles = [
+          ["done", String(count("done")), L("solved")],
+          ["building", String(count("building")), L("progress")],
+          ["open", String(count("open")), L("backlog")],
+          ["pipelines", known ? passing + " / " + withRepo.length : "-", L("pipelines")],
+        ];
+        statsEl.replaceChildren(...tiles.map(([kind, value, label]) => {
+          const tile = make("div", "board-stat");
+          tile.dataset.kind = kind;
+          tile.append(make("span", "num", value), make("span", "lbl", label));
+          return tile;
+        }));
+        const sorted = all.slice().sort((a, b) => rank[a.status] - rank[b.status] || a.id.localeCompare(b.id));
+        barEl.replaceChildren(...sorted.map((p) => {
+          const seg = make("span");
+          seg.dataset.status = p.status;
+          seg.title = "#" + p.id + " " + p.title;
+          return seg;
+        }));
+      }
+
+      function renderFilter() {
+        const areas = [];
+        problems().forEach((p) => { if (areas.indexOf(p.area) < 0) areas.push(p.area); });
+        const options = [["all", L("all"), problems().length]].concat(
+          areas.map((a) => [a, a, problems().filter((p) => p.area === a).length])
+        );
+        filterEl.replaceChildren(...options.map(([key, label, total]) => {
+          const button = make("button", null, label + " " + total);
+          button.type = "button";
+          button.setAttribute("aria-pressed", String(key === area));
+          button.addEventListener("click", () => {
+            area = key;
+            $$("button", filterEl).forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+            renderList();
+          });
+          return button;
+        }));
+      }
+
+      function paintCI(line) {
+        const state = ciState(line.dataset.repo);
+        const run = ci[line.dataset.repo];
+        line.dataset.state = state;
+        let text = L(state);
+        if (run && run.finished_at && state !== "unknown") text += " · " + L("lastrun") + " " + timeAgo(new Date(run.finished_at));
+        line.lastChild.textContent = text;
+      }
+
+      function ticketEl(p) {
+        const card = make("article", "ticket");
+        card.dataset.status = p.status;
+        const head = make("div", "ticket-head");
+        const pill = make("span", "status", L(p.status));
+        pill.dataset.status = p.status;
+        head.append(make("span", "ticket-id", "#" + p.id), pill, make("span", null, p.area));
+        card.append(head, make("h3", null, p.title), make("p", null, p.summary), make("p", "cc-stack", p.tools.join(", ")));
+
+        if (p.repo && p.status !== "open") {
+          const line = make("p", "ticket-ci");
+          line.dataset.repo = p.repo;
+          line.append(make("i"), make("span"));
+          card.append(line);
+          paintCI(line);
+        }
+        if (p.done_when && p.done_when.length) {
+          const details = make("details", "ticket-done");
+          details.append(make("summary", null, L("donewhen")));
+          const items = make("ul");
+          p.done_when.forEach((text) => items.append(make("li", null, text)));
+          details.append(items);
+          card.append(details);
+        }
+        const links = make("p", "ticket-links");
+        if (p.site_page) links.append(anchor(L("casestudy"), dataRoot + p.site_page));
+        if (p.post) links.append(anchor(L("post"), dataRoot + p.post));
+        if (p.repo && p.status !== "open") links.append(anchor(L("repo"), ghRepo(p.repo)));
+        links.append(anchor(L("writeup"), ghRepo(snapshot.repo) + "/blob/main/" + p.file));
+        card.append(links);
+        return card;
+      }
+
+      function renderList() {
+        const shown = problems()
+          .filter((p) => area === "all" || p.area === area)
+          .sort((a, b) => rank[a.status] - rank[b.status] || a.id.localeCompare(b.id));
+        listEl.replaceChildren(...shown.map(ticketEl));
+      }
+
+      function renderNote() {
+        const parts = [];
+        if (snapshot.source === "live" && snapshot.fetched_at) parts.push("Board read from GitHub " + timeAgo(new Date(snapshot.fetched_at)) + ".");
+        else parts.push("Showing the last saved copy of the board.");
+        if (checkedLive) parts.push("Pipeline status checked just now.");
+        else if (Object.keys(ci).length) parts.push("Pipeline status from the last site build.");
+        noteEl.textContent = parts.join(" ");
+      }
+
+      function renderAll() {
+        renderStats();
+        renderFilter();
+        renderList();
+        renderNote();
+      }
+
+      function refreshCI() {
+        if (!user || user.indexOf("{{") === 0) return Promise.resolve();
+        const wanted = {};
+        problems().forEach((p) => { if (p.repo && p.status !== "open") wanted[p.repo] = p.workflow || "ci.yml"; });
+        const jobs = Object.keys(wanted).map((name) => {
+          const url = "https://api.github.com/repos/" + encodeURIComponent(snapshot.owner) + "/" + encodeURIComponent(name) +
+            "/actions/workflows/" + encodeURIComponent(wanted[name]) + "/runs?branch=main&status=completed&per_page=5";
+          return getJSON(url).then((res) => {
+            const run = (res.workflow_runs || []).find((r) => ["success", "failure", "timed_out"].indexOf(r.conclusion) >= 0);
+            if (run) { ci[name] = { conclusion: run.conclusion, finished_at: run.updated_at, url: run.html_url }; checkedLive = true; }
+          }).catch(() => {});
+        });
+        return Promise.all(jobs).then(() => {
+          renderStats();
+          $$("[data-repo]", listEl).forEach(paintCI);
+          renderNote();
+        });
+      }
+
+      getJSON(dataRoot + "data/board.json").then((saved) => {
+        if (!saved || !saved.board || !Array.isArray(saved.board.problems)) throw new Error("board.json has no tickets");
+        snapshot = saved;
+        ci = saved.ci || {};
+        renderAll();
+        return refreshCI();
+      }).catch(() => {
+        if (!snapshot && failedEl) failedEl.hidden = false;
+      });
+    }
+  }
 
   // ---------- visitor stats (GoatCounter, no cookies) ----------
   {

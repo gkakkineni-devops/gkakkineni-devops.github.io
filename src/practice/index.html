@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{practice.meta.title}}</title>
+  <meta name="description" content="{{practice.meta.description}}">
+  <meta property="og:title" content="{{practice.meta.title}}">
+  <meta property="og:description" content="{{practice.meta.share_description}}">
+{{> head}}
+</head>
+<body data-page="practice" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">
+{{> header}}
+
+  <main id="main">
+    <header class="page-head wrap">
+      <p class="crumb"><a href="{{root}}">{{site.nav.home}}</a> <span aria-hidden="true">/</span> {{site.nav.practice}}</p>
+      <h1>{{practice.head.title}}</h1>
+      <p class="lede">{{practice.head.lede}}</p>
+    </header>
+
+    <section class="section wrap board" aria-labelledby="board-title" data-board
+      data-label-done="{{practice.labels.done}}" data-label-building="{{practice.labels.building}}" data-label-open="{{practice.labels.open}}"
+      data-label-solved="{{practice.labels.solved}}" data-label-progress="{{practice.labels.progress}}" data-label-backlog="{{practice.labels.backlog}}" data-label-pipelines="{{practice.labels.pipelines}}"
+      data-label-donewhen="{{practice.labels.done_when}}" data-label-casestudy="{{practice.labels.casestudy}}" data-label-repo="{{practice.labels.repo}}" data-label-writeup="{{practice.labels.writeup}}" data-label-post="{{practice.labels.post}}"
+      data-label-passing="{{practice.labels.passing}}" data-label-failing="{{practice.labels.failing}}" data-label-unknown="{{practice.labels.unknown}}" data-label-lastrun="{{practice.labels.last_run}}"
+      data-label-all="{{practice.board.all}}" data-label-filter="{{practice.board.labels_title}}" data-label-empty="{{practice.board.empty}}">
+      <div class="section-head">
+        <h2 id="board-title">{{practice.board.title}}</h2>
+        <p>{{practice.board.note}}</p>
+      </div>
+
+      <div class="board-stats" data-board-stats></div>
+      <div class="board-bar" data-board-bar aria-hidden="true"></div>
+      <div class="chips board-filter" data-board-filter role="group" aria-label="{{practice.board.labels_title}}"></div>
+      <div class="board-list" data-board-list aria-live="polite"></div>
+      <p class="board-failed" data-board-failed hidden>{{practice.board.failed}}</p>
+      <p class="board-foot muted" data-board-note></p>
+      <noscript><p class="board-nojs">{{practice.board.nojs}}</p></noscript>
+    </section>
+
+    <section class="section wrap" aria-labelledby="how-title">
+      <div class="section-head">
+        <h2 id="how-title">{{practice.how.title}}</h2>
+        <p>{{practice.how.text}}</p>
+      </div>
+      <ul class="earlier">
+{{#each practice.how.items}}
+        <li><strong>{{.0}}</strong> {{.1}}</li>
+{{/each}}
+      </ul>
+    </section>
+
+    <section class="section wrap" aria-labelledby="source-title">
+      <div class="section-head">
+        <h2 id="source-title">{{practice.source.title}}</h2>
+        <p>{{practice.source.text}}</p>
+      </div>
+    </section>
+
+{{> cta}}
+  </main>
+
+{{> footer}}
+</body>
+</html>
