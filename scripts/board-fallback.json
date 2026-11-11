@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "counts": {
-    "open": 4,
-    "building": 0,
+    "open": 3,
+    "building": 1,
     "done": 3
   },
   "problems": [
@@ -71,7 +71,7 @@
     {
       "id": "004",
       "title": "Nobody knows what is wasting money in AWS",
-      "status": "open",
+      "status": "building",
       "area": "Cost",
       "summary": "A weekly report of idle AWS resources and what they cost. It only reads and never deletes.",
       "tools": [
@@ -83,7 +83,7 @@
         "pytest",
         "GitHub Actions"
       ],
-      "repo": null,
+      "repo": "aws-idle-resource-finder",
       "workflow": "ci.yml",
       "site_page": null,
       "post": null,

@@ -505,12 +505,13 @@
         const count = (status) => all.filter((p) => p.status === status).length;
         const withRepo = all.filter((p) => p.repo && p.status !== "open");
         const passing = withRepo.filter((p) => ciState(p.repo) === "passing").length;
-        const known = Object.keys(ci).length > 0;
+        const read = withRepo.filter((p) => ciState(p.repo) !== "unknown").length;
+        const known = read > 0;
         const tiles = [
           ["done", String(count("done")), L("solved")],
           ["building", String(count("building")), L("progress")],
           ["open", String(count("open")), L("backlog")],
-          ["pipelines", known ? passing + " / " + withRepo.length : "-", L("pipelines")],
+          ["pipelines", known ? passing + " / " + read : "-", L("pipelines")],
         ];
         statsEl.replaceChildren(...tiles.map(([kind, value, label]) => {
           const tile = make("div", "board-stat");
