@@ -10,14 +10,14 @@ when: October 2026
 role: Designed, built and tested it
 results:
   - 5 | containers from one command
-  - 5 | alert rules, each with a severity and a runbook line
-  - 4 | unit tests on the alert rules, run on every push
+  - 6 | alert rules, each with a severity and a runbook line
+  - 5 | unit tests on the alert rules, run on every push
 situation:
   - Monitoring usually gets built by clicking around, and nobody tests it. The first time you find out an alert rule has a typo is during an outage, when nobody gets paged. I wanted a stack where the alerts are code, the dashboard is code, and CI proves that a real failure produces a real alert.
   - A tiny Python service sits inside it only to give the monitoring something to watch. You can make it fail on purpose, which is how the tests work.
 built:
   - Prometheus scraping the demo service, Alertmanager and a node exporter every five seconds, with recording rules that work out request rate, error ratio and p95 latency once, so the dashboard and the alerts always agree.
-  - Five alert rules: instance down, fast error-budget burn, high error ratio, high p95 latency, and a disk that will fill within four hours.
+  - Six alert rules: instance down, fast error-budget burn, high error ratio, high p95 latency, a disk that will fill within four hours, and memory above 90% for ten minutes.
   - An error-budget burn alert based on a 99.9% target. It fires when errors are using the budget 14.4 times too fast on both a 5-minute and a 1-hour window.
   - Alertmanager grouping alerts by name and job, repeating critical ones every 30 minutes, and muting warnings for a job that already has a critical alert firing.
   - A Grafana dashboard provisioned from files, so it lives in Git and comes back identical after a rebuild.
