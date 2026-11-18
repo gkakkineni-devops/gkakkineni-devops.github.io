@@ -100,6 +100,9 @@ jobs:
           for page in about work experience contact work/this-website; do curl -fsS "http://127.0.0.1:8080/$page/" > /dev/null; done
           curl -fsS http://127.0.0.1:8080/data/build.json | python3 -m json.tool > /dev/null
           curl -fsSI http://127.0.0.1:8080/ | grep -qi "content-security-policy"
+          curl -fsS http://127.0.0.1:8080/ | grep -q 'rel="canonical"'
+          curl -fsS http://127.0.0.1:8080/robots.txt | grep -q "^Sitemap: https://"
+          curl -fsS http://127.0.0.1:8080/sitemap.xml | grep -q "<urlset"
           echo "Smoke test passed"
 
       - name: Stop container

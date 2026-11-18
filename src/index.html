@@ -7,6 +7,29 @@
   <meta name="description" content="{{home.meta.description}}">
   <meta property="og:title" content="{{home.meta.share_title}}">
   <meta property="og:description" content="{{home.meta.share_description}}">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "{{site.site.url}}/#website",
+        "name": "{{site.site.name}}",
+        "url": "{{site.site.url}}/"
+      },
+      {
+        "@type": "Person",
+        "@id": "{{site.site.url}}/#person",
+        "name": "{{site.site.name}}",
+        "url": "{{site.site.url}}/",
+        "image": "{{site.site.url}}/assets/img/gopala.jpg",
+        "jobTitle": "DevOps Engineer",
+        "address": { "@type": "PostalAddress", "addressLocality": "Bloomington", "addressRegion": "IL", "addressCountry": "US" },
+        "sameAs": ["{{site.site.linkedin}}", "{{site.site.github}}"]
+      }
+    ]
+  }
+  </script>
 {{> head}}
 </head>
 <body data-page="home" data-root="{{root}}" data-github-user="{{github_user}}" data-github-repo="{{github_repo}}">

@@ -285,8 +285,14 @@ def copy_source(values: dict[str, str]) -> None:
 
     def write(path: Path, text: str) -> None:
         nonlocal pages
-        depth = len(path.relative_to(DIST).parts) - 1
-        page_values = {**values, "root": "../" * depth or "./"}
+        rel = path.relative_to(DIST)
+        depth = len(rel.parts) - 1
+        # The address of this page without the domain: "" for home, "about/", "work/faster-releases/".
+        if rel.name == "index.html":
+            page_path = "/".join(rel.parts[:-1]) + "/" if depth else ""
+        else:
+            page_path = rel.as_posix()
+        page_values = {**values, "root": "../" * depth or "./", "page_path": page_path}
         path.write_text(render_page(text, partials, page_values, content), encoding="utf-8")
         pages += 1
 
@@ -312,7 +318,27 @@ def copy_source(values: dict[str, str]) -> None:
         write(target, template)
     content.pop("case", None)
     (DIST / ".nojekyll").write_text("")
+    listed = write_search_files(content["site"]["site"]["url"])
     log(f"copied src/ to dist/ ({pages} pages, {sum(1 for p in DIST.rglob('*') if p.is_file())} files)")
+    log(f"sitemap.xml lists {listed} pages")
+
+
+def write_search_files(site_url: str) -> int:
+    """Write sitemap.xml and robots.txt. Every page that has an index.html is listed; 404.html is not."""
+    base = site_url.rstrip("/")
+    urls = []
+    for page in DIST.rglob("index.html"):
+        folder = page.relative_to(DIST).parent.as_posix()
+        urls.append(f"{base}/" if folder == "." else f"{base}/{folder}/")
+    urls.sort()
+    lines = "\n".join(f"  <url><loc>{url}</loc></url>" for url in urls)
+    (DIST / "sitemap.xml").write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + lines + "\n</urlset>\n",
+        encoding="utf-8",
+    )
+    (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {base}/sitemap.xml\n", encoding="utf-8")
+    return len(urls)
 
 
 def build_info(repo_slug: str, checks_passed: bool) -> dict:
