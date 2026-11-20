@@ -8,10 +8,13 @@ LABEL org.opencontainers.image.title="gopala-portfolio" \
 
 # The base image shipped brotli-libs 1.2.0-r1 and nginx 1.30.6-r1, which have CRITICAL CVEs
 # fixed in brotli-libs 1.2.1-r0 and nginx 1.30.7-r0.
-# This upgrades only those two packages. Once the base image is rebuilt it does nothing, so it is safe to delete.
+# This upgrades only those packages. The nginx modules in the image are tied to the nginx version,
+# so they have to be upgraded in the same step or apk refuses. Once the base image is rebuilt
+# it does nothing, so it is safe to delete.
 USER root
 # hadolint ignore=DL3018
-RUN apk add --no-cache --upgrade "brotli-libs>=1.2.1" "nginx>=1.30.7"
+RUN apk add --no-cache --upgrade "brotli-libs>=1.2.1" "nginx>=1.30.7" \
+    nginx-module-geoip nginx-module-image-filter nginx-module-njs nginx-module-xslt
 
 COPY --chown=101:101 deploy/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --chown=101:101 dist/ /usr/share/nginx/html/
