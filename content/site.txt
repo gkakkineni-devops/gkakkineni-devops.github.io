@@ -8,7 +8,7 @@ name: Gopala Krishna Akkineni
 first_name: Gopala
 role: DevOps engineer
 city: Bloomington, IL
-email: gopalakrishnaakkineni.dev@gmail.com
+email: gkakkineni.dev@gmail.com
 email_subject: Hello%20Gopala
 url: https://gkakkineni.dev
 github: https://github.com/gkakkineni-devops
