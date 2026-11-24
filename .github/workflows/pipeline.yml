@@ -170,4 +170,4 @@ jobs:
           echo "still not listed after a minute, going ahead anyway"
 
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
