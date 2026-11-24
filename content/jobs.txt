@@ -37,7 +37,7 @@ when: May 2022 to Jun 2023
 where: Hyderabad, India
 title: Cloud/DevOps Engineer
 org: Amistad Technologies
-summary: This was my on-call education. I supported AWS services in production, automated the repetitive work around them, and learned what really matters when something breaks.
+summary: I supported AWS services in production, automated the repetitive work around them, and learned what matters when something breaks.
 do_title: What I did
 do:
   - L1/L2 support for EC2, S3 and IAM, plus networking incidents.
@@ -53,7 +53,7 @@ results:
   - 20% | fewer failed deploys
   - 10% | lower AWS cost
 took_title: What I took away
-took: A clear alert, a tested backup and a rollback you trust are worth more than any clever architecture at 2 a.m.
+took: A clear alert, a tested backup and a rollback you can trust matter most when something breaks.
 
 [taal]
 short: Taal Tech
@@ -83,7 +83,7 @@ when: Jul 2020 to Feb 2021
 where: Kochi, India
 title: Linux Administrator
 org: Ignitarium
-summary: Where it started. I kept Linux servers healthy for development teams and began scripting my way out of repetitive work.
+summary: My first job. I kept Linux servers healthy for development teams and started scripting the repetitive work.
 do_title: What I did
 do:
   - Set up and troubleshot Linux servers for development teams and monitored server health.
@@ -92,4 +92,4 @@ do:
   - Handled patching, kernel updates, package installs and security hardening.
   - Worked with developers to fix application performance bottlenecks.
 took_title: What I took away
-took: The fundamentals: permissions, processes, logs and patches. Everything in the cloud still runs on them.
+took: The basics: permissions, processes, logs and patches. Cloud servers still depend on all of them.

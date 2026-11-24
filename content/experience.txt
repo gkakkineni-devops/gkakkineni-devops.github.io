@@ -6,8 +6,8 @@ description: Over four years of DevOps, cloud and Linux experience at State Farm
 share_description: DevOps, cloud and Linux experience from 2020 to now.
 
 [head]
-title: Over four years, four teams, three clouds.
-lede: Each role taught me something different. Here’s what I owned, what I shipped, and what I took away from it.
+title: Four teams in over four years.
+lede: Here’s what I did in each role and what I took away from it.
 resume_button: Open résumé (PDF)
 
 [labels]

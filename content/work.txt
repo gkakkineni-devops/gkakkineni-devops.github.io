@@ -7,7 +7,7 @@ description: Case studies from the State Farm ML platform and my own projects: C
 
 [head]
 title: Work, written up properly.
-lede: Each case study covers the situation, what I built, the decisions behind it and what changed. Client details are kept general, but the approach and the results are real.
+lede: Each case study covers the situation, what I built, the decisions behind it and what changed. Client details are kept general on purpose.
 
 [client]
 title: State Farm ML platform

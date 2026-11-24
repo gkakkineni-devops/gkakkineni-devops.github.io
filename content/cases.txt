@@ -28,7 +28,7 @@ flow:
   - Deploy with GitOps
   - Monitor
 decisions:
-  - Meet teams where they are | Moving every team to one CI tool overnight would have stalled delivery. I focused on making each path consistent and fast first, using the tool the team already ran.
+  - Use the tool each team already runs | Moving every team to one CI tool overnight would have stalled delivery. I focused on making each path consistent and fast first, using the tool the team already ran.
   - Infrastructure is reviewed like code | Terraform and CloudFormation changes go through pull requests. That turns environment changes into something people can read, discuss and roll back.
   - Models ship like software | A model deploy gets the same build, scan and rollout steps as a service. Fewer special cases means fewer surprises.
 changed: Release cycles got 40% shorter, and the infrastructure provisioned this way held 99.9% uptime.
@@ -66,7 +66,7 @@ flow:
 decisions:
   - GitOps over pushing from CI | When the cluster pulls its desired state from Git, there’s one source of truth. You can see what’s running, and undoing a change is a normal Git revert instead of a special procedure.
   - Canary for risky services, blue-green for the rest | Canary releases catch problems that only show up under real traffic. Blue-green is simpler when a clean switch is enough. Using both kept the setup no more complex than each service needed.
-  - Let a small slice find the problem | A new version that misbehaves is caught while only a few users can see it, and everyone else stays on the version that works. People investigate afterwards, but users stop being affected quickly.
+  - Catch problems with a small slice of users | A new version that misbehaves is caught while only a few users can see it, and everyone else stays on the version that works. People investigate afterwards, but users stop being affected quickly.
 changed: Service interruptions during releases dropped 95%, and releases stopped being something the teams had to schedule around.
 next: Tie canary analysis to the same SLOs the teams already watch, so “healthy enough to promote” means exactly what it means in production.
 stack: Kubernetes (EKS, GKE), Helm, ArgoCD, FluxCD
@@ -102,7 +102,7 @@ flow:
   - Deploy and serve
   - Scale down
 decisions:
-  - Scale on the work, not the calendar | Scaling GPU capacity around the actual jobs, instead of keeping a fixed fleet warm, is where most of the savings came from.
+  - Scale GPUs with the jobs | Scaling GPU capacity around the actual jobs, instead of keeping a fixed fleet warm, is where most of the savings came from.
   - Measure first, then scale | Automated monitoring of GPU workloads showed when capacity sat idle and when it ran short, so scaling followed real usage instead of guesses.
   - Use managed ML services where they fit | SageMaker, Bedrock and Hugging Face cover a lot of ground. Plugging them into the existing pipelines was faster and safer than rebuilding what they already do.
 changed: Training and inference ran up to 30% faster, and automated scaling cut costs for GPU workloads by 15% while keeping performance where it needed to be.
@@ -138,7 +138,7 @@ flow:
   - Fix and document
 decisions:
   - Every alert needs an owner and an action | An alert that nobody acts on trains people to ignore alerts. If it fires, someone should know what to do.
-  - Watch trends, not just thresholds | An alert on a trend catches a problem that is getting worse before it crosses the line where users notice.
+  - Watch trends as well as thresholds | An alert on a trend catches a problem that is getting worse before it crosses the line where users notice.
   - Reviews are about the system | Root cause reviews look for what in the system allowed the problem, then fix that, so the same incident doesn’t come back next month.
 changed: Downtime went down 25%, and problems started showing up on a dashboard before they showed up in a support queue.
 next: Base alerting on service-level objectives and error budgets for more of the important services, so it follows what users experience.
@@ -146,7 +146,7 @@ stack: Prometheus, Grafana, CloudWatch, ELK
 home_num: 25%
 home_sub: Prometheus, Grafana, CloudWatch and ELK with alerts that matter
 card_result: **25%** less downtime
-card_text: Metrics, logs and dashboards in one place, alerts that mean something, and honest root cause reviews.
+card_text: Metrics, logs and dashboards in one place, alerts people act on, and root cause reviews.
 card_stack: Prometheus, Grafana, CloudWatch, ELK
 
 [security-in-the-pipeline]
@@ -172,8 +172,8 @@ flow:
   - Gate
   - Deploy
 decisions:
-  - Fail the build, don’t file a report | A finding that blocks a merge gets fixed that day. A finding in a report gets fixed eventually.
-  - Block on what can be fixed | Gating on critical issues that have a fix available keeps the signal high. Teams take the gate seriously because it rarely cries wolf.
+  - Fail the build instead of filing a report | A finding that blocks a merge gets fixed that day. A finding in a report gets fixed eventually.
+  - Block on what can be fixed | Gating on critical issues that have a fix available keeps the signal high. Teams take the gate seriously because it rarely fires on something nobody can fix.
   - Secrets come from a manager at runtime | Pulling credentials from Vault or a cloud secret manager means rotation doesn’t require a code change, and nothing sensitive sits in Git.
 changed: Secrets moved into managed stores that help meet compliance requirements, and on my own projects a problem now surfaces in the pull request instead of in production.
 next: Sign container images and verify signatures at deploy time, so only images built by the pipeline can run.

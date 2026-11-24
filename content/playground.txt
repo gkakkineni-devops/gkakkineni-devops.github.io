@@ -41,7 +41,7 @@ steps:
 rules_title: The rules behind the simulation
 rules:
   - Rollback is automatic | If the error rate stays above 2% for three checks in a row, the release rolls back without waiting for a person. People investigate afterwards, but users stop being affected right away.
-  - Security gates fail the build | A report nobody reads doesn’t protect anyone. A failed scan stops the release, so it gets fixed the same day.
+  - Security gates fail the build | A failed scan stops the release, so the problem gets fixed the same day instead of sitting in a report.
   - Small slices first | Canary releases limit the damage of a bad change to the few users who saw it, which is why 90% of users never see the bad version in the canary scenario.
 
 [after]
