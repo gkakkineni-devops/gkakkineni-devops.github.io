@@ -4,7 +4,7 @@ FROM nginxinc/nginx-unprivileged:stable-alpine
 
 LABEL org.opencontainers.image.title="gopala-portfolio" \
       org.opencontainers.image.description="Personal portfolio site served by nginx" \
-      org.opencontainers.image.licenses="MIT"
+      org.opencontainers.image.licenses="LicenseRef-All-Rights-Reserved"
 
 # The base image shipped brotli-libs 1.2.0-r1 and nginx 1.30.6-r1, which have CRITICAL CVEs
 # fixed in brotli-libs 1.2.1-r0 and nginx 1.30.7. This upgrades only those packages.
