@@ -38,4 +38,3 @@ other: Other ways to reach me
 
 [footer]
 tagline: DevOps engineer, Bloomington IL
-note: Built and deployed by me with plain HTML, CSS and JavaScript. Build
