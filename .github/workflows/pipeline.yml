@@ -151,5 +151,23 @@ jobs:
         with:
           path: dist
 
+      # Sometimes GitHub doesn't list the artifact for a second or two after the upload,
+      # and deploy-pages then fails with "Found 0 artifact(s)". This waits until it shows up.
+      - name: Wait for the artifact to be listed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for i in $(seq 1 12); do
+            n=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
+              -q '.artifacts | map(select(.name == "github-pages")) | length' || echo 0)
+            if [ "$n" -ge 1 ]; then
+              echo "artifact is listed"
+              exit 0
+            fi
+            echo "not listed yet, waiting"
+            sleep 5
+          done
+          echo "still not listed after a minute, going ahead anyway"
+
       - id: deployment
         uses: actions/deploy-pages@v4
