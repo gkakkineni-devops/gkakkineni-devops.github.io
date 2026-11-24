@@ -501,6 +501,7 @@ def main() -> int:
         "github_repo": repo_name,
         "asset_version": asset_version(),
         "base_path": base_path,
+        "year": str(datetime.now(UTC).year),
     })
 
     data = DIST / "data"

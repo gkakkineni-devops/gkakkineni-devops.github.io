@@ -38,3 +38,4 @@ other: Other ways to reach me
 
 [footer]
 tagline: DevOps engineer, Bloomington IL
+analytics: Page views are counted with GoatCounter and Cloudflare Web Analytics. Neither uses cookies.
